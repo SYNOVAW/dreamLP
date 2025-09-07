@@ -9,6 +9,7 @@ import { useState } from "react"
 import { useLocale } from "@/hooks/use-locale"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { glassCardStyles } from "@/lib/card-styles"
+import { Emoji, EMOJIS } from "@/components/emoji"
 
 // JayVue: one-file landing page, Tailwind + shadcn/ui + framer-motion
 // Sections: Hero / Waitlist / Social Proof / Features / Meditation Hz Music / How It Works / Persona / Pricing / FAQ / CTA / Footer
@@ -736,12 +737,12 @@ function SheepCountingSection(){
 
   // 养生提示
   const wellnessTips = [
-    "💤 今晚别刷手机太久，23:30前关屏",
-    "🌿 明日晨起试试温水 + 柠檬",
-    "🌙 梦见月亮时，适合冥想 3 分钟",
-    "🍵 睡前1小时避免咖啡因",
-    "🧘 深呼吸5次，让身体放松",
-    "📱 把手机放在床外，减少蓝光干扰"
+    <><Emoji emoji={EMOJIS.SLEEP} size={16} /> 今晚别刷手机太久，23:30前关屏</>,
+    <><Emoji emoji={EMOJIS.LEAF} size={16} /> 明日晨起试试温水 + 柠檬</>,
+    <><Emoji emoji={EMOJIS.MOON} size={16} /> 梦见月亮时，适合冥想 3 分钟</>,
+    <><Emoji emoji={EMOJIS.TEA} size={16} /> 睡前1小时避免咖啡因</>,
+    <><Emoji emoji={EMOJIS.MEDITATION} size={16} /> 深呼吸5次，让身体放松</>,
+    <><Emoji emoji={EMOJIS.COMPUTER} size={16} /> 把手机放在床外，减少蓝光干扰</>
   ]
 
   // 数羊开始
@@ -867,7 +868,14 @@ function SheepCountingSection(){
                   className="mb-6"
                 >
                   <div className={`text-4xl mb-2 ${currentSheep.type === 'rare' ? 'animate-pulse' : ''}`}>
-                    {currentSheep.type === 'rare' ? '✨🐑' : '🐑'}
+                    {currentSheep.type === 'rare' ? (
+                      <>
+                        <Emoji emoji={EMOJIS.SPARKLES} size={32} />
+                        <Emoji emoji={EMOJIS.SHEEP} size={32} />
+                      </>
+                    ) : (
+                      <Emoji emoji={EMOJIS.SHEEP} size={32} />
+                    )}
                   </div>
                   {currentSheep.message && (
                     <div className="text-sm text-yellow-300 animate-bounce">
@@ -893,7 +901,7 @@ function SheepCountingSection(){
                       onClick={countSheep}
                       className="w-full bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 shadow-lg hover:shadow-white/20 transition-all duration-300 hover:scale-105"
                     >
-                      <span className="text-2xl mr-2">🐑</span>
+                      <Emoji emoji={EMOJIS.SHEEP} size={24} className="mr-2" />
                       数一只羊
                     </Button>
                   )}
@@ -940,17 +948,25 @@ function SheepCountingSection(){
               <h4 className="text-sm font-semibold text-white mb-2">羊群图鉴</h4>
               <div className="grid grid-cols-3 gap-2 text-xs text-slate-300">
                 <div className="text-center">
-                  <div className="text-lg">🐑</div>
+                  <div className="text-lg">
+                    <Emoji emoji={EMOJIS.SHEEP} size={20} />
+                  </div>
                   <div>普通羊</div>
                   <div className="text-slate-400">1-9只</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg">🌟🐑</div>
+                  <div className="text-lg">
+                    <Emoji emoji={EMOJIS.STAR} size={20} />
+                    <Emoji emoji={EMOJIS.SHEEP} size={20} />
+                  </div>
                   <div>梦之羊</div>
                   <div className="text-slate-400">10-19只</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg">✨🐑</div>
+                  <div className="text-lg">
+                    <Emoji emoji={EMOJIS.SPARKLES} size={20} />
+                    <Emoji emoji={EMOJIS.SHEEP} size={20} />
+                  </div>
                   <div>稀有羊</div>
                   <div className="text-slate-400">随机出现</div>
                 </div>
@@ -1204,7 +1220,7 @@ function CyberWellnessSection(){
 
   const wellnessCards = [
     {
-      icon: "🌙",
+      icon: <Emoji emoji={EMOJIS.MOON} size={24} />,
       title: "梦境处方签",
       description: "AI電気羊解读昨夜的梦，为你开出今日的小处方。可能是一杯柚子茶、一次深呼吸，或是一段短冥想。",
       cta: "解锁今日处方",
@@ -1222,7 +1238,7 @@ function CyberWellnessSection(){
       }
     },
     {
-      icon: "♨️",
+      icon: <Emoji emoji={EMOJIS.SPA} size={24} />,
       title: "虚拟温泉",
       description: "闭上眼睛，进入数字温泉。屏幕中的热气与光晕，配合呼吸引导，就像身体在赛博温泉中复原。",
       cta: activeWellness === 'spa' ? "温泉中..." : "开始温泉疗法",
@@ -1231,7 +1247,7 @@ function CyberWellnessSection(){
       action: startVirtualSpa
     },
     {
-      icon: "🍵",
+      icon: <Emoji emoji={EMOJIS.TEA} size={24} />,
       title: "赛博药膳",
       description: "将梦境色彩转化为饮品推荐。梦见森林？来一杯抹茶。梦见星空？今晚适合紫苏茶。",
       cta: "冲泡我的梦饮",
@@ -1518,7 +1534,9 @@ function AIElectricSheepSection(){
             
             <Card className={`${glassCardStyles.hover} cursor-pointer group transition-all duration-300 hover:bg-gradient-to-br hover:from-red-600/20 hover:to-orange-600/20 hover:border-red-400/30`}>
               <CardContent className="p-4 text-center space-y-2">
-                <div className="text-2xl mb-2">🔥</div>
+                <div className="text-2xl mb-2">
+                  <Emoji emoji={EMOJIS.FIRE} size={24} />
+                </div>
                 <h5 className="font-medium text-slate-200">火焰都市</h5>
                 <p className="text-xs text-slate-400">霓虹赛博空间，电子律动与合成器</p>
                 <div className="text-xs text-slate-300 font-medium">IGNIS · 激励 · 探索</div>
@@ -1527,7 +1545,9 @@ function AIElectricSheepSection(){
             
             <Card className={`${glassCardStyles.hover} cursor-pointer group transition-all duration-300 hover:bg-gradient-to-br hover:from-purple-600/20 hover:to-blue-600/20 hover:border-purple-400/30`}>
               <CardContent className="p-4 text-center space-y-2">
-                <div className="text-2xl mb-2">🪞</div>
+                <div className="text-2xl mb-2">
+                  <Emoji emoji="🪞" size={24} />
+                </div>
                 <h5 className="font-medium text-slate-200">镜之迷宫</h5>
                 <p className="text-xs text-slate-400">多维度反射空间，环绕音效与回响</p>
                 <div className="text-xs text-slate-300 font-medium">ECHO · 反思 · 洞察</div>
@@ -1539,7 +1559,7 @@ function AIElectricSheepSection(){
         <Card className={`${glassCardStyles.base} mb-8`}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-slate-200">
-              <span>👥</span>
+              <Emoji emoji={EMOJIS.USERS} size={20} />
               邀请其他人合梦
             </CardTitle>
           </CardHeader>
@@ -2063,7 +2083,7 @@ export default function DreamLifeLanding() {
         <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="max-w-2xl">
-            <h2 className="text-2xl md:text-4xl font-semibold">冥想 · Hz 音乐 🎶</h2>
+            <h2 className="text-2xl md:text-4xl font-semibold">冥想 · Hz 音乐 <Emoji emoji={EMOJIS.MUSIC} size={32} /></h2>
             <p className="mt-3 text-slate-300/90">科学频率调节脑波，配合梦境分析结果，提供个性化的冥想音频体验。</p>
           </div>
 
