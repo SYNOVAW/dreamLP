@@ -1,5 +1,5 @@
 "use client"
-import type React from "react"
+import React from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -124,20 +124,65 @@ function LockIcon() {
 }
 
 function WaitlistForm() {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const [email, setEmail] = useState("")
   const [intent, setIntent] = useState("")
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: 接入你的后端：Supabase / Firebase / Airtable / 自建API
-    // fetch('/api/waitlist', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ email, intent })
-    // });
-    setSubmitted(true)
+    setIsSubmitting(true)
+    setError(null)
+
+    // Honeypot 防机器人检查
+    const form = e.currentTarget as HTMLFormElement
+    const honeypot = (new FormData(form).get('company') as string) || ''
+    if (honeypot) {
+      setIsSubmitting(false)
+      return // 机器人，静默拒绝
+    }
+
+    try {
+      // 收集用户环境信息
+      const params = new URLSearchParams(window.location.search)
+      const utm = Object.fromEntries(params.entries())
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+      const referrer = typeof document !== 'undefined' ? document.referrer || '' : ''
+
+      // 动态导入 Supabase（避免 SSR 问题）
+      const { insertWaitlistEntry } = await import('@/lib/supabase')
+      
+      const { error: supabaseError } = await insertWaitlistEntry({
+        email,
+        intent: intent || 'unknown',
+        utm,
+        timezone,
+        locale,
+        referrer
+      })
+
+      if (supabaseError) {
+        throw new Error(supabaseError.message)
+      }
+
+      setSubmitted(true)
+      setEmail('')
+      setIntent('')
+      
+      // 埋点：等候名单提交成功
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'waitlist_submit', {
+          intent,
+          utm_source: utm.utm_source || 'direct'
+        })
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '提交失败，请稍后重试')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (submitted) {
@@ -149,29 +194,58 @@ function WaitlistForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="mt-4 grid gap-3 md:grid-cols-[1fr_220px_160px]">
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder={t.waitlist.emailPlaceholder}
-        className={`h-11 rounded-lg border border-white/15 bg-white/10 backdrop-blur-sm px-3 text-sm ${glassCardStyles.text.primary} placeholder:${glassCardStyles.text.subtle} focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40`}
-      />
-      <select
-        value={intent}
-        onChange={(e) => setIntent(e.target.value)}
-        className={`h-11 rounded-lg border border-white/15 bg-white/10 backdrop-blur-sm px-3 text-sm ${glassCardStyles.text.primary} focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40`}
-      >
-        <option value="">{t.waitlist.intentOptions.default}</option>
-        <option value="sleep">{t.waitlist.intentOptions.sleep}</option>
-        <option value="mood">{t.waitlist.intentOptions.mood}</option>
-        <option value="ritual">{t.waitlist.intentOptions.ritual}</option>
-      </select>
-      <Button type="submit" className="h-11 bg-gradient-to-r from-fuchsia-500/80 to-indigo-500/80 hover:opacity-90 backdrop-blur-sm border border-white/10">
-        {t.waitlist.joinButton}
-      </Button>
-    </form>
+    <div>
+      <form onSubmit={onSubmit} className="mt-4 grid gap-3 md:grid-cols-[1fr_220px_160px]">
+        {/* Honeypot 防机器人 */}
+        <input 
+          name="company" 
+          className="hidden" 
+          tabIndex={-1} 
+          autoComplete="off" 
+          aria-hidden="true"
+        />
+        
+        <input
+          type="email"
+          required
+          disabled={isSubmitting}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder={t.waitlist.emailPlaceholder}
+          className={`h-11 rounded-lg border border-white/15 bg-white/10 backdrop-blur-sm px-3 text-sm ${glassCardStyles.text.primary} placeholder:${glassCardStyles.text.subtle} focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40 disabled:opacity-50`}
+        />
+        <select
+          value={intent}
+          disabled={isSubmitting}
+          onChange={(e) => setIntent(e.target.value)}
+          className={`h-11 rounded-lg border border-white/15 bg-white/10 backdrop-blur-sm px-3 text-sm ${glassCardStyles.text.primary} focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40 disabled:opacity-50`}
+        >
+          <option value="">{t.waitlist.intentOptions.default}</option>
+          <option value="sleep">{t.waitlist.intentOptions.sleep}</option>
+          <option value="mood">{t.waitlist.intentOptions.mood}</option>
+          <option value="ritual">{t.waitlist.intentOptions.ritual}</option>
+        </select>
+        <Button 
+          type="submit" 
+          disabled={isSubmitting}
+          className="h-11 bg-gradient-to-r from-fuchsia-500/80 to-indigo-500/80 hover:opacity-90 backdrop-blur-sm border border-white/10 disabled:opacity-50"
+        >
+          {isSubmitting ? '提交中...' : t.waitlist.joinButton}
+        </Button>
+      </form>
+      
+      {/* 错误提示 */}
+      {error && (
+        <div className={`mt-3 text-xs ${glassCardStyles.text.accent} bg-red-500/10 border border-red-500/20 rounded-lg p-2 backdrop-blur-sm`}>
+          ❌ {error}
+        </div>
+      )}
+      
+      {/* 隐私说明 */}
+      <div className={`mt-3 text-xs ${glassCardStyles.text.subtle}`}>
+        {t.waitlist.privacy}
+      </div>
+    </div>
   )
 }
 
@@ -186,13 +260,37 @@ function MeditationCard({
   description: string
   benefits: string[]
 }) {
+  const { t } = useLocale()
   const [isPlaying, setIsPlaying] = useState(false)
+  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null)
 
   const handlePlay = () => {
-    // TODO: 接入真实音频播放功能
-    setIsPlaying(!isPlaying)
-    // 这里可以接入 HTML5 Audio API 或 React 音频库
-    console.log(`${isPlaying ? "Stopping" : "Playing"} ${frequency} meditation audio`)
+    if (!audioElement) return
+
+    if (isPlaying) {
+      audioElement.pause()
+      setIsPlaying(false)
+    } else {
+      audioElement.play()
+      setIsPlaying(true)
+      
+      // 埋点：冥想音频播放
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'med_demo_play', {
+          frequency: frequency
+        })
+      }
+    }
+  }
+
+  const handleAudioEnd = () => {
+    setIsPlaying(false)
+  }
+
+  const getAudioSrc = (freq: string) => {
+    // 根据频率返回对应的音频文件路径
+    const freqNum = freq.replace('Hz', '').toLowerCase()
+    return `/audio/${freqNum}hz-30s.mp3`
   }
 
   return (
@@ -207,13 +305,27 @@ function MeditationCard({
             className="border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-slate-200"
           >
             <Play className={`h-4 w-4 ${isPlaying ? "animate-pulse" : ""}`} />
-            {isPlaying ? "播放中" : "试听"}
+            {isPlaying ? t.meditation.playing : t.meditation.playButton}
           </Button>
         </CardTitle>
         <div className={`text-sm font-medium ${glassCardStyles.text.secondary}`}>{title}</div>
       </CardHeader>
       <CardContent>
         <p className={`${glassCardStyles.text.muted} text-sm leading-relaxed mb-4`}>{description}</p>
+        
+        {/* 隐藏的音频元素 */}
+        <audio
+          ref={setAudioElement}
+          preload="none"
+          onEnded={handleAudioEnd}
+          onPause={() => setIsPlaying(false)}
+          className="hidden"
+        >
+          <source src={getAudioSrc(frequency)} type="audio/mpeg" />
+          <source src={getAudioSrc(frequency).replace('.mp3', '.ogg')} type="audio/ogg" />
+          您的浏览器不支持音频播放。
+        </audio>
+        
         <div className="flex flex-wrap gap-2">
           {benefits.map((benefit, i) => (
             <span
@@ -224,6 +336,12 @@ function MeditationCard({
             </span>
           ))}
         </div>
+        
+        {/* 音频播放提示 */}
+        <div className={`mt-3 text-xs ${glassCardStyles.text.subtle} flex items-center gap-1`}>
+          <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+          30秒试听片段 · 常被用于放松冥想，体验因人而异
+        </div>
       </CardContent>
     </Card>
   )
@@ -231,6 +349,13 @@ function MeditationCard({
 
 export default function DreamLifeLanding() {
   const { t } = useLocale()
+  
+  // 页面浏览埋点
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'lp_view', { page: 'landing' })
+    }
+  }, [])
   
   return (
     <div className="min-h-screen text-slate-100">
@@ -263,10 +388,31 @@ export default function DreamLifeLanding() {
           </nav>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
-            <Button variant="ghost" className="text-slate-300 hover:text-white">
+            <Button variant="ghost" className="text-slate-300 hover:text-white hidden lg:flex">
               {t.nav.login}
             </Button>
-            <Button className="bg-fuchsia-500 hover:bg-fuchsia-400 shadow-lg shadow-fuchsia-500/30">{t.nav.experience}</Button>
+            <Button 
+              variant="outline"
+              className="border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-slate-200 hidden md:flex"
+              onClick={() => {
+                document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })
+                if (typeof window !== 'undefined' && (window as any).gtag) {
+                  (window as any).gtag('event', 'nav_waitlist_click')
+                }
+              }}
+            >
+              加入等候名单
+            </Button>
+            <Button 
+              className="bg-fuchsia-500 hover:bg-fuchsia-400 shadow-lg shadow-fuchsia-500/30"
+              onClick={() => {
+                if (typeof window !== 'undefined' && (window as any).gtag) {
+                  (window as any).gtag('event', 'nav_experience_click')
+                }
+              }}
+            >
+              {t.nav.experience}
+            </Button>
           </div>
         </div>
       </header>
@@ -294,14 +440,52 @@ export default function DreamLifeLanding() {
                 <span className="text-fuchsia-200">{t.hero.titleHighlight}</span>
               </h1>
               <p className="text-slate-300/90 md:text-lg max-w-xl">
-                {t.hero.description}
+                <span className="text-slate-200 font-medium">每天 2 个可执行小任务，让睡前更安、白天更稳。</span>
+                <br className="hidden md:block" />
+                <span className="mt-2 block">{t.hero.description}</span>
               </p>
               <div className="flex flex-wrap items-center gap-3">
-                <Button className="bg-indigo-500 hover:bg-indigo-400 shadow-lg shadow-indigo-500/30">{t.hero.startFree}</Button>
-                <Button variant="outline" className="border-white/20 text-slate-200 hover:bg-white/10 bg-transparent">
-                  {t.hero.viewDemo} <ChevronRight className="ml-1 h-4 w-4" />
+                <Button 
+                  className="bg-indigo-500 hover:bg-indigo-400 shadow-lg shadow-indigo-500/30"
+                  onClick={() => {
+                    // 埋点：Hero CTA 点击
+                    if (typeof window !== 'undefined' && (window as any).gtag) {
+                      (window as any).gtag('event', 'hero_cta_click', { btn: 'try' })
+                    }
+                  }}
+                >
+                  {t.hero.startFree}
                 </Button>
-                <div className="text-xs text-slate-400">{t.hero.noRegistration}</div>
+                <Button 
+                  variant="outline" 
+                  className="border-white/20 text-slate-200 hover:bg-white/10 bg-transparent"
+                  onClick={() => {
+                    // 滚动到等候名单
+                    document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })
+                    // 埋点：Hero CTA 点击
+                    if (typeof window !== 'undefined' && (window as any).gtag) {
+                      (window as any).gtag('event', 'hero_cta_click', { btn: 'waitlist' })
+                    }
+                  }}
+                >
+                  加入等候名单 <ChevronRight className="ml-1 h-4 w-4" />
+                </Button>
+              </div>
+              
+              {/* 社证徽章 */}
+              <div className="flex flex-wrap items-center gap-4 pt-4">
+                <div className={`flex items-center gap-2 text-xs ${glassCardStyles.text.subtle} bg-white/5 rounded-full px-3 py-1 border border-white/10`}>
+                  <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+                  隐私本地
+                </div>
+                <div className={`flex items-center gap-2 text-xs ${glassCardStyles.text.subtle} bg-white/5 rounded-full px-3 py-1 border border-white/10`}>
+                  <div className="w-2 h-2 rounded-full bg-blue-400"></div>
+                  非医疗声明
+                </div>
+                <div className={`flex items-center gap-2 text-xs ${glassCardStyles.text.subtle} bg-white/5 rounded-full px-3 py-1 border border-white/10`}>
+                  <div className="w-2 h-2 rounded-full bg-fuchsia-400"></div>
+                  免费开始
+                </div>
               </div>
               <div className="flex items-center gap-6 pt-2 text-xs text-slate-400">
                 <div className="flex items-center gap-1">
@@ -623,21 +807,32 @@ export default function DreamLifeLanding() {
       {/* Footer */}
       <footer className="py-10 border-t border-white/10 relative">
         <div className="absolute inset-0 bg-slate-900/80" />
-        <div className="mx-auto max-w-7xl px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-400 relative z-10">
-          <div className="flex items-center gap-2">
-            <div className="h-6 w-6 rounded-lg bg-gradient-to-br from-indigo-400 via-fuchsia-400 to-cyan-300" />
-            <span>DreamLife © {new Date().getFullYear()}</span>
+        <div className="mx-auto max-w-7xl px-4 relative z-10">
+          {/* 医疗声明 */}
+          <div className={`mb-6 p-4 rounded-xl ${glassCardStyles.base} text-center`}>
+            <p className={`text-sm ${glassCardStyles.text.muted} leading-relaxed`}>
+              <strong className={glassCardStyles.text.secondary}>重要声明：</strong>
+              所有建议仅作日常参考，不替代医疗或心理治疗。如有睡眠障碍、情绪问题或其他健康状况，请咨询专业医护人员。
+              Hz 音频常被用于放松冥想，体验因人而异。
+            </p>
           </div>
-          <div className="flex items-center gap-6">
-            <a className="hover:text-slate-200" href="#">
-              隐私政策
-            </a>
-            <a className="hover:text-slate-200" href="#">
-              使用条款
-            </a>
-            <a className="hover:text-slate-200" href="#">
-              联系
-            </a>
+          
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-400">
+            <div className="flex items-center gap-2">
+              <div className="h-6 w-6 rounded-lg bg-gradient-to-br from-indigo-400 via-fuchsia-400 to-cyan-300" />
+              <span>DreamLife © {new Date().getFullYear()}</span>
+            </div>
+            <div className="flex items-center gap-6">
+              <a className="hover:text-slate-200" href="#">
+                {t.footer.links.privacy}
+              </a>
+              <a className="hover:text-slate-200" href="#">
+                {t.footer.links.terms}
+              </a>
+              <a className="hover:text-slate-200" href="#">
+                {t.footer.links.contact}
+              </a>
+            </div>
           </div>
         </div>
       </footer>
