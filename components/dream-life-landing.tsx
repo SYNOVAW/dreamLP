@@ -26,6 +26,87 @@ const item = {
   show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120, damping: 16 } },
 }
 
+/* AI Card Art helpers + PersonaCardPro */
+function CardArt({ seed }: { seed: string }) {
+  const idx = Math.abs(hashStr(seed)) % 3;
+  const gradients = [
+    "from-[#ff5f6d]/30 via-[#ff7a85]/20 to-[#a855f7]/30",
+    "from-[#a855f7]/30 via-[#7dd3fc]/20 to-[#ff5f6d]/30",
+    "from-[#22d3ee]/20 via-[#a78bfa]/20 to-[#ff7a85]/25",
+  ];
+  return (
+    <div className={`h-40 rounded-xl border border-white/10 bg-gradient-to-br ${gradients[idx]} relative overflow-hidden`}>
+      <div className="absolute inset-0 opacity-20" style={{
+        backgroundImage:
+          'radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.5) 0, transparent 60%),'+
+          'radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.5) 0, transparent 60%),'+
+          'radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,.4) 0, transparent 60%)'
+      }}/>
+      <div className="absolute -top-6 -right-8 h-24 w-24 rounded-full bg-white/10 blur-2xl" />
+      <div className="absolute -bottom-10 -left-8 h-24 w-24 rounded-full bg-white/5 blur-2xl" />
+    </div>
+  );
+}
+
+function hashStr(s: string){ let h=0; for(let i=0;i<s.length;i++){ h=((h<<5)-h)+s.charCodeAt(i); h|=0; } return h; }
+
+function copyPersonaPrompt(name: string, theme: string){
+  const prompt = [
+    `ultra-detailed tarot-style character card, dreamy, ethereal lighting, neon watercolor gradient, cosmic motifs`,
+    `character: ${name} — theme: ${theme}`,
+    `style: soft-glow, volumetric light, particles, subtle bokeh, crisp linework, 3:4 portrait`,
+    `colorway: watermelon red (#ff5f6d) → magenta (#ff7a85) → dreamy purple (#a855f7)`,
+    `background: misty nebula, faint constellations; foreground: emblem matching theme`,
+    `clean border, gold foil ornament, minimal typography, no watermark, high quality`
+  ].join('\n');
+  if (navigator?.clipboard?.writeText) {
+    navigator.clipboard.writeText(prompt);
+    alert('已复制绘图 Prompt，粘贴到你的绘图工具即可。');
+  }
+}
+
+function PersonaCardPro({ name, line, tip, sr, artSeed }: {
+  name: string; line: string; tip: string; sr: number; artSeed?: string
+}) {
+  const { t } = useLocale()
+  
+  const handleCardHover = () => {
+    // 埋点：Persona卡片悬浮
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'persona_card_hover', { name })
+    }
+  }
+  
+  return (
+    <Card 
+      className={`${glassCardStyles.hover} transition hover:shadow-xl hover:shadow-pink-500/10`}
+      onMouseEnter={handleCardHover}
+    >
+      <CardHeader className="pb-3">
+        <CardTitle className={`flex items-center justify-between ${glassCardStyles.text.primary}`}>
+          <span>{name}</span>
+          <span className={`text-xs ${glassCardStyles.text.subtle}`}>SR {sr}</span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <CardArt seed={artSeed || name} />
+        <div className={`mt-3 text-sm ${glassCardStyles.text.muted}`}>{t.persona.themeLabel}{line}</div>
+        <div className={`mt-2 text-xs ${glassCardStyles.text.subtle}`}>{t.persona.tipLabel}{tip}</div>
+        <div className="mt-3 flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-slate-200"
+            onClick={() => copyPersonaPrompt(name, line)}
+          >
+            复制AI绘制Prompt
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 function FeatureCard({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
   return (
     <Card className={`${glassCardStyles.hover}`}>
@@ -699,18 +780,7 @@ export default function DreamLifeLanding() {
               { name: t.persona.characters.ignis.name, line: t.persona.characters.ignis.theme, tip: t.persona.characters.ignis.tip },
               { name: t.persona.characters.echo.name, line: t.persona.characters.echo.theme, tip: t.persona.characters.echo.tip },
             ].map((p, i) => (
-              <Card key={i} className={glassCardStyles.hover}>
-                <CardHeader>
-                  <CardTitle className={`flex items-center justify-between ${glassCardStyles.text.primary}`}>
-                    <span>{p.name}</span>
-                    <span className={`text-xs ${glassCardStyles.text.subtle}`}>SR {88 - i * 7}</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className={`text-sm ${glassCardStyles.text.muted}`}>{t.persona.themeLabel}{p.line}</div>
-                  <div className={`mt-2 text-xs ${glassCardStyles.text.subtle}`}>{t.persona.tipLabel}{p.tip}</div>
-                </CardContent>
-              </Card>
+              <PersonaCardPro key={i} {...p} sr={88 - i * 7} artSeed={p.name} />
             ))}
           </div>
         </div>
