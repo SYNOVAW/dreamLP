@@ -1039,6 +1039,40 @@ function MeditationCard({
 
 export default function DreamLifeLanding() {
   const { t } = useLocale()
+  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 })
+  const [stars, setStars] = React.useState<Array<{id: number, x: number, y: number, opacity: number}>>([])
+  
+  // 鼠标追踪和四芒星动画
+  React.useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+      
+      // 生成四芒星轨迹
+      const newStar = {
+        id: Date.now() + Math.random(),
+        x: e.clientX,
+        y: e.clientY,
+        opacity: 1
+      }
+      
+      setStars(prev => [...prev.slice(-8), newStar]) // 保持最多9个星星
+    }
+    
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+  
+  // 星星淡出动画
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setStars(prev => prev.map(star => ({
+        ...star,
+        opacity: star.opacity - 0.1
+      })).filter(star => star.opacity > 0))
+    }, 100)
+    
+    return () => clearInterval(interval)
+  }, [])
   
   // 页面浏览埋点
   React.useEffect(() => {
@@ -1048,16 +1082,52 @@ export default function DreamLifeLanding() {
   }, [])
   
   return (
-    <div className="min-h-screen text-slate-100">
+    <div className="min-h-screen text-slate-100 relative overflow-hidden">
+      {/* 四芒星鼠标追随动画 */}
+      <div className="fixed inset-0 pointer-events-none z-50">
+        {stars.map((star) => (
+          <div
+            key={star.id}
+            className="absolute transform -translate-x-1/2 -translate-y-1/2"
+            style={{
+              left: star.x,
+              top: star.y,
+              opacity: star.opacity,
+              transition: 'opacity 0.1s ease-out'
+            }}
+          >
+            <div className="relative w-3 h-3">
+              {/* 四芒星形状 */}
+              <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-400 to-cyan-400 transform rotate-45 rounded-sm blur-[1px]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-400 to-cyan-400 rounded-sm blur-[1px]" />
+              <div className="absolute inset-0 bg-white/60 transform rotate-45 rounded-sm scale-75" />
+              <div className="absolute inset-0 bg-white/60 rounded-sm scale-75" />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 梦幻紫色背景动画 */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-glow" />
+        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-fuchsia-500/8 rounded-full blur-3xl animate-pulse-glow" style={{animationDelay: '1s'}} />
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-cyan-500/8 rounded-full blur-3xl animate-pulse-glow" style={{animationDelay: '2s'}} />
+        <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-gradient-to-r from-purple-600/5 via-fuchsia-600/5 to-cyan-600/5 rounded-full blur-3xl animate-spin-slow" />
+        
+        {/* 额外的梦境粒子效果 */}
+        <div className="absolute top-1/4 left-1/2 w-32 h-32 bg-violet-400/5 rounded-full blur-2xl animate-float" />
+        <div className="absolute bottom-1/3 right-1/3 w-24 h-24 bg-pink-400/8 rounded-full blur-2xl animate-float" style={{animationDelay: '1.5s'}} />
+        <div className="absolute top-2/3 left-1/4 w-16 h-16 bg-blue-400/6 rounded-full blur-xl animate-twinkle" />
+      </div>
       {/* Top nav */}
       <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-slate-900/80 border-b border-white/10">
         <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-xl overflow-hidden shadow-lg shadow-fuchsia-500/20">
+            <div className="h-8 w-8 rounded-xl flex items-center justify-center bg-white/5 backdrop-blur-sm border border-white/10">
               <img 
                 src="/logo.jpg" 
                 alt="REMia Logo" 
-                className="w-full h-full object-cover"
+                className="w-6 h-6 object-contain"
               />
             </div>
             <span className="font-semibold tracking-wide text-slate-100">REMia</span>
@@ -1535,11 +1605,11 @@ export default function DreamLifeLanding() {
           
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-400">
             <div className="flex items-center gap-2">
-              <div className="h-6 w-6 rounded-lg overflow-hidden">
+              <div className="h-6 w-6 rounded-lg flex items-center justify-center bg-white/5 backdrop-blur-sm border border-white/10">
                 <img 
                   src="/logo.jpg" 
                   alt="REMia Logo" 
-                  className="w-full h-full object-cover"
+                  className="w-4 h-4 object-contain"
                 />
               </div>
               <span>REMia © {new Date().getFullYear()}</span>
