@@ -12,6 +12,7 @@ import { glassCardStyles } from "@/lib/card-styles"
 import { Emoji, EMOJIS } from "@/components/emoji"
 import LoadingScreen from "@/components/loading-screen"
 import SRDashboard from "@/components/sr-dashboard"
+import RitualLoopSection from "@/components/ritual-loop-section"
 
 // JayVue: one-file landing page, Tailwind + shadcn/ui + framer-motion
 // Sections: Hero / Waitlist / Social Proof / Features / Meditation Hz Music / How It Works / Persona / Pricing / FAQ / CTA / Footer
@@ -2154,6 +2155,9 @@ export default function DreamLifeLanding() {
 
       {/* SR Dashboard */}
       <SRDashboard />
+
+      {/* Day/Night Ritual Loop */}
+      <RitualLoopSection />
 
       {/* Meditation Hz Music */}
       <section id="meditation" className="py-16 md:py-24 relative">
