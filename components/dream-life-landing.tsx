@@ -113,6 +113,7 @@ function FlipCard({
   className?: string;
 }) {
   const [flipped, setFlipped] = React.useState(false);
+  const { t } = useLocale();
 
   const toggle = () => setFlipped((v) => !v);
 
@@ -124,7 +125,7 @@ function FlipCard({
       <motion.button
         type="button"
         aria-pressed={flipped}
-        aria-label={flipped ? "查看正面" : "查看反面"}
+        aria-label={flipped ? t.ui.cardFlip.viewFront : t.ui.cardFlip.viewBack}
         onClick={toggle}
         onKeyDown={(e) => {
           if (e.key === " " || e.key === "Enter") {
@@ -157,7 +158,7 @@ function FlipCard({
   );
 }
 
-function copyPersonaPrompt(name: string, theme: string){
+function copyPersonaPrompt(name: string, theme: string, t: any){
   const prompt = [
     `ultra-detailed tarot-style character card, dreamy, ethereal lighting, neon watercolor gradient, cosmic motifs`,
     `character: ${name} — theme: ${theme}`,
@@ -168,7 +169,7 @@ function copyPersonaPrompt(name: string, theme: string){
   ].join('\n');
   if (navigator?.clipboard?.writeText) {
     navigator.clipboard.writeText(prompt);
-    alert('已复制绘图 Prompt，粘贴到你的绘图工具即可。');
+    alert(t.ui.copyPrompt);
   }
 }
 
@@ -233,10 +234,10 @@ function PersonaFlipCard({
               className="border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-slate-200 text-xs"
               onClick={(e) => {
                 e.stopPropagation()
-                copyPersonaPrompt(name, line)
+                copyPersonaPrompt(name, line, t)
               }}
             >
-              复制AI Prompt
+              {t.ui.buttons.copyAIPrompt}
             </Button>
           </div>
           <div className={`mt-3 text-xs ${glassCardStyles.text.subtle}`}>
@@ -281,9 +282,9 @@ function PersonaCardPro({ name, line, tip, sr, artSeed }: {
             variant="outline"
             size="sm"
             className="border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-slate-200"
-            onClick={() => copyPersonaPrompt(name, line)}
+            onClick={() => copyPersonaPrompt(name, line, t)}
           >
-            复制AI绘制Prompt
+            {t.ui.buttons.copyDrawPrompt}
           </Button>
         </div>
       </CardContent>
@@ -547,6 +548,7 @@ function CreativeLabSection(){
 
 /* ——— AI 歌曲 —— */
 function MusicGenerator(){
+  const { t } = useLocale();
   const [mood, setMood] = React.useState('平静 · 432Hz');
   const [persona, setPersona] = React.useState('MIRA（安抚）');
   const [prompt, setPrompt] = React.useState('昨夜梦到在紫色海面漂浮，微风和远处灯塔。');
@@ -592,26 +594,26 @@ function MusicGenerator(){
           </div>
         </div>
         <div>
-          <div className="text-xs text-slate-400 mb-1">歌词/意象提示</div>
+          <div className="text-xs text-slate-400 mb-1">{t.ui.labels.lyricsPrompt}</div>
           <textarea value={prompt} onChange={e=>setPrompt(e.target.value)} rows={3}
-            placeholder="描述梦境场景、节奏与乐器：'慢板 · 呼吸感 pad · 海浪与风铃'"
+            placeholder={t.ui.placeholder.dreamScenes}
             className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500"/>
         </div>
         <div className="flex gap-3 flex-wrap">
           <Button onClick={generate} disabled={loading} className="bg-gradient-to-r from-[#ff5f6d] to-[#a855f7] hover:opacity-90 text-white">
-            {loading ? '生成中…' : '一键生成'}
+            {loading ? t.ui.buttons.generating : t.ui.buttons.generate}
           </Button>
           <Button variant="outline" className="border-white/20 text-slate-200 hover:bg-white/10" onClick={()=>setPrompt(draftFromPersona(persona))}>
-            用 Persona 自动填充
+            {t.ui.buttons.autoFill}
           </Button>
         </div>
-        {loading && <FakeProgress label="渲染音轨…" />}
+        {loading && <FakeProgress label={t.ui.progress.renderingAudio} />}
         {url && (
           <div className="mt-2">
             <audio controls preload="none" className="w-full">
               <source src={url} type="audio/mpeg" />
             </audio>
-            <div className="mt-2 text-xs text-slate-400">占位音频 · 上线后替换为后端生成链接</div>
+            <div className="mt-2 text-xs text-slate-400">{t.ui.placeholder_note.audio}</div>
           </div>
         )}
       </CardContent>
@@ -621,6 +623,7 @@ function MusicGenerator(){
 
 /* ——— AI 短视频 —— */
 function VideoGenerator(){
+  const { t } = useLocale();
   const [style, setStyle] = React.useState('梦境水彩 · 粒子光');
   const [ratio, setRatio] = React.useState('9:16');
   const [script, setScript] = React.useState('紫色海面、星屑、远处灯塔，镜头慢推；结尾出现今日卡牌。');
@@ -658,28 +661,28 @@ function VideoGenerator(){
           <SelectBox label="节奏" value={'慢'} onChange={()=>{}} options={['慢','中','快']}/>
         </div>
         <div>
-          <div className="text-xs text-slate-400 mb-1">分镜/脚本</div>
+          <div className="text-xs text-slate-400 mb-1">{t.ui.labels.videoScript}</div>
           <textarea rows={3} value={script} onChange={e=>setScript(e.target.value)}
-            placeholder="分三镜：① 星屑流动 ② 卡牌渐显 ③ Persona 名称字幕"
+            placeholder={t.ui.placeholder.videoScript}
             className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500"/>
         </div>
         <div className="flex gap-3 flex-wrap">
-          <UploadButton label="上传素材（可选）" accept="image/*,video/*" />
+          <UploadButton label={t.ui.buttons.uploadMaterial} accept="image/*,video/*" />
           <Button onClick={generate} disabled={loading} className="bg-gradient-to-r from-[#ff5f6d] to-[#a855f7] hover:opacity-90 text-white">
-            {loading ? '生成中…' : '一键生成 15s 预告片'}
+            {loading ? t.ui.buttons.generating : t.ui.buttons.generateVideo}
           </Button>
           <Button variant="outline" className="border-white/20 text-slate-200 hover:bg-white/10"
-            onClick={()=>setScript('镜头慢推紫色海面 → 卡牌翻转（正面→反面） → Persona 名字与一句祝词，结尾 CTA')}>
-            用模板脚本
+            onClick={()=>setScript(t.ui.template.videoScript)}>
+            {t.ui.buttons.useTemplate}
           </Button>
         </div>
-        {loading && <FakeProgress label="渲染视频帧…" />}
+        {loading && <FakeProgress label={t.ui.progress.renderingVideo} />}
         {url && (
           <div className="mt-2">
             <video controls playsInline className="w-full rounded-lg border border-white/10 bg-black">
               <source src={url} type="video/mp4" />
             </video>
-            <div className="mt-2 text-xs text-slate-400">占位视频 · 上线后替换为后端生成链接</div>
+            <div className="mt-2 text-xs text-slate-400">{t.ui.placeholder_note.video}</div>
           </div>
         )}
       </CardContent>

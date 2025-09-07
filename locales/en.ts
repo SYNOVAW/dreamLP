@@ -313,6 +313,44 @@ export const en = {
     }
   },
 
+  // UI Components
+  ui: {
+    cardFlip: {
+      viewFront: 'View front',
+      viewBack: 'View back'
+    },
+    copyPrompt: 'Drawing prompt copied! Paste it into your drawing tool.',
+    placeholder: {
+      dreamScenes: 'Describe dream scenes, rhythm and instruments: \'Slow tempo · Breathing pad · Ocean waves and wind chimes\'',
+      videoScript: 'Three shots: ① Starlight flowing ② Card gradually appearing ③ Persona name subtitle'
+    },
+    labels: {
+      lyricsPrompt: 'Lyrics/Imagery Prompt',
+      videoScript: 'Storyboard/Script'
+    },
+    buttons: {
+      generating: 'Generating...',
+      generate: 'One-Click Generate',
+      generateVideo: 'One-Click Generate 15s Trailer',
+      autoFill: 'Auto-fill with Persona',
+      useTemplate: 'Use Template Script',
+      uploadMaterial: 'Upload Material (Optional)',
+      copyAIPrompt: 'Copy AI Prompt',
+      copyDrawPrompt: 'Copy AI Drawing Prompt'
+    },
+    template: {
+      videoScript: 'Camera slowly pushes to purple sea → Card flip (front→back) → Persona name with blessing, ending CTA'
+    },
+    progress: {
+      renderingAudio: 'Rendering audio track...',
+      renderingVideo: 'Rendering video frames...'
+    },
+    placeholder_note: {
+      audio: 'Placeholder audio · Will be replaced with backend-generated link after launch',
+      video: 'Placeholder video · Will be replaced with backend-generated link after launch'
+    }
+  },
+
   // Mock Data
   mockData: {
     todayCards: ['Stargate', 'Silver Feather Traveler', 'Serene Ocean'],

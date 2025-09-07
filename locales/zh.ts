@@ -313,6 +313,44 @@ export const zh = {
     }
   },
 
+  // UI Components
+  ui: {
+    cardFlip: {
+      viewFront: '查看正面',
+      viewBack: '查看反面'
+    },
+    copyPrompt: '已复制绘图 Prompt，粘贴到你的绘图工具即可。',
+    placeholder: {
+      dreamScenes: '描述梦境场景、节奏与乐器：\'慢板 · 呼吸感 pad · 海浪与风铃\'',
+      videoScript: '分三镜：① 星屑流动 ② 卡牌渐显 ③ Persona 名称字幕'
+    },
+    labels: {
+      lyricsPrompt: '歌词/意象提示',
+      videoScript: '分镜/脚本'
+    },
+    buttons: {
+      generating: '生成中…',
+      generate: '一键生成',
+      generateVideo: '一键生成 15s 预告片',
+      autoFill: '用 Persona 自动填充',
+      useTemplate: '用模板脚本',
+      uploadMaterial: '上传素材（可选）',
+      copyAIPrompt: '复制AI Prompt',
+      copyDrawPrompt: '复制AI绘制Prompt'
+    },
+    template: {
+      videoScript: '镜头慢推紫色海面 → 卡牌翻转（正面→反面） → Persona 名字与一句祝词，结尾 CTA'
+    },
+    progress: {
+      renderingAudio: '渲染音轨…',
+      renderingVideo: '渲染视频帧…'
+    },
+    placeholder_note: {
+      audio: '占位音频 · 上线后替换为后端生成链接',
+      video: '占位视频 · 上线后替换为后端生成链接'
+    }
+  },
+
   // Mock Data
   mockData: {
     todayCards: ['星之门', '银羽旅者', '静谧之海'],

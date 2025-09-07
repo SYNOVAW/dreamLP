@@ -85,7 +85,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
         >
           {/* ロゴ画像 */}
           <Image
-            src="/logo.png"
+            src="/logo-transparent.png"
             alt="REMia Logo"
             width={150}
             height={150}
@@ -206,7 +206,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
           >
             {/* ロゴ画像 */}
             <Image
-              src="/logo.png"
+              src="/logo-transparent.png"
               alt="REMia Logo"
               width={200}
               height={200}

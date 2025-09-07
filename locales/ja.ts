@@ -274,6 +274,44 @@ export const ja = {
     }
   },
 
+  // UI Components
+  ui: {
+    cardFlip: {
+      viewFront: '表を見る',
+      viewBack: '裏を見る'
+    },
+    copyPrompt: '描画プロンプトをコピーしました。描画ツールに貼り付けてご使用ください。',
+    placeholder: {
+      dreamScenes: '夢のシーン、リズム、楽器を説明：\'スロー · 呼吸感パッド · 波音と風鈴\'',
+      videoScript: '3カット：① 星屑の流れ ② カードが徐々に表示 ③ ペルソナ名字幕'
+    },
+    labels: {
+      lyricsPrompt: '歌詞/イメージプロンプト',
+      videoScript: 'ストーリーボード/スクリプト'
+    },
+    buttons: {
+      generating: '生成中…',
+      generate: 'ワンクリック生成',
+      generateVideo: 'ワンクリック15秒予告編生成',
+      autoFill: 'ペルソナで自動入力',
+      useTemplate: 'テンプレートスクリプト使用',
+      uploadMaterial: '素材アップロード（オプション）',
+      copyAIPrompt: 'AIプロンプトコピー',
+      copyDrawPrompt: 'AI描画プロンプトコピー'
+    },
+    template: {
+      videoScript: '紫の海面にカメラゆっくり寄る → カード反転（表→裏） → ペルソナ名前と祝詞、最後CTA'
+    },
+    progress: {
+      renderingAudio: '音声トラックレンダリング中…',
+      renderingVideo: 'ビデオフレームレンダリング中…'
+    },
+    placeholder_note: {
+      audio: 'プレースホルダー音声 · 本番ではバックエンド生成リンクに置換',
+      video: 'プレースホルダー動画 · 本番ではバックエンド生成リンクに置換'
+    }
+  },
+
   // Mock Data
   mockData: {
     todayCards: ['星の門', '銀羽の旅人', '静寂の海'],
