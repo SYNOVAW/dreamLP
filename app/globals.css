@@ -200,3 +200,90 @@
 .animate-pulse-glow {
   animation: pulse-glow 4s ease-in-out infinite;
 }
+
+/* カスタムマウスカーソル - SVG細長四芒星 */
+html, body, * {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><path d='M8 0 C9 6, 10 7, 16 8 C10 9, 9 10, 8 16 C7 10, 6 9, 0 8 C6 7, 7 6, 8 0 Z' fill='white'/></svg>") 8 8, pointer !important;
+}
+
+/* 特定の要素でカーソルを強調 */
+a, button, [role="button"], input, textarea, select, div, span, p, h1, h2, h3, h4, h5, h6 {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><path d='M8 0 C9 6, 10 7, 16 8 C10 9, 9 10, 8 16 C7 10, 6 9, 0 8 C6 7, 7 6, 8 0 Z' fill='white'/></svg>") 8 8, pointer !important;
+}
+
+/* Tailwindのカーソルクラスを無効化して四芒星カーソルを強制適用 */
+.cursor-pointer,
+.cursor-default,
+.cursor-not-allowed,
+.cursor-grab,
+.cursor-grabbing,
+.cursor-w-resize,
+.cursor-e-resize {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><path d='M8 0 C9 6, 10 7, 16 8 C10 9, 9 10, 8 16 C7 10, 6 9, 0 8 C6 7, 7 6, 8 0 Z' fill='white'/></svg>") 8 8, pointer !important;
+}
+
+/* モバイルでも四芒星カーソルを使用 */
+@media (max-width: 768px) {
+  html, body, * {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><path d='M8 0 C9 6, 10 7, 16 8 C10 9, 9 10, 8 16 C7 10, 6 9, 0 8 C6 7, 7 6, 8 0 Z' fill='white'/></svg>") 8 8, pointer !important;
+  }
+  
+  .cursor-pointer,
+  .cursor-default,
+  .cursor-not-allowed,
+  .cursor-grab,
+  .cursor-grabbing,
+  .cursor-w-resize,
+  .cursor-e-resize {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><path d='M8 0 C9 6, 10 7, 16 8 C10 9, 9 10, 8 16 C7 10, 6 9, 0 8 C6 7, 7 6, 8 0 Z' fill='white'/></svg>") 8 8, pointer !important;
+  }
+}
+
+/* Purple Nebula Cursor Animations */
+@keyframes nebula-pulse {
+  0%, 100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1) translate(-50%, -50%);
+    opacity: 0.5;
+  }
+}
+
+@keyframes nebula-float {
+  0%, 100% {
+    transform: translate(-50%, -50%) translateY(0px);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-10px);
+  }
+}
+
+@keyframes particle-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(147, 51, 234, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(147, 51, 234, 0.6);
+  }
+}
+
+.nebula-pulse {
+  animation: nebula-pulse 3s ease-in-out infinite;
+}
+
+.nebula-float {
+  animation: nebula-float 4s ease-in-out infinite;
+}
+
+.particle-glow {
+  animation: particle-glow 2s ease-in-out infinite;
+}
+
+/* Enhanced cursor effect for better performance */
+.cursor-nebula {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}

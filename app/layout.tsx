@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Instrument_Serif } from "next/font/google"
 import { Suspense } from "react"
+import { PurpleNebulaCursor } from "@/components/purple-nebula-cursor"
 import "./globals.css"
 
 const figtree = Figtree({
@@ -67,6 +68,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${figtree.variable} ${instrumentSerif.variable} antialiased`}>
       <body className={`font-sans ${GeistMono.variable}`}>
+        <PurpleNebulaCursor isActive={true} />
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
       </body>

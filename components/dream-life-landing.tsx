@@ -59,7 +59,7 @@ function CardArt({ seed, personaName }: { seed: string; personaName?: string }) 
   }, [personaName])
   
   return (
-    <div className={`h-40 rounded-xl border border-white/10 bg-gradient-to-br ${gradients[idx]} relative overflow-hidden`}>
+    <div className={`w-full rounded-xl border border-white/10 bg-gradient-to-br ${gradients[idx]} relative overflow-hidden`} style={{ aspectRatio: '3/5' }}>
       {/* 程序化渐变背景（作为后备或加载状态） */}
       {!imageLoaded && (
         <>
@@ -116,8 +116,8 @@ function FlipCard({
 
   return (
     <div
-      className={`relative h-[340px] w-full cursor-pointer select-none ${className}`}
-      style={{ perspective: 1200 }}
+      className={`relative w-full cursor-pointer select-none ${className}`}
+      style={{ perspective: 1200, aspectRatio: '3/5' }}
     >
       <motion.button
         type="button"
@@ -187,19 +187,21 @@ function PersonaFlipCard({
       className="rounded-2xl"
       hover={false} // 移动端友好，只用点击翻转
       front={
-        <div className={`h-full rounded-2xl ${glassCardStyles.base} overflow-hidden`}>
-          <div className="flex items-center justify-between px-4 py-3">
+        <div className={`h-full rounded-2xl ${glassCardStyles.base} overflow-hidden flex flex-col`}>
+          <div className="flex items-center justify-between px-4 py-3 flex-shrink-0">
             <div className={`text-sm ${glassCardStyles.text.primary}`}>{name}</div>
             <div className={`text-xs ${glassCardStyles.text.subtle}`}>SR {sr}</div>
           </div>
-          <img
-            src={img}
-            alt={`${name} card art`}
-            className="h-[270px] w-full object-cover"
-            loading="lazy"
-          />
-          <div className="absolute bottom-2 right-2 bg-black/50 backdrop-blur-sm rounded-full px-2 py-1">
-            <span className="text-xs text-slate-300">点击翻面</span>
+          <div className="flex-1 relative">
+            <img
+              src={img}
+              alt={`${name} card art`}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div className="absolute bottom-2 right-2 bg-black/50 backdrop-blur-sm rounded-full px-2 py-1">
+              <span className="text-xs text-slate-300">点击翻面</span>
+            </div>
           </div>
         </div>
       }
@@ -1281,10 +1283,10 @@ export default function DreamLifeLanding() {
                           { meaning: "平静 / 反思", action: "花 3 分钟冥想或深呼吸" }
                         ];
                         return (
-                          <div key={i} className="h-[120px]" style={{ perspective: 600 }}>
+                          <div key={i} style={{ perspective: 600, aspectRatio: '3/5' }}>
                             <FlipCard
                               hover={false}
-                              className="h-[120px] cursor-pointer"
+                              className="cursor-pointer"
                               front={
                                 <div className="h-full rounded-xl bg-white/5 border border-white/10 p-3 text-center flex flex-col justify-between">
                                   <div className="text-[10px] text-slate-400">SR{90 - i * 7}</div>
