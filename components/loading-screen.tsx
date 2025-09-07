@@ -85,8 +85,8 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
         >
           {/* ロゴ画像 */}
           <Image
-            src="/logo-transparent.png"
-            alt="REMia Logo"
+            src="/synova-logo-new.png"
+            alt="Synova Whisper Logo"
             width={150}
             height={150}
             className="object-contain"
@@ -206,8 +206,8 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
           >
             {/* ロゴ画像 */}
             <Image
-              src="/logo-transparent.png"
-              alt="REMia Logo"
+              src="/synova-logo-new.png"
+              alt="Synova Whisper Logo"
               width={200}
               height={200}
               className="object-contain"
