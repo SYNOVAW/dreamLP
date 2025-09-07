@@ -725,6 +725,123 @@ function draftFromPersona(p:string){
   return '钢琴与弦乐碎片，轻回声，慢速 65BPM，反思、留白';
 }
 
+/* —— 赛博养生 Cyber Wellness —— */
+function CyberWellnessSection(){
+  const { t } = useLocale()
+  
+  const wellnessCards = [
+    {
+      icon: "🌙",
+      title: "梦境处方签",
+      description: "AI電気羊解读昨夜的梦，为你开出今日的小处方。可能是一杯柚子茶、一次深呼吸，或是一段短冥想。",
+      cta: "解锁今日处方",
+      gradient: "from-pink-500/20 to-purple-500/20",
+      borderGradient: "from-pink-400/40 to-purple-400/40"
+    },
+    {
+      icon: "♨️",
+      title: "虚拟温泉",
+      description: "闭上眼睛，进入数字温泉。屏幕中的热气与光晕，配合呼吸引导，就像身体在赛博温泉中复原。",
+      cta: "开始温泉疗法",
+      gradient: "from-cyan-500/20 to-blue-500/20",
+      borderGradient: "from-cyan-400/40 to-blue-400/40"
+    },
+    {
+      icon: "🍵",
+      title: "赛博药膳",
+      description: "将梦境色彩转化为饮品推荐。梦见森林？来一杯抹茶。梦见星空？今晚适合紫苏茶。",
+      cta: "冲泡我的梦饮",
+      gradient: "from-emerald-500/20 to-teal-500/20",
+      borderGradient: "from-emerald-400/40 to-teal-400/40"
+    }
+  ]
+
+  return (
+    <section id="cyber-wellness" className="py-16 md:py-24 border-t border-white/10 relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-purple-900/20 to-pink-900/20" />
+      
+      <div className="mx-auto max-w-7xl px-4 relative z-10">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-12"
+        >
+          <motion.div variants={item} className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-slate-800/60 px-4 py-2 text-sm text-slate-200 mb-6">
+            <Sparkles className="h-4 w-4" /> 赛博养生 Cyber Wellness
+          </motion.div>
+          
+          <motion.h2 
+            variants={item}
+            className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent mb-4"
+          >
+            让梦境成为你的每日养生处方
+          </motion.h2>
+          
+          <motion.p 
+            variants={item}
+            className="text-slate-300/80 text-lg max-w-2xl mx-auto"
+          >
+            在梦与代码之间，重启身体
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto"
+        >
+          {wellnessCards.map((card, index) => (
+            <motion.div
+              key={index}
+              variants={item}
+              className={`group relative rounded-2xl p-6 ${glassCardStyles.base} border-2 border-transparent bg-gradient-to-br ${card.gradient} hover:border-opacity-60 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20 hover:scale-105`}
+              style={{
+                background: `linear-gradient(135deg, ${card.gradient.includes('pink') ? 'rgba(236, 72, 153, 0.1)' : card.gradient.includes('cyan') ? 'rgba(6, 182, 212, 0.1)' : 'rgba(16, 185, 129, 0.1)'}, transparent)`,
+                borderImage: `linear-gradient(135deg, ${card.borderGradient.includes('pink') ? 'rgba(244, 114, 182, 0.4)' : card.borderGradient.includes('cyan') ? 'rgba(34, 211, 238, 0.4)' : 'rgba(52, 211, 153, 0.4)'}, transparent) 1`
+              }}
+            >
+              {/* 能量场效果 */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-pink-500/5 via-purple-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div className="relative z-10">
+                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  {card.icon}
+                </div>
+                
+                <h3 className="text-xl font-semibold text-slate-100 mb-3 group-hover:text-white transition-colors">
+                  {card.title}
+                </h3>
+                
+                <p className="text-sm text-slate-300/80 mb-6 leading-relaxed">
+                  {card.description}
+                </p>
+                
+                <Button 
+                  className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-400 hover:to-purple-400 text-white shadow-lg hover:shadow-pink-500/30 transition-all duration-300 hover:scale-105"
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && (window as any).gtag) {
+                      (window as any).gtag('event', 'cyber_wellness_click', {
+                        card_type: card.title,
+                        card_index: index
+                      })
+                    }
+                  }}
+                >
+                  {card.cta}
+                </Button>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
 /* —— AI Electric Sheep：合梦创造 —— */
 function AIElectricSheepSection(){
   const { t } = useLocale()
@@ -1119,6 +1236,9 @@ export default function DreamLifeLanding() {
             </a>
             <a href="#meditation" className="hover:text-white transition">
               {t.nav.meditation}
+            </a>
+            <a href="#cyber-wellness" className="hover:text-white transition">
+              赛博养生
             </a>
             <a href="#how" className="hover:text-white transition">
               {t.nav.how}
@@ -1517,6 +1637,9 @@ export default function DreamLifeLanding() {
 
       {/* Creative Lab */}
       <CreativeLabSection />
+
+      {/* 赛博养生 Cyber Wellness */}
+      <CyberWellnessSection />
 
       {/* AI Electric Sheep */}
       <AIElectricSheepSection />
