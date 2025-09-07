@@ -8,7 +8,7 @@ import { Check, Sparkles, Moon, Stars, Heart, Brain, Flame, ChevronRight, Play }
 import { useState } from "react"
 import { useLocale } from "@/hooks/use-locale"
 import { LanguageSwitcher } from "@/components/language-switcher"
-import { glassCardStyles, specialGlassStyles } from "@/lib/card-styles"
+import { glassCardStyles } from "@/lib/card-styles"
 
 // JayVue: one-file landing page, Tailwind + shadcn/ui + framer-motion
 // Sections: Hero / Waitlist / Social Proof / Features / Meditation Hz Music / How It Works / Persona / Pricing / FAQ / CTA / Footer
@@ -314,7 +314,7 @@ function PriceCard({
 }: { title: string; price: string; items: string[]; cta: string; highlight?: boolean }) {
   return (
     <Card
-      className={highlight ? specialGlassStyles.pricing : glassCardStyles.base}
+      className={`${glassCardStyles.base} ${highlight ? 'shadow-2xl border-fuchsia-400/30' : ''}`}
     >
       <CardHeader>
         <CardTitle className={`${glassCardStyles.text.primary} flex items-baseline justify-between`}>
