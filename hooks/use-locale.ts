@@ -31,23 +31,31 @@ export function useLocale() {
 
 export function useLocalStorage() {
   const [locale, setLocaleState] = useState<Locale>(defaultLocale)
+  const [isHydrated, setIsHydrated] = useState(false)
 
   useEffect(() => {
+    // 标记为已水合，避免 hydration 不匹配
+    setIsHydrated(true)
+    
     // Load from localStorage on client side
-    const saved = localStorage.getItem('dreamlife-locale') as Locale
-    if (saved && translations[saved]) {
-      setLocaleState(saved)
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('dreamlife-locale') as Locale
+      if (saved && translations[saved]) {
+        setLocaleState(saved)
+      }
     }
   }, [])
 
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale)
-    localStorage.setItem('dreamlife-locale', newLocale)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dreamlife-locale', newLocale)
+    }
   }
 
   return {
-    locale,
+    locale: isHydrated ? locale : defaultLocale,
     setLocale,
-    t: translations[locale]
+    t: translations[isHydrated ? locale : defaultLocale]
   }
 }
