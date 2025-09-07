@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Emoji, EMOJIS } from '@/components/emoji'
 import { useLocale } from '@/hooks/use-locale'
+import { glassCardStyles } from '@/lib/card-styles'
 
 const RitualLoopSection = () => {
   const { t } = useLocale()
@@ -77,7 +78,7 @@ const RitualLoopSection = () => {
 
   return (
     <section id="ritual-loop" className="py-16 md:py-24 border-t border-white/10 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-indigo-900/10 to-purple-900/10" />
+      <div className="absolute inset-0 bg-slate-900/30" />
       <div className="mx-auto max-w-7xl px-4 relative z-10">
         {/* 标题 */}
         <motion.div
@@ -86,13 +87,10 @@ const RitualLoopSection = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center mb-12"
         >
-          <h2 className="text-2xl md:text-4xl font-semibold text-white mb-4">
-            <span className="font-light tracking-tight">
-              <span className="font-medium italic">Day/Night</span> Ritual Loop
-            </span>
-            <Emoji emoji={EMOJIS.REFRESH} size={32} className="ml-3" />
+          <h2 className="text-2xl md:text-4xl font-semibold text-slate-100 mb-4">
+            Day/Night Ritual Loop <Emoji emoji={EMOJIS.REFRESH} size={32} />
           </h2>
-          <p className="text-white/70 font-light text-sm leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-3 text-slate-300/90 max-w-2xl mx-auto">
             "REMia 是一款让你晚上安心入睡，早晨带来启示的梦境伴侣 App。"
           </p>
         </motion.div>
@@ -120,15 +118,15 @@ const RitualLoopSection = () => {
 
             {/* 夜のRitual */}
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2">
-              <Card className="bg-white/5 border-white/20 backdrop-blur-sm w-64">
+              <Card className={`${glassCardStyles.base} w-64`}>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-light tracking-tight text-white">
+                  <CardTitle className={`text-lg font-semibold ${glassCardStyles.text.primary}`}>
                     <Emoji emoji={EMOJIS.MOON} size={20} className="mr-2" />
-                    <span className="font-medium italic">夜の</span>Ritual
+                    夜のRitual
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <p className="text-white/70 font-light text-sm leading-relaxed">
+                  <p className={`text-sm ${glassCardStyles.text.secondary}`}>
                     数羊助眠，让小羊陪伴你进入梦乡
                   </p>
                 </CardContent>
@@ -137,15 +135,15 @@ const RitualLoopSection = () => {
 
             {/* 朝のRitual */}
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-              <Card className="bg-white/5 border-white/20 backdrop-blur-sm w-64">
+              <Card className={`${glassCardStyles.base} w-64`}>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-light tracking-tight text-white">
+                  <CardTitle className={`text-lg font-semibold ${glassCardStyles.text.primary}`}>
                     <Emoji emoji={EMOJIS.SUN} size={20} className="mr-2" />
-                    <span className="font-medium italic">朝の</span>Ritual
+                    朝のRitual
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <p className="text-white/70 font-light text-sm leading-relaxed">
+                  <p className={`text-sm ${glassCardStyles.text.secondary}`}>
                     梦境抽卡，让梦境指引你的一天
                   </p>
                 </CardContent>
@@ -161,13 +159,13 @@ const RitualLoopSection = () => {
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           className="mb-16"
         >
-          <Card className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border-indigo-500/20 backdrop-blur-sm">
+          <Card className={`${glassCardStyles.base}`}>
             <CardHeader>
-              <CardTitle className="text-xl font-light tracking-tight text-white">
+              <CardTitle className={`text-xl font-semibold ${glassCardStyles.text.primary}`}>
                 <Emoji emoji={EMOJIS.MOON} size={24} className="mr-2" />
-                <span className="font-medium italic">夜の</span>Ritual - 数羊助眠
+                夜のRitual - 数羊助眠
               </CardTitle>
-              <p className="text-white/70 font-light text-sm leading-relaxed">
+              <p className={`text-sm ${glassCardStyles.text.secondary}`}>
                 睡前焦虑、难入睡时，让小羊陪伴你进入梦乡
               </p>
             </CardHeader>
@@ -178,10 +176,10 @@ const RitualLoopSection = () => {
                     <div className="text-3xl mb-3">
                       <Emoji emoji={feature.icon} size={32} />
                     </div>
-                    <h4 className="text-sm font-light tracking-tight text-white mb-2">
-                      <span className="font-medium italic">{feature.title}</span>
+                    <h4 className={`text-sm font-semibold ${glassCardStyles.text.primary} mb-2`}>
+                      {feature.title}
                     </h4>
-                    <p className="text-white/70 font-light text-xs leading-relaxed">
+                    <p className={`text-xs ${glassCardStyles.text.secondary}`}>
                       {feature.desc}
                     </p>
                   </div>
@@ -204,13 +202,13 @@ const RitualLoopSection = () => {
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
           className="mb-16"
         >
-          <Card className="bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border-orange-500/20 backdrop-blur-sm">
+          <Card className={`${glassCardStyles.base}`}>
             <CardHeader>
-              <CardTitle className="text-xl font-light tracking-tight text-white">
+              <CardTitle className={`text-xl font-semibold ${glassCardStyles.text.primary}`}>
                 <Emoji emoji={EMOJIS.SUN} size={24} className="mr-2" />
-                <span className="font-medium italic">朝の</span>Ritual - 梦境抽卡
+                朝のRitual - 梦境抽卡
               </CardTitle>
-              <p className="text-white/70 font-light text-sm leading-relaxed">
+              <p className={`text-sm ${glassCardStyles.text.secondary}`}>
                 醒来后对梦的好奇、一天的期待，让梦境指引你
               </p>
             </CardHeader>
@@ -221,10 +219,10 @@ const RitualLoopSection = () => {
                     <div className="text-3xl mb-3">
                       <Emoji emoji={feature.icon} size={32} />
                     </div>
-                    <h4 className="text-sm font-light tracking-tight text-white mb-2">
-                      <span className="font-medium italic">{feature.title}</span>
+                    <h4 className={`text-sm font-semibold ${glassCardStyles.text.primary} mb-2`}>
+                      {feature.title}
                     </h4>
-                    <p className="text-white/70 font-light text-xs leading-relaxed">
+                    <p className={`text-xs ${glassCardStyles.text.secondary}`}>
                       {feature.desc}
                     </p>
                   </div>
@@ -246,11 +244,11 @@ const RitualLoopSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
         >
-          <Card className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/20 backdrop-blur-sm">
+          <Card className={`${glassCardStyles.base}`}>
             <CardHeader>
-              <CardTitle className="text-xl font-light tracking-tight text-white text-center">
+              <CardTitle className={`text-xl font-semibold ${glassCardStyles.text.primary} text-center`}>
                 <Emoji emoji={EMOJIS.REFRESH} size={24} className="mr-2" />
-                <span className="font-medium italic">昼夜闭环</span>价值
+                昼夜闭环价值
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -260,10 +258,10 @@ const RitualLoopSection = () => {
                     <div className="text-3xl mb-3">
                       <Emoji emoji={benefit.icon} size={32} />
                     </div>
-                    <h4 className="text-sm font-light tracking-tight text-white mb-2">
-                      <span className="font-medium italic">{benefit.title}</span>
+                    <h4 className={`text-sm font-semibold ${glassCardStyles.text.primary} mb-2`}>
+                      {benefit.title}
                     </h4>
-                    <p className="text-white/70 font-light text-xs leading-relaxed">
+                    <p className={`text-xs ${glassCardStyles.text.secondary}`}>
                       {benefit.desc}
                     </p>
                   </div>
