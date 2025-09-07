@@ -10,6 +10,7 @@ import { useLocale } from "@/hooks/use-locale"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { glassCardStyles } from "@/lib/card-styles"
 import { Emoji, EMOJIS } from "@/components/emoji"
+import LoadingScreen from "@/components/loading-screen"
 
 // JayVue: one-file landing page, Tailwind + shadcn/ui + framer-motion
 // Sections: Hero / Waitlist / Social Proof / Features / Meditation Hz Music / How It Works / Persona / Pricing / FAQ / CTA / Footer
@@ -1695,7 +1696,13 @@ function MeditationCard({
 
 export default function DreamLifeLanding() {
   const { t } = useLocale()
+  const [isLoading, setIsLoading] = useState(true)
   const [currentCopyIndex, setCurrentCopyIndex] = React.useState(0)
+  
+  // ローディング完了ハンドラー
+  const handleLoadingComplete = () => {
+    setIsLoading(false)
+  }
   
   // AI電気羊コピー群
   const aiSheepCopies = [
@@ -1740,7 +1747,9 @@ export default function DreamLifeLanding() {
   }, [])
   
   return (
-    <div className="min-h-screen text-slate-100 relative overflow-hidden">
+    <>
+      {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
+      <div className="min-h-screen text-slate-100 relative overflow-hidden">
 
       {/* 梦幻紫色背景动画 */}
       <div className="fixed inset-0 pointer-events-none">
@@ -2319,6 +2328,7 @@ export default function DreamLifeLanding() {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </>
   )
 }
