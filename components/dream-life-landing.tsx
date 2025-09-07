@@ -430,7 +430,7 @@ function WaitlistForm() {
         throw new Error(supabaseError.message)
       }
 
-      setSubmitted(true)
+    setSubmitted(true)
       setEmail('')
       setIntent('')
       
@@ -458,7 +458,7 @@ function WaitlistForm() {
 
   return (
     <div>
-      <form onSubmit={onSubmit} className="mt-4 grid gap-3 md:grid-cols-[1fr_220px_160px]">
+    <form onSubmit={onSubmit} className="mt-4 grid gap-3 md:grid-cols-[1fr_220px_160px]">
         {/* Honeypot 防机器人 */}
         <input 
           name="company" 
@@ -468,34 +468,34 @@ function WaitlistForm() {
           aria-hidden="true"
         />
         
-        <input
-          type="email"
-          required
+      <input
+        type="email"
+        required
           disabled={isSubmitting}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
           placeholder={t.waitlist.emailPlaceholder}
           className={`h-11 rounded-lg border border-white/15 bg-white/10 backdrop-blur-sm px-3 text-sm ${glassCardStyles.text.primary} placeholder:${glassCardStyles.text.subtle} focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40 disabled:opacity-50`}
-        />
-        <select
-          value={intent}
+      />
+      <select
+        value={intent}
           disabled={isSubmitting}
-          onChange={(e) => setIntent(e.target.value)}
+        onChange={(e) => setIntent(e.target.value)}
           className={`h-11 rounded-lg border border-white/15 bg-white/10 backdrop-blur-sm px-3 text-sm ${glassCardStyles.text.primary} focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40 disabled:opacity-50`}
         >
           <option value="">{t.waitlist.intentOptions.default}</option>
           <option value="sleep">{t.waitlist.intentOptions.sleep}</option>
           <option value="mood">{t.waitlist.intentOptions.mood}</option>
           <option value="ritual">{t.waitlist.intentOptions.ritual}</option>
-        </select>
+      </select>
         <Button 
           type="submit" 
           disabled={isSubmitting}
           className="h-11 bg-gradient-to-r from-fuchsia-500/80 to-indigo-500/80 hover:opacity-90 backdrop-blur-sm border border-white/10 disabled:opacity-50"
         >
           {isSubmitting ? '提交中...' : t.waitlist.joinButton}
-        </Button>
-      </form>
+      </Button>
+    </form>
       
       {/* 错误提示 */}
       {error && (
@@ -811,7 +811,7 @@ function SheepCountingSection(){
 
   return (
     <section id="sheep-counting" className="py-16 md:py-24 border-t border-white/10 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-indigo-900/20 to-purple-900/20" />
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-indigo-900/10 to-purple-900/10" />
       
       <div className="mx-auto max-w-4xl px-4 relative z-10">
         <motion.div
@@ -1027,7 +1027,7 @@ function TodaysCardSection(){
 
   return (
     <section id="todays-card" className="py-16 md:py-24 border-t border-white/10 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-indigo-900/20 to-purple-900/20" />
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-indigo-900/10 to-purple-900/10" />
       
       <div className="mx-auto max-w-4xl px-4 relative z-10">
         <motion.div
@@ -1252,7 +1252,7 @@ function CyberWellnessSection(){
 
   return (
     <section id="cyber-wellness" className="py-16 md:py-24 border-t border-white/10 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-purple-900/20 to-pink-900/20" />
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-purple-900/10 to-pink-900/10" />
       
       <div className="mx-auto max-w-7xl px-4 relative z-10">
         <motion.div
@@ -1949,10 +1949,10 @@ export default function DreamLifeLanding() {
                               className="cursor-pointer"
                               front={
                                 <div className="h-full rounded-xl bg-white/5 border border-white/10 p-3 text-center flex flex-col justify-between">
-                                  <div className="text-[10px] text-slate-400">SR{90 - i * 7}</div>
+                          <div className="text-[10px] text-slate-400">SR{90 - i * 7}</div>
                                   <div className="text-sm text-slate-200">{cardName}</div>
                                   <div className="text-[9px] text-slate-500">点击翻面</div>
-                                </div>
+                        </div>
                               }
                               back={
                                 <div className="h-full rounded-xl bg-white/5 border border-white/10 p-3 text-left flex flex-col justify-between">
@@ -2016,7 +2016,7 @@ export default function DreamLifeLanding() {
 
       {/* Social proof */}
       <section className="py-8 md:py-12 border-t border-white/10 relative">
-        <div className="absolute inset-0 bg-slate-900/60" />
+        <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-6xl px-4 grid grid-cols-2 md:grid-cols-4 gap-6 opacity-80 relative z-10">
           {["改善睡眠", "情绪调节", "个性化养生", "隐私优先"].map((t, i) => (
             <div key={i} className="flex items-center gap-2 text-sm text-slate-300">
@@ -2029,7 +2029,7 @@ export default function DreamLifeLanding() {
 
       {/* Features */}
       <section id="features" className="py-16 md:py-24 relative">
-        <div className="absolute inset-0 bg-slate-900/60" />
+        <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="max-w-2xl">
             <h2 className="text-2xl md:text-4xl font-semibold">核心功能</h2>
@@ -2060,7 +2060,7 @@ export default function DreamLifeLanding() {
 
       {/* Meditation Hz Music */}
       <section id="meditation" className="py-16 md:py-24 relative">
-        <div className="absolute inset-0 bg-slate-900/60" />
+        <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="max-w-2xl">
             <h2 className="text-2xl md:text-4xl font-semibold">冥想 · Hz 音乐 🎶</h2>
@@ -2092,7 +2092,7 @@ export default function DreamLifeLanding() {
 
       {/* How it works */}
       <section id="how" className="py-16 relative">
-        <div className="absolute inset-0 bg-slate-900/60" />
+        <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-7xl px-4 grid md:grid-cols-2 gap-10 items-center relative z-10">
           <div>
             <h3 className="text-2xl md:text-3xl font-semibold">3步开始</h3>
@@ -2140,7 +2140,7 @@ export default function DreamLifeLanding() {
 
       {/* Persona */}
       <section id="persona" className="py-16 md:py-24 border-t border-white/10 relative">
-        <div className="absolute inset-0 bg-slate-900/60" />
+        <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="max-w-2xl">
             <h3 className="text-2xl md:text-4xl font-semibold">解锁 Persona · 梦中同伴</h3>
@@ -2175,7 +2175,7 @@ export default function DreamLifeLanding() {
 
       {/* Pricing */}
       <section id="pricing" className="py-16 md:py-24 relative">
-        <div className="absolute inset-0 bg-slate-900/60" />
+        <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <h3 className="text-2xl md:text-4xl font-semibold">价格方案</h3>
           <p className="mt-2 text-slate-300/90">从入门到深度陪伴，支持订阅制与次卡制，按需选择。</p>
@@ -2210,7 +2210,7 @@ export default function DreamLifeLanding() {
 
       {/* FAQ */}
       <section id="faq" className="py-16 border-t border-white/10 relative">
-        <div className="absolute inset-0 bg-slate-900/60" />
+        <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-4xl px-4 relative z-10">
           <h3 className="text-2xl md:text-4xl font-semibold">常见问题</h3>
           <Accordion type="single" collapsible className="mt-6">
@@ -2244,7 +2244,7 @@ export default function DreamLifeLanding() {
 
       {/* CTA */}
       <section className="py-16 md:py-24 relative">
-        <div className="absolute inset-0 bg-slate-900/60" />
+        <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-5xl px-4 relative z-10">
           <Card className={`${glassCardStyles.base} shadow-2xl`}>
             <CardContent className="p-8 md:p-12 text-center">
@@ -2275,7 +2275,7 @@ export default function DreamLifeLanding() {
           </div>
           
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-400">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
               <div className="h-6 w-6 rounded-lg flex items-center justify-center bg-white/5 backdrop-blur-sm border border-white/10">
                 <img 
                   src="/logo.png" 
@@ -2284,17 +2284,17 @@ export default function DreamLifeLanding() {
                 />
               </div>
               <span>REMia by Synova Whisper © {new Date().getFullYear()}</span>
-            </div>
-            <div className="flex items-center gap-6">
+          </div>
+          <div className="flex items-center gap-6">
               <a className="hover:text-slate-200" href="https://www.synovawhisper.com" target="_blank" rel="noopener noreferrer">
                 Synova Whisper
-              </a>
-              <a className="hover:text-slate-200" href="#">
+            </a>
+            <a className="hover:text-slate-200" href="#">
                 {t.footer.links.privacy}
-              </a>
-              <a className="hover:text-slate-200" href="#">
+            </a>
+            <a className="hover:text-slate-200" href="#">
                 {t.footer.links.terms}
-              </a>
+            </a>
             </div>
           </div>
         </div>
