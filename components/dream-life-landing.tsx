@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Check, Sparkles, Moon, Stars, Heart, Brain, Flame, ChevronRight, Play } from "lucide-react"
 import { useState } from "react"
+import { useLocale } from "@/hooks/use-locale"
+import { LanguageSwitcher } from "@/components/language-switcher"
 
 // JayVue: one-file landing page, Tailwind + shadcn/ui + framer-motion
 // Sections: Hero / Waitlist / Social Proof / Features / Meditation Hz Music / How It Works / Persona / Pricing / FAQ / CTA / Footer
@@ -231,6 +233,8 @@ function MeditationCard({
 }
 
 export default function DreamLifeLanding() {
+  const { t } = useLocale()
+  
   return (
     <div className="min-h-screen text-slate-100">
       {/* Top nav */}
@@ -242,29 +246,30 @@ export default function DreamLifeLanding() {
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm text-slate-300">
             <a href="#features" className="hover:text-white transition">
-              功能
+              {t.nav.features}
             </a>
             <a href="#meditation" className="hover:text-white transition">
-              冥想音乐
+              {t.nav.meditation}
             </a>
             <a href="#how" className="hover:text-white transition">
-              流程
+              {t.nav.how}
             </a>
             <a href="#persona" className="hover:text-white transition">
-              Persona
+              {t.nav.persona}
             </a>
             <a href="#pricing" className="hover:text-white transition">
-              价格
+              {t.nav.pricing}
             </a>
             <a href="#faq" className="hover:text-white transition">
-              FAQ
+              {t.nav.faq}
             </a>
           </nav>
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <Button variant="ghost" className="text-slate-300 hover:text-white">
-              登录
+              {t.nav.login}
             </Button>
-            <Button className="bg-fuchsia-500 hover:bg-fuchsia-400 shadow-lg shadow-fuchsia-500/30">立即体验</Button>
+            <Button className="bg-fuchsia-500 hover:bg-fuchsia-400 shadow-lg shadow-fuchsia-500/30">{t.nav.experience}</Button>
           </div>
         </div>
       </header>
@@ -285,31 +290,31 @@ export default function DreamLifeLanding() {
           >
             <motion.div variants={item} className="space-y-6">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-slate-800/60 px-3 py-1 text-xs text-slate-200">
-                <Sparkles className="h-3.5 w-3.5" /> 梦境分析 × 抽卡 × 养生指南 × Persona陪伴
+                <Sparkles className="h-3.5 w-3.5" /> {t.hero.badge}
               </div>
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.1]">
-                把你的梦，
-                <span className="text-fuchsia-200">变成白天的指引</span>
+                {t.hero.title}
+                <span className="text-fuchsia-200">{t.hero.titleHighlight}</span>
               </h1>
               <p className="text-slate-300/90 md:text-lg max-w-xl">
-                改善睡眠质量，调节情绪压力，建立生活仪式感。记录昨夜的故事，AI解读象征与情绪；抽取今日「命运卡」，获得个性化的呼吸/饮食/作息建议；解锁与你同频的梦中Persona陪伴。
+                {t.hero.description}
               </p>
               <div className="flex flex-wrap items-center gap-3">
-                <Button className="bg-indigo-500 hover:bg-indigo-400 shadow-lg shadow-indigo-500/30">免费开始</Button>
+                <Button className="bg-indigo-500 hover:bg-indigo-400 shadow-lg shadow-indigo-500/30">{t.hero.startFree}</Button>
                 <Button variant="outline" className="border-white/20 text-slate-200 hover:bg-white/10 bg-transparent">
-                  查看Demo <ChevronRight className="ml-1 h-4 w-4" />
+                  {t.hero.viewDemo} <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
-                <div className="text-xs text-slate-400">无需注册 · 本地隐私模式</div>
+                <div className="text-xs text-slate-400">{t.hero.noRegistration}</div>
               </div>
               <div className="flex items-center gap-6 pt-2 text-xs text-slate-400">
                 <div className="flex items-center gap-1">
-                  <Check className="h-3.5 w-3.5" /> iOS/Android
+                  <Check className="h-3.5 w-3.5" /> {t.hero.features.platforms}
                 </div>
                 <div className="flex items-center gap-1">
-                  <LockIcon /> 端到端加密 · 本地SQLite存储
+                  <LockIcon /> {t.hero.features.security}
                 </div>
                 <div className="flex items-center gap-1">
-                  <Stars className="h-3.5 w-3.5" /> 明晰梦支持 · GDPR合规
+                  <Stars className="h-3.5 w-3.5" /> {t.hero.features.advanced}
                 </div>
               </div>
             </motion.div>
@@ -322,25 +327,25 @@ export default function DreamLifeLanding() {
                   <div className="p-4 space-y-3">
                     <div className="text-xs text-slate-400">今日卡牌</div>
                     <div className="grid grid-cols-3 gap-3">
-                      {["星之门", "银羽旅者", "静谧之海"].map((t, i) => (
+                      {t.mockData.todayCards.map((cardName, i) => (
                         <div key={i} className="rounded-xl bg-slate-800/80 border border-white/20 p-3 text-center">
                           <div className="text-[10px] text-slate-400">SR{90 - i * 7}</div>
-                          <div className="mt-2 text-sm text-slate-200">{t}</div>
+                          <div className="mt-2 text-sm text-slate-200">{cardName}</div>
                         </div>
                       ))}
                     </div>
                     <div className="mt-4 rounded-xl border border-white/20 bg-slate-800/80 p-3">
                       <div className="text-xs text-slate-400">梦境情绪概览</div>
                       <div className="mt-2 flex items-center gap-2 text-sm text-slate-200">
-                        <Brain className="h-4 w-4" /> 平静 42% · 好奇 31% · 焦虑 15%
+                        <Brain className="h-4 w-4" /> {t.mockData.emotionOverview}
                       </div>
                     </div>
                     <div className="mt-3 rounded-xl border border-white/10 bg-gradient-to-r from-fuchsia-500/10 to-cyan-500/10 p-3">
                       <div className="text-xs text-slate-300">今日养生</div>
                       <ul className="mt-2 space-y-1 text-[13px] text-slate-200/90">
-                        <li>• 早间 4-7-8 呼吸 × 3轮</li>
-                        <li>• 午后白茶 + 枸杞</li>
-                        <li>• 23:30 前入睡 · 屏幕暗色</li>
+                        {t.mockData.todayWellness.map((item, i) => (
+                          <li key={i}>• {item}</li>
+                        ))}
                       </ul>
                     </div>
                   </div>
