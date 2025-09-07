@@ -1127,7 +1127,7 @@ export default function DreamLifeLanding() {
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-xl flex items-center justify-center bg-white/5 backdrop-blur-sm border border-white/10">
               <img 
-                src="/logo.jpg" 
+                src="/logo.png" 
                 alt="REMia Logo" 
                 className="w-6 h-6 object-contain"
               />
@@ -1609,22 +1609,22 @@ export default function DreamLifeLanding() {
             <div className="flex items-center gap-2">
               <div className="h-6 w-6 rounded-lg flex items-center justify-center bg-white/5 backdrop-blur-sm border border-white/10">
                 <img 
-                  src="/logo.jpg" 
+                  src="/logo.png" 
                   alt="REMia Logo" 
                   className="w-4 h-4 object-contain"
                 />
               </div>
-              <span>REMia © {new Date().getFullYear()}</span>
+              <span>REMia by Synova Whisper © {new Date().getFullYear()}</span>
             </div>
             <div className="flex items-center gap-6">
+              <a className="hover:text-slate-200" href="https://www.synovawhisper.com" target="_blank" rel="noopener noreferrer">
+                Synova Whisper
+              </a>
               <a className="hover:text-slate-200" href="#">
                 {t.footer.links.privacy}
               </a>
               <a className="hover:text-slate-200" href="#">
                 {t.footer.links.terms}
-              </a>
-              <a className="hover:text-slate-200" href="#">
-                {t.footer.links.contact}
               </a>
             </div>
           </div>
