@@ -725,10 +725,245 @@ function draftFromPersona(p:string){
   return '钢琴与弦乐碎片，轻回声，慢速 65BPM，反思、留白';
 }
 
+/* —— 今日卡 Today's Card —— */
+function TodaysCardSection(){
+  const { t } = useLocale()
+  const [isFlipped, setIsFlipped] = React.useState(false)
+  const [cardData, setCardData] = React.useState<{
+    id: string,
+    title: string,
+    image: string,
+    interpretation: string,
+    action: string,
+    color: string
+  } | null>(null)
+
+  // 今日卡データ生成
+  const generateTodaysCard = () => {
+    const cards = [
+      {
+        id: 'moonlight',
+        title: '月光之梦',
+        image: '/MIRA.jpg',
+        interpretation: '昨夜你梦见了温柔的月光，这象征着内心的平静与智慧。',
+        action: '今日建议：喝一杯温热的柚子茶，进行10分钟深呼吸冥想。',
+        color: 'from-blue-500/20 to-purple-500/20'
+      },
+      {
+        id: 'flame',
+        title: '火焰之梦',
+        image: '/IGNIS.jpg',
+        interpretation: '梦中出现的火焰代表你内心的激情与创造力正在觉醒。',
+        action: '今日建议：进行30分钟有氧运动，喝一杯生姜茶提升活力。',
+        color: 'from-orange-500/20 to-red-500/20'
+      },
+      {
+        id: 'echo',
+        title: '回响之梦',
+        image: '/ECHO.jpg',
+        interpretation: '梦中的回响暗示你需要倾听内心的声音，寻找真实的自己。',
+        action: '今日建议：写日记记录感受，喝一杯薰衣草茶放松心情。',
+        color: 'from-green-500/20 to-teal-500/20'
+      }
+    ]
+    
+    const randomCard = cards[Math.floor(Math.random() * cards.length)]
+    setCardData(randomCard)
+    setIsFlipped(false)
+    
+    // 埋点：今日卡生成
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'todays_card_generated', {
+        card_id: randomCard.id,
+        card_title: randomCard.title
+      })
+    }
+  }
+
+  // 初回生成
+  React.useEffect(() => {
+    if (!cardData) {
+      generateTodaysCard()
+    }
+  }, [])
+
+  return (
+    <section id="todays-card" className="py-16 md:py-24 border-t border-white/10 relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-indigo-900/20 to-purple-900/20" />
+      
+      <div className="mx-auto max-w-4xl px-4 relative z-10">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-12"
+        >
+          <motion.div variants={item} className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-slate-800/60 px-4 py-2 text-sm text-slate-200 mb-6">
+            <Moon className="h-4 w-4" /> 今日卡 Today's Card
+          </motion.div>
+          
+          <motion.h2 
+            variants={item}
+            className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4"
+          >
+            AI電気羊が、今夜の夢をカードに変える
+          </motion.h2>
+          
+          <motion.p 
+            variants={item}
+            className="text-slate-300/80 text-lg max-w-2xl mx-auto"
+          >
+            点击卡片，解锁今日的梦境指引
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex justify-center"
+        >
+          <motion.div variants={item} className="w-full max-w-sm">
+            {cardData && (
+              <FlipCard
+                isFlipped={isFlipped}
+                onFlip={() => {
+                  setIsFlipped(!isFlipped)
+                  // 埋点：今日卡翻面
+                  if (typeof window !== 'undefined' && (window as any).gtag) {
+                    (window as any).gtag('event', 'todays_card_flip', {
+                      card_id: cardData.id,
+                      is_flipped: !isFlipped
+                    })
+                  }
+                }}
+                className="cursor-pointer"
+              >
+                {/* 正面：插画 */}
+                <div className={`h-full rounded-2xl ${glassCardStyles.base} overflow-hidden flex flex-col bg-gradient-to-br ${cardData.color}`}>
+                  <div className="flex items-center justify-between px-4 py-3 flex-shrink-0">
+                    <div className="flex items-center gap-2">
+                      <Moon className="h-5 w-5 text-slate-300" />
+                      <span className="text-sm font-medium text-slate-200">今日卡</span>
+                    </div>
+                    <div className="text-xs text-slate-400">点击翻转</div>
+                  </div>
+                  <div className="flex-1 relative">
+                    <img
+                      src={cardData.image}
+                      alt={`${cardData.title} card art`}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <h3 className="text-xl font-bold text-white mb-2">{cardData.title}</h3>
+                      <p className="text-sm text-slate-200/90">点击查看解析</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 反面：解析+行动 */}
+                <div className={`h-full rounded-2xl ${glassCardStyles.base} overflow-hidden flex flex-col bg-gradient-to-br ${cardData.color}`}>
+                  <div className="flex items-center justify-between px-4 py-3 flex-shrink-0">
+                    <div className="flex items-center gap-2">
+                      <Brain className="h-5 w-5 text-slate-300" />
+                      <span className="text-sm font-medium text-slate-200">梦境解析</span>
+                    </div>
+                    <div className="text-xs text-slate-400">点击翻转</div>
+                  </div>
+                  <div className="flex-1 p-4 space-y-4">
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-100 mb-2">{cardData.title}</h3>
+                      <p className="text-sm text-slate-300/90 leading-relaxed">
+                        {cardData.interpretation}
+                      </p>
+                    </div>
+                    <div className="border-t border-white/10 pt-4">
+                      <h4 className="text-sm font-semibold text-slate-200 mb-2">今日行动</h4>
+                      <p className="text-sm text-slate-300/90 leading-relaxed">
+                        {cardData.action}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </FlipCard>
+            )}
+            
+            {/* 重新生成按钮 */}
+            <div className="mt-6 text-center">
+              <Button
+                variant="outline"
+                className="border-white/20 text-slate-200 hover:bg-white/10 bg-transparent"
+                onClick={generateTodaysCard}
+              >
+                <Sparkles className="h-4 w-4 mr-2" />
+                重新抽取今日卡
+              </Button>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
 /* —— 赛博养生 Cyber Wellness —— */
 function CyberWellnessSection(){
   const { t } = useLocale()
   
+  const [activeWellness, setActiveWellness] = React.useState<string | null>(null)
+  const [wellnessResult, setWellnessResult] = React.useState<string | null>(null)
+
+  // 梦境处方生成
+  const generateDreamPrescription = () => {
+    const prescriptions = [
+      "今日处方：喝一杯温热的柚子茶，进行10分钟深呼吸冥想。",
+      "今日处方：进行30分钟有氧运动，喝一杯生姜茶提升活力。",
+      "今日处方：写日记记录感受，喝一杯薰衣草茶放松心情。",
+      "今日处方：听432Hz音乐15分钟，喝一杯薄荷茶清新头脑。",
+      "今日处方：进行瑜伽拉伸，喝一杯玫瑰花茶滋养身心。"
+    ]
+    return prescriptions[Math.floor(Math.random() * prescriptions.length)]
+  }
+
+  // 虚拟温泉呼吸引导
+  const startVirtualSpa = () => {
+    setActiveWellness('spa')
+    // 埋点：虚拟温泉开始
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'ritual_start', {
+        ritual_type: 'virtual_spa'
+      })
+    }
+    
+    // 5秒後に完成
+    setTimeout(() => {
+      setActiveWellness(null)
+      setWellnessResult('温泉疗法完成！身心得到深度放松。')
+      // 埋点：虚拟温泉完成
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'ritual_done', {
+          ritual_type: 'virtual_spa'
+        })
+      }
+    }, 5000)
+  }
+
+  // 赛博药膳推荐
+  const generateDreamDrink = () => {
+    const drinks = [
+      "梦见森林？来一杯抹茶，感受自然的清新。",
+      "梦见星空？今晚适合紫苏茶，让思绪如星光般闪烁。",
+      "梦见海洋？推荐柠檬蜂蜜茶，如海风般清爽。",
+      "梦见花朵？玫瑰花茶最适合，让花香伴随入梦。",
+      "梦见火焰？生姜茶能温暖身心，点燃内在能量。"
+    ]
+    return drinks[Math.floor(Math.random() * drinks.length)]
+  }
+
   const wellnessCards = [
     {
       icon: "🌙",
@@ -736,15 +971,26 @@ function CyberWellnessSection(){
       description: "AI電気羊解读昨夜的梦，为你开出今日的小处方。可能是一杯柚子茶、一次深呼吸，或是一段短冥想。",
       cta: "解锁今日处方",
       gradient: "from-pink-500/20 to-purple-500/20",
-      borderGradient: "from-pink-400/40 to-purple-400/40"
+      borderGradient: "from-pink-400/40 to-purple-400/40",
+      action: () => {
+        const prescription = generateDreamPrescription()
+        setWellnessResult(prescription)
+        // 埋点：梦境处方生成
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'ritual_start', {
+            ritual_type: 'dream_prescription'
+          })
+        }
+      }
     },
     {
       icon: "♨️",
       title: "虚拟温泉",
       description: "闭上眼睛，进入数字温泉。屏幕中的热气与光晕，配合呼吸引导，就像身体在赛博温泉中复原。",
-      cta: "开始温泉疗法",
+      cta: activeWellness === 'spa' ? "温泉中..." : "开始温泉疗法",
       gradient: "from-cyan-500/20 to-blue-500/20",
-      borderGradient: "from-cyan-400/40 to-blue-400/40"
+      borderGradient: "from-cyan-400/40 to-blue-400/40",
+      action: startVirtualSpa
     },
     {
       icon: "🍵",
@@ -752,7 +998,17 @@ function CyberWellnessSection(){
       description: "将梦境色彩转化为饮品推荐。梦见森林？来一杯抹茶。梦见星空？今晚适合紫苏茶。",
       cta: "冲泡我的梦饮",
       gradient: "from-emerald-500/20 to-teal-500/20",
-      borderGradient: "from-emerald-400/40 to-teal-400/40"
+      borderGradient: "from-emerald-400/40 to-teal-400/40",
+      action: () => {
+        const drink = generateDreamDrink()
+        setWellnessResult(drink)
+        // 埋点：赛博药膳生成
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'ritual_start', {
+            ritual_type: 'cyber_medicine'
+          })
+        }
+      }
     }
   ]
 
@@ -823,6 +1079,7 @@ function CyberWellnessSection(){
                 <Button 
                   className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-400 hover:to-purple-400 text-white shadow-lg hover:shadow-pink-500/30 transition-all duration-300 hover:scale-105"
                   onClick={() => {
+                    card.action()
                     if (typeof window !== 'undefined' && (window as any).gtag) {
                       (window as any).gtag('event', 'cyber_wellness_click', {
                         card_type: card.title,
@@ -830,6 +1087,7 @@ function CyberWellnessSection(){
                       })
                     }
                   }}
+                  disabled={activeWellness === 'spa'}
                 >
                   {card.cta}
                 </Button>
@@ -837,6 +1095,31 @@ function CyberWellnessSection(){
             </motion.div>
           ))}
         </motion.div>
+        
+        {/* 养生结果展示 */}
+        {wellnessResult && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-8 max-w-2xl mx-auto"
+          >
+            <div className={`${glassCardStyles.base} p-6 border border-green-400/30 bg-gradient-to-br from-green-500/10 to-emerald-500/10`}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                <h3 className="text-lg font-semibold text-green-200">养生处方已生成</h3>
+              </div>
+              <p className="text-slate-200 leading-relaxed">{wellnessResult}</p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-4 border-green-400/30 text-green-200 hover:bg-green-400/10"
+                onClick={() => setWellnessResult(null)}
+              >
+                关闭
+              </Button>
+            </div>
+          </motion.div>
+        )}
       </div>
     </section>
   )
@@ -1236,6 +1519,9 @@ export default function DreamLifeLanding() {
             </a>
             <a href="#meditation" className="hover:text-white transition">
               {t.nav.meditation}
+            </a>
+            <a href="#todays-card" className="hover:text-white transition">
+              今日卡
             </a>
             <a href="#cyber-wellness" className="hover:text-white transition">
               赛博养生
@@ -1637,6 +1923,9 @@ export default function DreamLifeLanding() {
 
       {/* Creative Lab */}
       <CreativeLabSection />
+
+      {/* 今日卡 Today's Card */}
+      <TodaysCardSection />
 
       {/* 赛博养生 Cyber Wellness */}
       <CyberWellnessSection />
