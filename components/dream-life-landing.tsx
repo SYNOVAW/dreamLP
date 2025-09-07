@@ -773,7 +773,7 @@ function AIElectricSheepSection(){
           </p>
         </div>
 
-        <Card className={`${glassCardStyles.highlight} mb-8`}>
+        <Card className={`${glassCardStyles.base} mb-8`}>
           <CardContent className="p-6">
             <div className="space-y-4">
               <label className="text-sm font-medium text-slate-200 block">
@@ -826,7 +826,7 @@ function AIElectricSheepSection(){
         )}
 
         {dreamResult && (
-          <Card className={`${glassCardStyles.highlight} mb-8`}>
+          <Card className={`${glassCardStyles.base} mb-8`}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-slate-100">
                 <span>✨</span>
@@ -1341,7 +1341,7 @@ export default function DreamLifeLanding() {
       {/* Waiting List */}
       <section id="waitlist" className="py-6 md:py-10 -mt-8">
         <div className="mx-auto max-w-3xl px-4">
-          <Card className={specialGlassStyles.waitlist}>
+          <Card className={`${glassCardStyles.base} shadow-2xl`}>
             <CardContent className="p-6 md:p-8">
               <h3 className={`text-xl md:text-2xl font-semibold ${glassCardStyles.text.primary}`}>{t.waitlist.title}</h3>
               <p className={`mt-2 text-sm ${glassCardStyles.text.muted}`}>
@@ -1577,7 +1577,7 @@ export default function DreamLifeLanding() {
       <section className="py-16 md:py-24 relative">
         <div className="absolute inset-0 bg-slate-900/60" />
         <div className="mx-auto max-w-5xl px-4 relative z-10">
-          <Card className={specialGlassStyles.cta}>
+          <Card className={`${glassCardStyles.base} shadow-2xl`}>
             <CardContent className="p-8 md:p-12 text-center">
               <h3 className={`text-2xl md:text-4xl font-semibold ${glassCardStyles.text.primary}`}>{t.cta.title}</h3>
               <p className={`mt-3 ${glassCardStyles.text.muted}`}>{t.cta.description}</p>
