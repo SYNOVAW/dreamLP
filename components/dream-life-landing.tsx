@@ -98,6 +98,63 @@ function CardArt({ seed, personaName }: { seed: string; personaName?: string }) 
 
 function hashStr(s: string){ let h=0; for(let i=0;i<s.length;i++){ h=((h<<5)-h)+s.charCodeAt(i); h|=0; } return h; }
 
+/** FlipCard：支持点击/回车/空格翻转，桌面可 hover 翻转（可关） */
+function FlipCard({
+  front,
+  back,
+  hover = true,
+  className = ""
+}: {
+  front: React.ReactNode;
+  back: React.ReactNode;
+  hover?: boolean;
+  className?: string;
+}) {
+  const [flipped, setFlipped] = React.useState(false);
+
+  const toggle = () => setFlipped((v) => !v);
+
+  return (
+    <div
+      className={`relative h-[340px] w-full cursor-pointer select-none ${className}`}
+      style={{ perspective: 1200 }}
+    >
+      <motion.button
+        type="button"
+        aria-pressed={flipped}
+        aria-label={flipped ? "查看正面" : "查看反面"}
+        onClick={toggle}
+        onKeyDown={(e) => {
+          if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            toggle();
+          }
+        }}
+        className="group absolute inset-0 w-full h-full outline-none focus:ring-2 focus:ring-fuchsia-500/40 rounded-2xl"
+        whileTap={{ scale: 0.985 }}
+        onMouseEnter={hover ? () => setFlipped(true) : undefined}
+        onMouseLeave={hover ? () => setFlipped(false) : undefined}
+      >
+        <motion.div
+          className="relative h-full w-full"
+          style={{ transformStyle: 'preserve-3d' }}
+          animate={{ rotateY: flipped ? 180 : 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
+        >
+          {/* Front */}
+          <div className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }}>
+            {front}
+          </div>
+          {/* Back */}
+          <div className="absolute inset-0" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+            {back}
+          </div>
+        </motion.div>
+      </motion.button>
+    </div>
+  );
+}
+
 function copyPersonaPrompt(name: string, theme: string){
   const prompt = [
     `ultra-detailed tarot-style character card, dreamy, ethereal lighting, neon watercolor gradient, cosmic motifs`,
@@ -113,6 +170,81 @@ function copyPersonaPrompt(name: string, theme: string){
   }
 }
 
+function PersonaFlipCard({
+  name, line, tip, sr, img
+}: { name: string; line: string; tip: string; sr: number; img: string }) {
+  const { t } = useLocale()
+  
+  const handleCardInteraction = () => {
+    // 埋点：Persona卡片交互
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'persona_card_flip', { name })
+    }
+  }
+
+  return (
+    <FlipCard
+      className="rounded-2xl"
+      hover={false} // 移动端友好，只用点击翻转
+      front={
+        <div className={`h-full rounded-2xl ${glassCardStyles.base} overflow-hidden`}>
+          <div className="flex items-center justify-between px-4 py-3">
+            <div className={`text-sm ${glassCardStyles.text.primary}`}>{name}</div>
+            <div className={`text-xs ${glassCardStyles.text.subtle}`}>SR {sr}</div>
+          </div>
+          <img
+            src={img}
+            alt={`${name} card art`}
+            className="h-[270px] w-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute bottom-2 right-2 bg-black/50 backdrop-blur-sm rounded-full px-2 py-1">
+            <span className="text-xs text-slate-300">点击翻面</span>
+          </div>
+        </div>
+      }
+      back={
+        <div className={`h-full rounded-2xl ${glassCardStyles.base} p-4`}>
+          <div className="flex items-center justify-between">
+            <div className={`text-sm ${glassCardStyles.text.primary}`}>{name}</div>
+            <div className={`text-xs ${glassCardStyles.text.subtle}`}>SR {sr}</div>
+          </div>
+          <div className={`mt-2 text-sm ${glassCardStyles.text.muted}`}>{t.persona.themeLabel}{line}</div>
+          <div className={`mt-3 text-xs ${glassCardStyles.text.muted} leading-relaxed`}>
+            <div className={`mb-2 font-medium ${glassCardStyles.text.secondary}`}>今日解析</div>
+            <p>
+              梦中的符号指向「{line}」。建议从小处着手：{tip}。若出现犹豫，
+              先做 2 分钟呼吸，再选择一个 5 分钟内能完成的小动作。
+            </p>
+            <ul className="mt-3 list-disc list-inside space-y-1">
+              <li>行动 ①：4-7-8 呼吸 × 3 轮</li>
+              <li>行动 ②：{tip}</li>
+              <li>行动 ③：记录今日感受</li>
+            </ul>
+          </div>
+          <div className="mt-4 flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-slate-200 text-xs"
+              onClick={(e) => {
+                e.stopPropagation()
+                copyPersonaPrompt(name, line)
+              }}
+            >
+              复制AI Prompt
+            </Button>
+          </div>
+          <div className={`mt-3 text-xs ${glassCardStyles.text.subtle}`}>
+            点击可翻面 / 空格或回车也可
+          </div>
+        </div>
+      }
+    />
+  );
+}
+
+// 保留原版本作为备用
 function PersonaCardPro({ name, line, tip, sr, artSeed }: {
   name: string; line: string; tip: string; sr: number; artSeed?: string
 }) {
@@ -637,12 +769,37 @@ export default function DreamLifeLanding() {
                   <div className="p-4 space-y-3">
                     <div className="text-xs text-slate-400">今日卡牌</div>
                     <div className="grid grid-cols-3 gap-3">
-                      {t.mockData.todayCards.map((cardName, i) => (
-                        <div key={i} className="rounded-xl bg-slate-800/80 border border-white/20 p-3 text-center">
-                          <div className="text-[10px] text-slate-400">SR{90 - i * 7}</div>
-                          <div className="mt-2 text-sm text-slate-200">{cardName}</div>
-                        </div>
-                      ))}
+                      {t.mockData.todayCards.map((cardName, i) => {
+                        const cardMeanings = [
+                          { meaning: "新的起点 / 机会", action: "给今日设定一个 5 分钟小目标" },
+                          { meaning: "探索 / 成长", action: "尝试一个新的小习惯" },
+                          { meaning: "平静 / 反思", action: "花 3 分钟冥想或深呼吸" }
+                        ];
+                        return (
+                          <div key={i} className="h-[120px]" style={{ perspective: 600 }}>
+                            <FlipCard
+                              hover={false}
+                              className="h-[120px] cursor-pointer"
+                              front={
+                                <div className="h-full rounded-xl bg-white/5 border border-white/10 p-3 text-center flex flex-col justify-between">
+                                  <div className="text-[10px] text-slate-400">SR{90 - i * 7}</div>
+                                  <div className="text-sm text-slate-200">{cardName}</div>
+                                  <div className="text-[9px] text-slate-500">点击翻面</div>
+                                </div>
+                              }
+                              back={
+                                <div className="h-full rounded-xl bg-white/5 border border-white/10 p-3 text-left flex flex-col justify-between">
+                                  <div>
+                                    <div className="text-[11px] text-slate-300">寓意：{cardMeanings[i].meaning}</div>
+                                    <div className="mt-1 text-[11px] text-slate-400">行动：{cardMeanings[i].action}</div>
+                                  </div>
+                                  <div className="text-[9px] text-slate-500">再次点击翻回</div>
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
                     <div className="mt-4 rounded-xl border border-white/20 bg-slate-800/80 p-3">
                       <div className="text-xs text-slate-400">梦境情绪概览</div>
@@ -824,11 +981,11 @@ export default function DreamLifeLanding() {
           </div>
           <div className="mt-8 grid md:grid-cols-3 gap-6">
             {[
-              { name: t.persona.characters.mira.name, line: t.persona.characters.mira.theme, tip: t.persona.characters.mira.tip },
-              { name: t.persona.characters.ignis.name, line: t.persona.characters.ignis.theme, tip: t.persona.characters.ignis.tip },
-              { name: t.persona.characters.echo.name, line: t.persona.characters.echo.theme, tip: t.persona.characters.echo.tip },
+              { name: t.persona.characters.mira.name, line: t.persona.characters.mira.theme, tip: t.persona.characters.mira.tip, img: "/MIRA.jpg" },
+              { name: t.persona.characters.ignis.name, line: t.persona.characters.ignis.theme, tip: t.persona.characters.ignis.tip, img: "/IGNIS.jpg" },
+              { name: t.persona.characters.echo.name, line: t.persona.characters.echo.theme, tip: t.persona.characters.echo.tip, img: "/ECHO.jpg" },
             ].map((p, i) => (
-              <PersonaCardPro key={i} {...p} sr={88 - i * 7} artSeed={p.name} />
+              <PersonaFlipCard key={i} {...p} sr={88 - i * 7} />
             ))}
           </div>
         </div>
