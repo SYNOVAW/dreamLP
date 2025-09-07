@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   title: "REMia · 梦境生活 - 记录梦境，解锁内心世界的秘密",
   description: "改善睡眠质量，调节情绪压力，建立生活仪式感。记录昨夜的故事，AI解读象征与情绪；抽取今日「命运卡」，获得个性化的呼吸/饮食/作息建议；解锁与你同频的梦中Persona陪伴。",
   keywords: ["梦境记录", "睡眠改善", "AI解梦", "Persona", "冥想", "情绪调节", "生活仪式感"],
-  authors: [{ name: "Synova Whisper" }],
-  creator: "Synova Whisper",
-  publisher: "Synova Whisper",
+  authors: [{ name: "SYNOVA WHISPER" }],
+  creator: "SYNOVA WHISPER",
+  publisher: "SYNOVA WHISPER",
   openGraph: {
     title: "REMia · 梦境生活",
     description: "把你的梦，变成白天的指引",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     title: "REMia · 梦境生活",
     description: "把你的梦，变成白天的指引",
     images: ["/logo.png"],
-    creator: "@SynovaWhisper",
+    creator: "@SYNOVAWHISPER",
   },
   icons: {
     icon: "/logo.png",
