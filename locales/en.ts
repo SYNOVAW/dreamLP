@@ -159,6 +159,93 @@ export const en = {
     tipLabel: 'Today\'s guidance: '
   },
 
+  // AI Electric Sheep Section
+  aiElectricSheep: {
+    title: 'AI Electric Sheep · Collaborative Dream Creation',
+    subtitle: 'Not just interpreting dreams, but creating dreams with AI',
+    description: 'Inspired by "Do Androids Dream of Electric Sheep?", breaking the boundaries between human and AI dreams. Input last night\'s fragments, and AI will weave new dreams with you, generating exclusive music and visuals.',
+    inputPlaceholder: 'Write down a dream fragment from last night...',
+    inputHint: 'For example: Floating on a purple sea with lighthouse light in the distance...',
+    dreamWithAI: 'Dream with AI',
+    generating: 'Weaving dreams...',
+    personaWorlds: {
+      title: 'Persona Dream Worlds',
+      description: 'Each Persona has unique dream colors and soundscapes',
+      mira: {
+        world: 'Serene Forest',
+        description: 'Ancient trees in mist with flowing water sounds, 432Hz natural frequency',
+        mood: 'Soothing · Healing'
+      },
+      ignis: {
+        world: 'Flame City',
+        description: 'Neon cyber space with electronic rhythms and synthesizers',
+        mood: 'Inspiring · Exploration'
+      },
+      echo: {
+        world: 'Mirror Maze',
+        description: 'Multi-dimensional reflection space with surround sound and echoes',
+        mood: 'Reflection · Insight'
+      }
+    },
+    collaborative: {
+      title: 'Invite Others to Dream Together',
+      description: 'Share dream links and let friends participate in dream creation',
+      invite: 'Generate Dream Link',
+      maxDreamers: 'Up to 4 people can dream together'
+    },
+    dreamCard: {
+      musicGenerated: 'Dream music generated',
+      videoGenerated: 'Dream visuals generated',
+      listen: 'Listen',
+      watch: 'Watch',
+      share: 'Share',
+      remix: 'Reweave'
+    },
+    premium: {
+      note: 'Premium users enjoy unlimited dream sessions and high-quality output',
+      upgrade: 'Upgrade to Unlock'
+    }
+  },
+
+  // Creative Lab Section
+  creativeLab: {
+    title: 'Creative Lab · AI Music & Short Videos',
+    subtitle: 'Turn last night\'s dreams into melodies or 15-second visuals. Support Persona themes, emotion/Hz atmosphere, one-click generation.',
+    tabs: {
+      music: 'AI Music',
+      video: 'AI Short Video'
+    },
+    music: {
+      title: 'AI Music Generation',
+      persona: 'Persona Theme',
+      mood: 'Mood/Frequency', 
+      duration: 'Duration (seconds)',
+      prompt: 'Lyrics/Imagery Prompt',
+      promptPlaceholder: 'Describe dream scenes, rhythm and instruments: \'Slow tempo · Breathing pad · Ocean waves and wind chimes\'',
+      generate: 'One-Click Generate',
+      generating: 'Generating...',
+      autoFill: 'Auto-fill with Persona',
+      personaOptions: ['MIRA (Soothing)', 'IGNIS (Motivating)', 'ECHO (Reflective)'],
+      moodOptions: ['Calm · 432Hz', 'Healing · 528Hz', 'Awakening · 963Hz', 'Focus · No Hz Label']
+    },
+    video: {
+      title: 'AI Short Video Creation',
+      style: 'Style',
+      ratio: 'Aspect Ratio',
+      rhythm: 'Rhythm',
+      script: 'Storyboard/Script',
+      scriptPlaceholder: 'Three shots: ① Starlight flowing ② Card gradually appearing ③ Persona name subtitle',
+      upload: 'Upload Material (Optional)',
+      generate: 'One-Click Generate 15s Trailer',
+      generating: 'Rendering video frames...',
+      template: 'Use Template Script',
+      styleOptions: ['Dreamlike Watercolor · Particle Light', 'Neon Cyber · Starry', 'Soft Mist Cinematic', 'Linear Gradient · Abstract'],
+      ratioOptions: ['9:16', '1:1', '16:9'],
+      rhythmOptions: ['Slow', 'Medium', 'Fast']
+    },
+    disclaimer: '* Creative content is for entertainment and personal inspiration only. Please ensure you own the copyright of uploaded materials; generated works should not infringe third-party rights or impersonate others\' voices/images.'
+  },
+
   // Pricing Section
   pricing: {
     title: 'Pricing Plans',

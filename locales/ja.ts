@@ -159,6 +159,54 @@ export const ja = {
     tipLabel: '今日の指針：'
   },
 
+  // AI Electric Sheep Section
+  aiElectricSheep: {
+    title: 'AI電気羊 · 協働夢創造',
+    subtitle: '夢を解読するだけでなく、AIと共に夢を作る',
+    description: '『アンドロイドは電気羊の夢を見るか？』からインスピレーションを得て、人間とAIの夢境界を破る。昨夜の断片を入力し、AIがあなたと共に新しい夢を織り、専用の音楽と映像を生成。',
+    inputPlaceholder: '昨夜の夢の断片を書いてください...',
+    inputHint: '例：紫の海面に浮かんで、遠くに灯台の光が...',
+    dreamWithAI: 'AIと一緒に夢を見る',
+    generating: '夢を織っています...',
+    personaWorlds: {
+      title: 'ペルソナ夢世界',
+      description: '各ペルソナには独特の夢の色彩と音風景があります',
+      mira: {
+        world: '静寂の森',
+        description: '霧の中の古木と流水音、432Hz自然周波数',
+        mood: '安らぎ · 癒し'
+      },
+      ignis: {
+        world: '炎の都市',
+        description: 'ネオンサイバー空間、電子リズムとシンセサイザー',
+        mood: 'インスピレーション · 探索'
+      },
+      echo: {
+        world: '鏡の迷宮',
+        description: '多次元反射空間、サラウンド音響とエコー',
+        mood: '内省 · 洞察'
+      }
+    },
+    collaborative: {
+      title: '他の人を夢に招待',
+      description: '夢のリンクを共有し、友達と一緒に夢創造に参加',
+      invite: '夢リンクを生成',
+      maxDreamers: '最大4人が同時に夢を見ることができます'
+    },
+    dreamCard: {
+      musicGenerated: '夢音楽が生成されました',
+      videoGenerated: '夢映像が生成されました',
+      listen: '聴く',
+      watch: '見る',
+      share: 'シェア',
+      remix: '再編成'
+    },
+    premium: {
+      note: 'プレミアムユーザーは無制限の夢セッションと高品質出力をお楽しみいただけます',
+      upgrade: 'アップグレードして解放'
+    }
+  },
+
   // Pricing Section
   pricing: {
     title: '料金プラン',

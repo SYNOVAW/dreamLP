@@ -723,6 +723,222 @@ function draftFromPersona(p:string){
   return '钢琴与弦乐碎片，轻回声，慢速 65BPM，反思、留白';
 }
 
+/* —— AI Electric Sheep：合梦创造 —— */
+function AIElectricSheepSection(){
+  const { t } = useLocale()
+  const [dreamInput, setDreamInput] = React.useState('')
+  const [loading, setLoading] = React.useState(false)
+  const [dreamResult, setDreamResult] = React.useState<{title: string, music: string, video: string} | null>(null)
+
+  const handleDreamGeneration = async () => {
+    if (!dreamInput.trim()) return
+    setLoading(true)
+    
+    // Analytics
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'ai_electric_sheep_generate', {
+        input_length: dreamInput.length
+      })
+    }
+    
+    // Simulate AI processing
+    await new Promise(r => setTimeout(r, 2500))
+    
+    setDreamResult({
+      title: '午夜的电子牧场',
+      music: '/audio/electric-sheep-dream.mp3',
+      video: '/video/electric-sheep-visual.mp4'
+    })
+    
+    setLoading(false)
+  }
+
+  return (
+    <section className="py-16 md:py-24 border-t border-white/10 relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-slate-900/40 to-purple-900/20" />
+      <div className="mx-auto max-w-7xl px-4 relative z-10">
+        
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/20 text-cyan-300 text-sm mb-4">
+            <span>⚡</span>
+            <span>灵感来自《Do Androids Dream of Electric Sheep?》</span>
+          </div>
+          <h3 className="text-2xl md:text-4xl font-semibold text-slate-100">
+            AI電気羊 · 合梦创造
+          </h3>
+          <p className="mt-3 text-slate-300/90 max-w-3xl mx-auto">
+            不只解读梦境，更与AI共同造梦。输入昨夜片段，AI将与你共同编织新的梦境，生成专属音乐与影像。
+          </p>
+        </div>
+
+        <Card className={`${glassCardStyles.highlight} mb-8`}>
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              <label className="text-sm font-medium text-slate-200 block">
+                写下昨夜的一个梦片段...
+              </label>
+              <textarea
+                value={dreamInput}
+                onChange={(e) => setDreamInput(e.target.value)}
+                placeholder="例如：在紫色海面漂浮，远处有灯塔的光..."
+                className="w-full h-32 rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm px-4 py-3 text-slate-100 placeholder:text-slate-500 resize-none focus:border-cyan-400/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/20"
+              />
+              <div className="flex justify-between items-center">
+                <Button 
+                  onClick={handleDreamGeneration}
+                  disabled={loading || !dreamInput.trim()}
+                  className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white px-6 py-3 font-medium"
+                >
+                  {loading ? (
+                    <>
+                      <span className="animate-spin mr-2">⚡</span>
+                      正在编织梦境...
+                    </>
+                  ) : (
+                    <>
+                      <span className="mr-2">⚡</span>
+                      与AI一起做梦
+                    </>
+                  )}
+                </Button>
+                <span className="text-xs text-slate-400">{dreamInput.length}/500</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {loading && (
+          <Card className={`${glassCardStyles.base} mb-8`}>
+            <CardContent className="p-6 text-center">
+              <div className="space-y-4">
+                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 flex items-center justify-center animate-pulse">
+                  <span className="text-2xl animate-spin">⚡</span>
+                </div>
+                <p className="text-slate-300">AI正在与你的潜意识对话...</p>
+                <div className="w-full bg-white/5 rounded-full h-2">
+                  <div className="bg-gradient-to-r from-cyan-500 to-purple-600 h-2 rounded-full w-3/5 animate-pulse" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {dreamResult && (
+          <Card className={`${glassCardStyles.highlight} mb-8`}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-slate-100">
+                <span>✨</span>
+                {dreamResult.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-sm font-medium text-slate-200 mb-3">梦境音乐已生成</h4>
+                  <audio controls preload="none" className="w-full mb-3">
+                    <source src={dreamResult.music} type="audio/mpeg" />
+                  </audio>
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" className="border-cyan-400/20 text-cyan-300">
+                      聆听
+                    </Button>
+                    <Button size="sm" variant="outline" className="border-white/20 text-slate-300">
+                      分享
+                    </Button>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-slate-200 mb-3">梦境影像已生成</h4>
+                  <video controls playsInline className="w-full rounded-lg mb-3">
+                    <source src={dreamResult.video} type="video/mp4" />
+                  </video>
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" className="border-purple-400/20 text-purple-300">
+                      观看
+                    </Button>
+                    <Button size="sm" variant="outline" className="border-white/20 text-slate-300">
+                      重新编织
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        <div className="mb-8">
+          <h4 className="text-lg font-semibold text-slate-200 mb-4 text-center">Persona 梦境世界</h4>
+          <p className="text-slate-400 text-center mb-6 text-sm">每个Persona都有独特的梦境色彩与音景</p>
+          
+          <div className="grid md:grid-cols-3 gap-4">
+            <Card className={`${glassCardStyles.hover} cursor-pointer group transition-all duration-300 hover:bg-gradient-to-br hover:from-green-600/20 hover:to-blue-600/20 hover:border-green-400/30`}>
+              <CardContent className="p-4 text-center space-y-2">
+                <div className="text-2xl mb-2">🌲</div>
+                <h5 className="font-medium text-slate-200">静谧森林</h5>
+                <p className="text-xs text-slate-400">薄雾中的古树与流水声，432Hz自然频率</p>
+                <div className="text-xs text-slate-300 font-medium">MIRA · 安抚 · 治愈</div>
+              </CardContent>
+            </Card>
+            
+            <Card className={`${glassCardStyles.hover} cursor-pointer group transition-all duration-300 hover:bg-gradient-to-br hover:from-red-600/20 hover:to-orange-600/20 hover:border-red-400/30`}>
+              <CardContent className="p-4 text-center space-y-2">
+                <div className="text-2xl mb-2">🔥</div>
+                <h5 className="font-medium text-slate-200">火焰都市</h5>
+                <p className="text-xs text-slate-400">霓虹赛博空间，电子律动与合成器</p>
+                <div className="text-xs text-slate-300 font-medium">IGNIS · 激励 · 探索</div>
+              </CardContent>
+            </Card>
+            
+            <Card className={`${glassCardStyles.hover} cursor-pointer group transition-all duration-300 hover:bg-gradient-to-br hover:from-purple-600/20 hover:to-blue-600/20 hover:border-purple-400/30`}>
+              <CardContent className="p-4 text-center space-y-2">
+                <div className="text-2xl mb-2">🪞</div>
+                <h5 className="font-medium text-slate-200">镜之迷宫</h5>
+                <p className="text-xs text-slate-400">多维度反射空间，环绕音效与回响</p>
+                <div className="text-xs text-slate-300 font-medium">ECHO · 反思 · 洞察</div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        <Card className={`${glassCardStyles.base} mb-8`}>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-slate-200">
+              <span>👥</span>
+              邀请其他人合梦
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-slate-400 text-sm mb-4">分享梦境链接，让朋友一起参与梦境创造</p>
+            <div className="flex gap-3 flex-wrap">
+              <Button 
+                variant="outline" 
+                className="border-white/20 text-slate-200 hover:bg-white/10"
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).gtag) {
+                    (window as any).gtag('event', 'collaborative_dream_click')
+                  }
+                }}
+              >
+                生成合梦链接
+              </Button>
+            </div>
+            <div className="text-xs text-slate-500 mt-3">最多4人同时合梦</div>
+          </CardContent>
+        </Card>
+
+        <div className="mt-6 text-center">
+          <p className="text-xs text-slate-400">
+            专业版用户享有无限合梦次数与高品质输出 ·
+            <Button variant="link" className="text-cyan-400 hover:text-cyan-300 p-0 h-auto text-xs ml-1">
+              升级解锁
+            </Button>
+          </p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function MeditationCard({
   frequency,
   title,
@@ -837,8 +1053,14 @@ export default function DreamLifeLanding() {
       <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-slate-900/80 border-b border-white/10">
         <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-indigo-400 via-fuchsia-400 to-cyan-300 shadow-lg shadow-fuchsia-500/20" />
-            <span className="font-semibold tracking-wide text-slate-100">DreamLife</span>
+            <div className="h-8 w-8 rounded-xl overflow-hidden shadow-lg shadow-fuchsia-500/20">
+              <img 
+                src="/logo.jpg" 
+                alt="REMia Logo" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <span className="font-semibold tracking-wide text-slate-100">REMia</span>
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm text-slate-300">
             <a href="#features" className="hover:text-white transition">
@@ -1207,6 +1429,9 @@ export default function DreamLifeLanding() {
       {/* Creative Lab */}
       <CreativeLabSection />
 
+      {/* AI Electric Sheep */}
+      <AIElectricSheepSection />
+
       {/* Pricing */}
       <section id="pricing" className="py-16 md:py-24 relative">
         <div className="absolute inset-0 bg-slate-900/60" />
@@ -1310,8 +1535,14 @@ export default function DreamLifeLanding() {
           
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-400">
             <div className="flex items-center gap-2">
-              <div className="h-6 w-6 rounded-lg bg-gradient-to-br from-indigo-400 via-fuchsia-400 to-cyan-300" />
-              <span>DreamLife © {new Date().getFullYear()}</span>
+              <div className="h-6 w-6 rounded-lg overflow-hidden">
+                <img 
+                  src="/logo.jpg" 
+                  alt="REMia Logo" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span>REMia © {new Date().getFullYear()}</span>
             </div>
             <div className="flex items-center gap-6">
               <a className="hover:text-slate-200" href="#">

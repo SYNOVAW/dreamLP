@@ -17,7 +17,7 @@ export function useClientLocale() {
     setMounted(true)
     
     // 只在客户端运行
-    const saved = localStorage.getItem('dreamlife-locale') as Locale
+        const saved = localStorage.getItem('remia-locale') as Locale
     if (saved && translations[saved]) {
       setLocaleState(saved)
     }
@@ -25,10 +25,10 @@ export function useClientLocale() {
 
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale)
-    localStorage.setItem('dreamlife-locale', newLocale)
+      localStorage.setItem('remia-locale', newLocale)
     
-    // 触发页面重新渲染
-    window.location.reload()
+    // Optional page reload for complete language switch - uncomment if needed
+    // window.location.reload()
   }
 
   // 在服务端或未挂载时返回默认值

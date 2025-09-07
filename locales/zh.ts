@@ -159,6 +159,93 @@ export const zh = {
     tipLabel: '今日指引：'
   },
 
+  // AI Electric Sheep Section
+  aiElectricSheep: {
+    title: 'AI電気羊 · 合梦创造',
+    subtitle: '不只解读梦境，更与AI共同造梦',
+    description: '基于《仿生人会梦见电子羊吗》的灵感，打破人类与AI的梦境边界。输入昨夜片段，AI将与你共同编织新的梦境，生成专属音乐与影像。',
+    inputPlaceholder: '写下昨夜的一个梦片段...',
+    inputHint: '例如：在紫色海面漂浮，远处有灯塔的光...',
+    dreamWithAI: '与AI一起做梦',
+    generating: '正在编织梦境...',
+    personaWorlds: {
+      title: 'Persona 梦境世界',
+      description: '每个Persona都有独特的梦境色彩与音景',
+      mira: {
+        world: '静谧森林',
+        description: '薄雾中的古树与流水声，432Hz自然频率',
+        mood: '安抚 · 治愈'
+      },
+      ignis: {
+        world: '火焰都市',
+        description: '霓虹赛博空间，电子律动与合成器',
+        mood: '激励 · 探索'
+      },
+      echo: {
+        world: '镜之迷宫',
+        description: '多维度反射空间，环绕音效与回响',
+        mood: '反思 · 洞察'
+      }
+    },
+    collaborative: {
+      title: '邀请其他人合梦',
+      description: '分享梦境链接，让朋友一起参与梦境创造',
+      invite: '生成合梦链接',
+      maxDreamers: '最多4人同时合梦'
+    },
+    dreamCard: {
+      musicGenerated: '梦境音乐已生成',
+      videoGenerated: '梦境影像已生成',
+      listen: '聆听',
+      watch: '观看',
+      share: '分享',
+      remix: '重新编织'
+    },
+    premium: {
+      note: '专业版用户享有无限合梦次数与高品质输出',
+      upgrade: '升级解锁'
+    }
+  },
+
+  // Creative Lab Section
+  creativeLab: {
+    title: '创作实验室 · AI 歌曲 & 短视频',
+    subtitle: '让昨夜的梦，长成一段旋律或 15s 影像。支持 Persona 主题、情绪/Hz 氛围、一键生成。',
+    tabs: {
+      music: 'AI 歌曲',
+      video: 'AI 短视频'
+    },
+    music: {
+      title: 'AI 歌曲生成',
+      persona: 'Persona 主题',
+      mood: '情绪/频率', 
+      duration: '时长（秒）',
+      prompt: '歌词/意象提示',
+      promptPlaceholder: '描述梦境场景、节奏与乐器：\'慢板 · 呼吸感 pad · 海浪与风铃\'',
+      generate: '一键生成',
+      generating: '生成中…',
+      autoFill: '用 Persona 自动填充',
+      personaOptions: ['MIRA（安抚）', 'IGNIS（激励）', 'ECHO（反思）'],
+      moodOptions: ['平静 · 432Hz', '疗愈 · 528Hz', '觉醒 · 963Hz', '专注 · 无Hz标签']
+    },
+    video: {
+      title: 'AI 短视频制作',
+      style: '风格',
+      ratio: '画幅',
+      rhythm: '节奏',
+      script: '分镜/脚本',
+      scriptPlaceholder: '分三镜：① 星屑流动 ② 卡牌渐显 ③ Persona 名称字幕',
+      upload: '上传素材（可选）',
+      generate: '一键生成 15s 预告片',
+      generating: '渲染视频帧…',
+      template: '用模板脚本',
+      styleOptions: ['梦境水彩 · 粒子光', '霓虹赛博 · 星空', '柔雾电影感', '线性渐变 · 抽象'],
+      ratioOptions: ['9:16', '1:1', '16:9'],
+      rhythmOptions: ['慢', '中', '快']
+    },
+    disclaimer: '* 创作内容仅作娱乐与个人灵感用途。请确保你拥有上传素材的版权；生成作品不应侵犯第三方权利或冒用他人声音/形象。'
+  },
+
   // Pricing Section
   pricing: {
     title: '价格方案',
