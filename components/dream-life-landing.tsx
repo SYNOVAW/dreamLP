@@ -27,23 +27,71 @@ const item = {
 }
 
 /* AI Card Art helpers + PersonaCardPro */
-function CardArt({ seed }: { seed: string }) {
+function CardArt({ seed, personaName }: { seed: string; personaName?: string }) {
+  const [imageLoaded, setImageLoaded] = React.useState(false)
+  const [imageSrc, setImageSrc] = React.useState<string | null>(null)
+  
+  // 程序化渐变作为后备
   const idx = Math.abs(hashStr(seed)) % 3;
   const gradients = [
     "from-[#ff5f6d]/30 via-[#ff7a85]/20 to-[#a855f7]/30",
     "from-[#a855f7]/30 via-[#7dd3fc]/20 to-[#ff5f6d]/30",
     "from-[#22d3ee]/20 via-[#a78bfa]/20 to-[#ff7a85]/25",
   ];
+  
+  // 根据persona名称确定图片路径
+  React.useEffect(() => {
+    if (personaName) {
+      // 提取persona的关键词来匹配图片文件名
+      let imageFileName = ''
+      if (personaName.includes('MIRA') || personaName.includes('静谧')) {
+        imageFileName = 'MIRA.jpg'
+      } else if (personaName.includes('IGNIS') || personaName.includes('炽羽')) {
+        imageFileName = 'IGNIS.jpg'
+      } else if (personaName.includes('ECHO') || personaName.includes('回响')) {
+        imageFileName = 'ECHO.jpg'
+      }
+      
+      if (imageFileName) {
+        setImageSrc(`/${imageFileName}`)
+      }
+    }
+  }, [personaName])
+  
   return (
     <div className={`h-40 rounded-xl border border-white/10 bg-gradient-to-br ${gradients[idx]} relative overflow-hidden`}>
-      <div className="absolute inset-0 opacity-20" style={{
-        backgroundImage:
-          'radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.5) 0, transparent 60%),'+
-          'radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.5) 0, transparent 60%),'+
-          'radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,.4) 0, transparent 60%)'
-      }}/>
-      <div className="absolute -top-6 -right-8 h-24 w-24 rounded-full bg-white/10 blur-2xl" />
-      <div className="absolute -bottom-10 -left-8 h-24 w-24 rounded-full bg-white/5 blur-2xl" />
+      {/* 程序化渐变背景（作为后备或加载状态） */}
+      {!imageLoaded && (
+        <>
+          <div className="absolute inset-0 opacity-20" style={{
+            backgroundImage:
+              'radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.5) 0, transparent 60%),'+
+              'radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.5) 0, transparent 60%),'+
+              'radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,.4) 0, transparent 60%)'
+          }}/>
+          <div className="absolute -top-6 -right-8 h-24 w-24 rounded-full bg-white/10 blur-2xl" />
+          <div className="absolute -bottom-10 -left-8 h-24 w-24 rounded-full bg-white/5 blur-2xl" />
+        </>
+      )}
+      
+      {/* 真实AI图片 */}
+      {imageSrc && (
+        <img
+          src={imageSrc}
+          alt={`${personaName} AI Art`}
+          className={`absolute inset-0 w-full h-full object-cover rounded-xl transition-opacity duration-500 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          onLoad={() => setImageLoaded(true)}
+          onError={() => {
+            console.log(`Failed to load image: ${imageSrc}`)
+            setImageSrc(null) // 回退到程序化渐变
+          }}
+        />
+      )}
+      
+      {/* 渐变遮罩层，确保文字可读性 */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10 rounded-xl" />
     </div>
   );
 }
@@ -89,7 +137,7 @@ function PersonaCardPro({ name, line, tip, sr, artSeed }: {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <CardArt seed={artSeed || name} />
+        <CardArt seed={artSeed || name} personaName={name} />
         <div className={`mt-3 text-sm ${glassCardStyles.text.muted}`}>{t.persona.themeLabel}{line}</div>
         <div className={`mt-2 text-xs ${glassCardStyles.text.subtle}`}>{t.persona.tipLabel}{tip}</div>
         <div className="mt-3 flex items-center gap-2">
