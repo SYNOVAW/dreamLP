@@ -8,6 +8,7 @@ import { Check, Sparkles, Moon, Stars, Heart, Brain, Flame, ChevronRight, Play }
 import { useState } from "react"
 import { useLocale } from "@/hooks/use-locale"
 import { LanguageSwitcher } from "@/components/language-switcher"
+import { glassCardStyles, specialGlassStyles } from "@/lib/card-styles"
 
 // JayVue: one-file landing page, Tailwind + shadcn/ui + framer-motion
 // Sections: Hero / Waitlist / Social Proof / Features / Meditation Hz Music / How It Works / Persona / Pricing / FAQ / CTA / Footer
@@ -27,15 +28,15 @@ const item = {
 
 function FeatureCard({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
   return (
-    <Card className="bg-slate-800/60 border-white/10">
+    <Card className={`${glassCardStyles.hover}`}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-slate-100">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/10">{icon}</span>
+        <CardTitle className={`flex items-center gap-2 ${glassCardStyles.text.primary}`}>
+          <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm">{icon}</span>
           {title}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-slate-300 text-sm leading-relaxed">{desc}</p>
+        <p className={`${glassCardStyles.text.muted} text-sm leading-relaxed`}>{desc}</p>
       </CardContent>
     </Card>
   )
@@ -50,21 +51,16 @@ function PriceCard({
 }: { title: string; price: string; items: string[]; cta: string; highlight?: boolean }) {
   return (
     <Card
-      className={
-        "border-white/10 " +
-        (highlight
-          ? "bg-gradient-to-b from-slate-700/80 to-slate-800/60 shadow-xl shadow-fuchsia-500/10"
-          : "bg-slate-800/60")
-      }
+      className={highlight ? specialGlassStyles.pricing : glassCardStyles.base}
     >
       <CardHeader>
-        <CardTitle className="text-slate-100 flex items-baseline justify-between">
+        <CardTitle className={`${glassCardStyles.text.primary} flex items-baseline justify-between`}>
           <span>{title}</span>
           <span className="text-xl">{price}</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ul className="space-y-2 text-sm text-slate-300">
+        <ul className={`space-y-2 text-sm ${glassCardStyles.text.muted}`}>
           {items.map((x, i) => (
             <li key={i} className="flex items-center gap-2">
               <Check className="h-4 w-4" />
@@ -74,7 +70,7 @@ function PriceCard({
         </ul>
         <Button
           className={
-            "mt-6 w-full " + (highlight ? "bg-fuchsia-500 hover:bg-fuchsia-400" : "bg-slate-700 hover:bg-slate-600")
+            "mt-6 w-full backdrop-blur-sm " + (highlight ? "bg-fuchsia-500/80 hover:bg-fuchsia-400/90 border border-white/10" : "bg-white/10 hover:bg-white/20 border border-white/10 text-slate-200")
           }
         >
           {cta}
@@ -87,12 +83,12 @@ function PriceCard({
 function TagRow({ label, items }: { label: string; items: string[] }) {
   return (
     <div>
-      <div className="text-xs text-slate-400 mb-2">{label}</div>
+      <div className={`text-xs ${glassCardStyles.text.subtle} mb-2`}>{label}</div>
       <div className="flex flex-wrap gap-2">
         {items.map((t, i) => (
           <span
             key={i}
-            className="rounded-full border border-white/10 bg-slate-700/60 px-2.5 py-1 text-xs text-slate-200"
+            className={`rounded-full border border-white/15 bg-white/10 backdrop-blur-sm px-2.5 py-1 text-xs ${glassCardStyles.text.secondary}`}
           >
             {t}
           </span>
@@ -104,12 +100,12 @@ function TagRow({ label, items }: { label: string; items: string[] }) {
 
 function MiniCard({ title, subtitle, icon }: { title: string; subtitle: string; icon: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-slate-800/80 p-4 backdrop-blur min-w-[240px]">
-      <div className="flex items-center gap-2 text-sm text-slate-200">
-        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/15">{icon}</span>
+    <div className={`rounded-2xl ${glassCardStyles.base} p-4 min-w-[240px]`}>
+      <div className={`flex items-center gap-2 text-sm ${glassCardStyles.text.secondary}`}>
+        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">{icon}</span>
         <div>
-          <div className="font-medium text-slate-100">{title}</div>
-          <div className="text-xs text-slate-300">{subtitle}</div>
+          <div className={`font-medium ${glassCardStyles.text.primary}`}>{title}</div>
+          <div className={`text-xs ${glassCardStyles.text.muted}`}>{subtitle}</div>
         </div>
       </div>
     </div>
@@ -128,6 +124,7 @@ function LockIcon() {
 }
 
 function WaitlistForm() {
+  const { t } = useLocale()
   const [email, setEmail] = useState("")
   const [intent, setIntent] = useState("")
   const [submitted, setSubmitted] = useState(false)
@@ -145,8 +142,8 @@ function WaitlistForm() {
 
   if (submitted) {
     return (
-      <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-200">
-        ✅ 已加入等候名单。请留意邮箱，我们会发送 Beta 邀请与下载方式。
+      <div className={`mt-4 rounded-xl ${glassCardStyles.base} p-4 text-sm ${glassCardStyles.text.secondary}`}>
+        {t.waitlist.successMessage}
       </div>
     )
   }
@@ -158,21 +155,21 @@ function WaitlistForm() {
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="你的邮箱"
-        className="h-11 rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#a855f7]/40"
+        placeholder={t.waitlist.emailPlaceholder}
+        className={`h-11 rounded-lg border border-white/15 bg-white/10 backdrop-blur-sm px-3 text-sm ${glassCardStyles.text.primary} placeholder:${glassCardStyles.text.subtle} focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40`}
       />
       <select
         value={intent}
         onChange={(e) => setIntent(e.target.value)}
-        className="h-11 rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#a855f7]/40"
+        className={`h-11 rounded-lg border border-white/15 bg-white/10 backdrop-blur-sm px-3 text-sm ${glassCardStyles.text.primary} focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40`}
       >
-        <option value="">你最想改善…</option>
-        <option value="sleep">睡眠质量</option>
-        <option value="mood">情绪与压力</option>
-        <option value="ritual">生活仪式感</option>
+        <option value="">{t.waitlist.intentOptions.default}</option>
+        <option value="sleep">{t.waitlist.intentOptions.sleep}</option>
+        <option value="mood">{t.waitlist.intentOptions.mood}</option>
+        <option value="ritual">{t.waitlist.intentOptions.ritual}</option>
       </select>
-      <Button type="submit" className="h-11 bg-gradient-to-r from-[#ff5f6d] to-[#a855f7] hover:opacity-90">
-        加入等候名单
+      <Button type="submit" className="h-11 bg-gradient-to-r from-fuchsia-500/80 to-indigo-500/80 hover:opacity-90 backdrop-blur-sm border border-white/10">
+        {t.waitlist.joinButton}
       </Button>
     </form>
   )
@@ -199,29 +196,29 @@ function MeditationCard({
   }
 
   return (
-    <Card className="bg-slate-800/60 border-white/10">
+    <Card className={glassCardStyles.hover}>
       <CardHeader>
-        <CardTitle className="flex items-center justify-between text-slate-100">
+        <CardTitle className={`flex items-center justify-between ${glassCardStyles.text.primary}`}>
           <span className="text-lg">{frequency}</span>
           <Button
             onClick={handlePlay}
             size="sm"
             variant="outline"
-            className="border-white/20 text-slate-200 hover:bg-white/10 bg-transparent"
+            className="border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-slate-200"
           >
             <Play className={`h-4 w-4 ${isPlaying ? "animate-pulse" : ""}`} />
             {isPlaying ? "播放中" : "试听"}
           </Button>
         </CardTitle>
-        <div className="text-sm font-medium text-slate-200">{title}</div>
+        <div className={`text-sm font-medium ${glassCardStyles.text.secondary}`}>{title}</div>
       </CardHeader>
       <CardContent>
-        <p className="text-slate-300 text-sm leading-relaxed mb-4">{description}</p>
+        <p className={`${glassCardStyles.text.muted} text-sm leading-relaxed mb-4`}>{description}</p>
         <div className="flex flex-wrap gap-2">
           {benefits.map((benefit, i) => (
             <span
               key={i}
-              className="rounded-full border border-white/10 bg-slate-700/60 px-2.5 py-1 text-xs text-slate-200"
+              className={`rounded-full border border-white/15 bg-white/10 backdrop-blur-sm px-2.5 py-1 text-xs ${glassCardStyles.text.secondary}`}
             >
               {benefit}
             </span>
@@ -367,14 +364,14 @@ export default function DreamLifeLanding() {
       {/* Waiting List */}
       <section id="waitlist" className="py-6 md:py-10 -mt-8">
         <div className="mx-auto max-w-3xl px-4">
-          <Card className="bg-gradient-to-r from-[#ff5f6d]/10 to-[#a855f7]/10 border-white/10">
+          <Card className={specialGlassStyles.waitlist}>
             <CardContent className="p-6 md:p-8">
-              <h3 className="text-xl md:text-2xl font-semibold text-white">加入等候名单 · 率先解锁 Beta</h3>
-              <p className="mt-2 text-sm text-slate-300/90">
-                留下邮箱即可获得内测资格与限量 Persona 主题包。我们只会在重要更新时联系你。
+              <h3 className={`text-xl md:text-2xl font-semibold ${glassCardStyles.text.primary}`}>{t.waitlist.title}</h3>
+              <p className={`mt-2 text-sm ${glassCardStyles.text.muted}`}>
+                {t.waitlist.description}
               </p>
               <WaitlistForm />
-              <p className="mt-3 text-xs text-slate-400">提交即表示同意我们的隐私政策与使用条款（可随时退订）。</p>
+              <p className={`mt-3 text-xs ${glassCardStyles.text.subtle}`}>{t.waitlist.privacy}</p>
             </CardContent>
           </Card>
         </div>
@@ -487,16 +484,16 @@ export default function DreamLifeLanding() {
             </div>
           </div>
           <div>
-            <Card className="bg-white/5 border-white/10">
+            <Card className={glassCardStyles.base}>
               <CardHeader>
-                <CardTitle className="text-slate-100">梦图谱 · 示例</CardTitle>
+                <CardTitle className={glassCardStyles.text.primary}>{t.howItWorks.exampleTitle}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <TagRow label="象征" items={["雨", "迷宫", "火焰", "海"]} />
-                  <TagRow label="情绪" items={["平静", "好奇", "焦虑"]} />
-                  <TagRow label="主题" items={["探索", "寻人", "转化"]} />
-                  <TagRow label="行动" items={["今日 4-7-8 呼吸", "晚间温水足浴", "减少咖啡因"]} />
+                  <TagRow label={t.howItWorks.exampleTags.symbols.label} items={t.howItWorks.exampleTags.symbols.items} />
+                  <TagRow label={t.howItWorks.exampleTags.emotions.label} items={t.howItWorks.exampleTags.emotions.items} />
+                  <TagRow label={t.howItWorks.exampleTags.themes.label} items={t.howItWorks.exampleTags.themes.items} />
+                  <TagRow label={t.howItWorks.exampleTags.actions.label} items={t.howItWorks.exampleTags.actions.items} />
                 </div>
               </CardContent>
             </Card>
@@ -514,20 +511,20 @@ export default function DreamLifeLanding() {
           </div>
           <div className="mt-8 grid md:grid-cols-3 gap-6">
             {[
-              { name: "静谧者·MIRA", line: "平和与呼吸", tip: "晚间 10 分钟冥想" },
-              { name: "炽羽者·IGNIS", line: "行动与火", tip: "今日选择一个小挑战" },
-              { name: "回响者·ECHO", line: "线索与反思", tip: "写下一个未解之问" },
+              { name: t.persona.characters.mira.name, line: t.persona.characters.mira.theme, tip: t.persona.characters.mira.tip },
+              { name: t.persona.characters.ignis.name, line: t.persona.characters.ignis.theme, tip: t.persona.characters.ignis.tip },
+              { name: t.persona.characters.echo.name, line: t.persona.characters.echo.theme, tip: t.persona.characters.echo.tip },
             ].map((p, i) => (
-              <Card key={i} className="bg-white/5 border-white/10">
+              <Card key={i} className={glassCardStyles.hover}>
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
+                  <CardTitle className={`flex items-center justify-between ${glassCardStyles.text.primary}`}>
                     <span>{p.name}</span>
-                    <span className="text-xs text-slate-400">SR {88 - i * 7}</span>
+                    <span className={`text-xs ${glassCardStyles.text.subtle}`}>SR {88 - i * 7}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-sm text-slate-300">主题：{p.line}</div>
-                  <div className="mt-2 text-xs text-slate-400">今日指引：{p.tip}</div>
+                  <div className={`text-sm ${glassCardStyles.text.muted}`}>{t.persona.themeLabel}{p.line}</div>
+                  <div className={`mt-2 text-xs ${glassCardStyles.text.subtle}`}>{t.persona.tipLabel}{p.tip}</div>
                 </CardContent>
               </Card>
             ))}
@@ -608,14 +605,14 @@ export default function DreamLifeLanding() {
       <section className="py-16 md:py-24 relative">
         <div className="absolute inset-0 bg-slate-900/60" />
         <div className="mx-auto max-w-5xl px-4 relative z-10">
-          <Card className="bg-gradient-to-r from-fuchsia-600/20 to-cyan-600/20 border-white/10">
+          <Card className={specialGlassStyles.cta}>
             <CardContent className="p-8 md:p-12 text-center">
-              <h3 className="text-2xl md:text-4xl font-semibold text-white">今晚，从记录一个梦开始</h3>
-              <p className="mt-3 text-slate-300/90">明早的你，将收到第一张来自潜意识的指引卡。</p>
+              <h3 className={`text-2xl md:text-4xl font-semibold ${glassCardStyles.text.primary}`}>{t.cta.title}</h3>
+              <p className={`mt-3 ${glassCardStyles.text.muted}`}>{t.cta.description}</p>
               <div className="mt-6 flex justify-center gap-3">
-                <Button className="bg-indigo-500 hover:bg-indigo-400">下载 App</Button>
-                <Button variant="outline" className="border-white/20 text-slate-200 hover:bg-white/10 bg-transparent">
-                  在浏览器体验
+                <Button className="bg-indigo-500/80 hover:bg-indigo-400/90 backdrop-blur-sm border border-white/10">{t.cta.downloadApp}</Button>
+                <Button variant="outline" className="border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-slate-200">
+                  {t.cta.tryBrowser}
                 </Button>
               </div>
             </CardContent>
