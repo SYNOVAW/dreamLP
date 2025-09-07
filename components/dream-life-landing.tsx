@@ -510,6 +510,219 @@ function WaitlistForm() {
   )
 }
 
+/* —— Creative Lab：AI 歌曲 & AI 短视频 —— */
+function CreativeLabSection(){
+  const [tab, setTab] = React.useState<'music'|'video'>('music');
+  return (
+    <section id="creative" className="py-16 md:py-24 border-t border-white/10">
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="flex items-end justify-between flex-wrap gap-3">
+          <div>
+            <h3 className="text-2xl md:text-4xl font-semibold text-slate-100">创作实验室 · AI 歌曲 & 短视频</h3>
+            <p className="mt-2 text-slate-300/90">让昨夜的梦，长成一段旋律或 15s 影像。支持 Persona 主题、情绪/Hz 氛围、一键生成。</p>
+          </div>
+          <div className="inline-flex rounded-lg border border-white/10 overflow-hidden">
+            <button onClick={()=>setTab('music')}
+              className={`px-3 py-2 text-sm transition-all ${tab==='music'?'bg-white/10 text-white':'text-slate-300 hover:bg-white/5'}`}>AI 歌曲</button>
+            <button onClick={()=>setTab('video')}
+              className={`px-3 py-2 text-sm transition-all ${tab==='video'?'bg-white/10 text-white':'text-slate-300 hover:bg-white/5'}`}>AI 短视频</button>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          {tab==='music' ? <MusicGenerator/> : <VideoGenerator/>}
+        </div>
+
+        <p className="mt-6 text-xs text-slate-400">
+          * 创作内容仅作娱乐与个人灵感用途。请确保你拥有上传素材的版权；生成作品不应侵犯第三方权利或冒用他人声音/形象。
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ——— AI 歌曲 —— */
+function MusicGenerator(){
+  const [mood, setMood] = React.useState('平静 · 432Hz');
+  const [persona, setPersona] = React.useState('MIRA（安抚）');
+  const [prompt, setPrompt] = React.useState('昨夜梦到在紫色海面漂浮，微风和远处灯塔。');
+  const [dur, setDur] = React.useState(20);
+  const [loading, setLoading] = React.useState(false);
+  const [url, setUrl] = React.useState<string | null>(null);
+
+  const generate = async ()=>{
+    setLoading(true); setUrl(null);
+    
+    // 埋点：AI音乐生成
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'ai_music_generate', { 
+        persona, 
+        mood, 
+        duration: dur 
+      })
+    }
+    
+    // TODO: 接后端 /api/ai-music 生成并返回 {url}
+    // const res = await fetch('/api/ai-music',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,mood,persona,duration:dur})});
+    // const { url } = await res.json();
+    await new Promise(r=>setTimeout(r,1200)); // demo
+    setUrl('/audio/demo-ambient-20s.mp3');    // 占位
+    setLoading(false);
+  };
+
+  return (
+    <Card className={`${glassCardStyles.base}`}>
+      <CardHeader>
+        <CardTitle className={glassCardStyles.text.primary}>AI 歌曲生成</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid md:grid-cols-3 gap-3">
+          <SelectBox label="Persona 主题" value={persona} onChange={setPersona}
+            options={['MIRA（安抚）','IGNIS（激励）','ECHO（反思）']}/>
+          <SelectBox label="情绪/频率" value={mood} onChange={setMood}
+            options={['平静 · 432Hz','疗愈 · 528Hz','觉醒 · 963Hz','专注 · 无Hz标签']}/>
+          <div>
+            <div className="text-xs text-slate-400 mb-1">时长（秒）</div>
+            <input type="number" min={10} max={60} value={dur} onChange={e=>setDur(parseInt(e.target.value||'20'))}
+              className="w-full h-11 rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-slate-100"/>
+          </div>
+        </div>
+        <div>
+          <div className="text-xs text-slate-400 mb-1">歌词/意象提示</div>
+          <textarea value={prompt} onChange={e=>setPrompt(e.target.value)} rows={3}
+            placeholder="描述梦境场景、节奏与乐器：'慢板 · 呼吸感 pad · 海浪与风铃'"
+            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500"/>
+        </div>
+        <div className="flex gap-3 flex-wrap">
+          <Button onClick={generate} disabled={loading} className="bg-gradient-to-r from-[#ff5f6d] to-[#a855f7] hover:opacity-90 text-white">
+            {loading ? '生成中…' : '一键生成'}
+          </Button>
+          <Button variant="outline" className="border-white/20 text-slate-200 hover:bg-white/10" onClick={()=>setPrompt(draftFromPersona(persona))}>
+            用 Persona 自动填充
+          </Button>
+        </div>
+        {loading && <FakeProgress label="渲染音轨…" />}
+        {url && (
+          <div className="mt-2">
+            <audio controls preload="none" className="w-full">
+              <source src={url} type="audio/mpeg" />
+            </audio>
+            <div className="mt-2 text-xs text-slate-400">占位音频 · 上线后替换为后端生成链接</div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+/* ——— AI 短视频 —— */
+function VideoGenerator(){
+  const [style, setStyle] = React.useState('梦境水彩 · 粒子光');
+  const [ratio, setRatio] = React.useState('9:16');
+  const [script, setScript] = React.useState('紫色海面、星屑、远处灯塔，镜头慢推；结尾出现今日卡牌。');
+  const [loading, setLoading] = React.useState(false);
+  const [url, setUrl] = React.useState<string | null>(null);
+
+  const generate = async ()=>{
+    setLoading(true); setUrl(null);
+    
+    // 埋点：AI视频生成
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'ai_video_generate', { 
+        style, 
+        ratio 
+      })
+    }
+    
+    // TODO: 接后端 /api/ai-video 生成并返回 {url, cover}
+    await new Promise(r=>setTimeout(r,1500)); // demo
+    setUrl('/video/demo-clip-15s.mp4');       // 占位
+    setLoading(false);
+  };
+
+  return (
+    <Card className={`${glassCardStyles.base}`}>
+      <CardHeader>
+        <CardTitle className={glassCardStyles.text.primary}>AI 短视频制作</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid md:grid-cols-3 gap-3">
+          <SelectBox label="风格" value={style} onChange={setStyle}
+            options={['梦境水彩 · 粒子光','霓虹赛博 · 星空','柔雾电影感','线性渐变 · 抽象']}/>
+          <SelectBox label="画幅" value={ratio} onChange={setRatio}
+            options={['9:16','1:1','16:9']}/>
+          <SelectBox label="节奏" value={'慢'} onChange={()=>{}} options={['慢','中','快']}/>
+        </div>
+        <div>
+          <div className="text-xs text-slate-400 mb-1">分镜/脚本</div>
+          <textarea rows={3} value={script} onChange={e=>setScript(e.target.value)}
+            placeholder="分三镜：① 星屑流动 ② 卡牌渐显 ③ Persona 名称字幕"
+            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500"/>
+        </div>
+        <div className="flex gap-3 flex-wrap">
+          <UploadButton label="上传素材（可选）" accept="image/*,video/*" />
+          <Button onClick={generate} disabled={loading} className="bg-gradient-to-r from-[#ff5f6d] to-[#a855f7] hover:opacity-90 text-white">
+            {loading ? '生成中…' : '一键生成 15s 预告片'}
+          </Button>
+          <Button variant="outline" className="border-white/20 text-slate-200 hover:bg-white/10"
+            onClick={()=>setScript('镜头慢推紫色海面 → 卡牌翻转（正面→反面） → Persona 名字与一句祝词，结尾 CTA')}>
+            用模板脚本
+          </Button>
+        </div>
+        {loading && <FakeProgress label="渲染视频帧…" />}
+        {url && (
+          <div className="mt-2">
+            <video controls playsInline className="w-full rounded-lg border border-white/10 bg-black">
+              <source src={url} type="video/mp4" />
+            </video>
+            <div className="mt-2 text-xs text-slate-400">占位视频 · 上线后替换为后端生成链接</div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+/* ——— 小组件 —— */
+function SelectBox({label,value,onChange,options}:{label:string;value:string;onChange:(v:string)=>void;options:string[]}) {
+  return (
+    <div>
+      <div className="text-xs text-slate-400 mb-1">{label}</div>
+      <select value={value} onChange={e=>onChange(e.target.value)}
+        className="w-full h-11 rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-slate-100">
+        {options.map(o=> <option key={o} value={o}>{o}</option>)}
+      </select>
+    </div>
+  );
+}
+function UploadButton({label,accept}:{label:string;accept:string}){
+  const id = React.useId();
+  return (
+    <div className="relative">
+      <input id={id} type="file" accept={accept} className="sr-only" multiple />
+      <label htmlFor={id} className="inline-flex h-11 items-center px-3 rounded-lg border border-white/20 bg-white/5 text-sm text-slate-200 hover:bg-white/10 cursor-pointer transition-all">
+        {label}
+      </label>
+    </div>
+  );
+}
+function FakeProgress({label}:{label:string}){
+  return (
+    <div className="mt-2">
+      <div className="text-xs text-slate-400 mb-1">{label}</div>
+      <div className="h-2 w-full rounded bg-white/5 overflow-hidden">
+        <div className="h-full w-1/3 animate-[progress_1.2s_ease-in-out_infinite] bg-gradient-to-r from-[#ff5f6d] to-[#a855f7]" />
+      </div>
+      <style>{`@keyframes progress{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}`}</style>
+    </div>
+  );
+}
+function draftFromPersona(p:string){
+  if(p.includes('MIRA')) return '温柔女声哼唱，Lo-fi + pad + 海风与风铃，节拍 70BPM，平静、呼吸感';
+  if(p.includes('IGNIS')) return '鼓点有推进，合成主旋律与火花粒子音效，95BPM，正向、行动力';
+  return '钢琴与弦乐碎片，轻回声，慢速 65BPM，反思、留白';
+}
+
 function MeditationCard({
   frequency,
   title,
@@ -990,6 +1203,9 @@ export default function DreamLifeLanding() {
           </div>
         </div>
       </section>
+
+      {/* Creative Lab */}
+      <CreativeLabSection />
 
       {/* Pricing */}
       <section id="pricing" className="py-16 md:py-24 relative">
