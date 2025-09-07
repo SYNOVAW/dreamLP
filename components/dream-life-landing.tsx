@@ -2152,6 +2152,9 @@ export default function DreamLifeLanding() {
         </div>
       </section>
 
+      {/* SR Dashboard */}
+      <SRDashboard />
+
       {/* Meditation Hz Music */}
       <section id="meditation" className="py-16 md:py-24 relative">
         <div className="absolute inset-0 bg-slate-900/30" />
