@@ -725,6 +725,244 @@ function draftFromPersona(p:string){
   return '钢琴与弦乐碎片，轻回声，慢速 65BPM，反思、留白';
 }
 
+/* —— AI電気羊数羊 AI Electric Sheep Counting —— */
+function SheepCountingSection(){
+  const { t } = useLocale()
+  const [sheepCount, setSheepCount] = React.useState(0)
+  const [isCounting, setIsCounting] = React.useState(false)
+  const [currentSheep, setCurrentSheep] = React.useState<{id: number, type: 'normal' | 'rare', message?: string} | null>(null)
+  const [wellnessTip, setWellnessTip] = React.useState<string | null>(null)
+  const [showCompletion, setShowCompletion] = React.useState(false)
+
+  // 养生提示
+  const wellnessTips = [
+    "💤 今晚别刷手机太久，23:30前关屏",
+    "🌿 明日晨起试试温水 + 柠檬",
+    "🌙 梦见月亮时，适合冥想 3 分钟",
+    "🍵 睡前1小时避免咖啡因",
+    "🧘 深呼吸5次，让身体放松",
+    "📱 把手机放在床外，减少蓝光干扰"
+  ]
+
+  // 数羊开始
+  const startCounting = () => {
+    setIsCounting(true)
+    setSheepCount(0)
+    setCurrentSheep(null)
+    setWellnessTip(null)
+    setShowCompletion(false)
+    
+    // 埋点：数羊开始
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'sheep_counting_start', {
+        session_id: Date.now()
+      })
+    }
+  }
+
+  // 数羊クリック
+  const countSheep = () => {
+    if (!isCounting) return
+
+    const newCount = sheepCount + 1
+    setSheepCount(newCount)
+
+    // 随机生成羊的类型
+    const isRare = Math.random() < 0.15 // 15%概率出现稀有羊
+    const sheepType = isRare ? 'rare' : 'normal'
+    
+    const sheep = {
+      id: newCount,
+      type: sheepType,
+      message: sheepType === 'rare' ? '✨ 稀有梦之羊出现了！' : undefined
+    }
+    
+    setCurrentSheep(sheep)
+
+    // 每5只羊给一个养生提示
+    if (newCount % 5 === 0) {
+      const randomTip = wellnessTips[Math.floor(Math.random() * wellnessTips.length)]
+      setWellnessTip(randomTip)
+    }
+
+    // 数到20只羊完成
+    if (newCount >= 20) {
+      setIsCounting(false)
+      setShowCompletion(true)
+      
+      // 埋点：数羊完成
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'sheep_counting_complete', {
+          total_sheep: newCount,
+          session_id: Date.now()
+        })
+      }
+    }
+  }
+
+  // 重置
+  const resetCounting = () => {
+    setIsCounting(false)
+    setSheepCount(0)
+    setCurrentSheep(null)
+    setWellnessTip(null)
+    setShowCompletion(false)
+  }
+
+  return (
+    <section id="sheep-counting" className="py-16 md:py-24 border-t border-white/10 relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-indigo-900/20 to-purple-900/20" />
+      
+      <div className="mx-auto max-w-4xl px-4 relative z-10">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-12"
+        >
+          <motion.div variants={item} className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-slate-800/60 px-4 py-2 text-sm text-slate-200 mb-6">
+            <Sparkles className="h-4 w-4" /> AI電気羊数羊
+          </motion.div>
+          
+          <motion.h2 
+            variants={item}
+            className="text-3xl md:text-5xl font-bold text-white mb-4"
+          >
+            数えた羊が、夢のカードになる
+          </motion.h2>
+          
+          <motion.p 
+            variants={item}
+            className="text-slate-300/80 text-lg max-w-2xl mx-auto"
+          >
+            AI電気羊と一緒に数える、眠りの儀式
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center"
+        >
+          <motion.div variants={item} className="max-w-md mx-auto">
+            {/* 数羊エリア */}
+            <div className={`${glassCardStyles.base} p-8 border border-white/20 mb-6`}>
+              {/* 羊カウンター */}
+              <div className="text-center mb-6">
+                <div className="text-6xl font-bold text-white mb-2">
+                  {sheepCount}
+                </div>
+                <div className="text-slate-300">只羊</div>
+              </div>
+
+              {/* 現在の羊 */}
+              {currentSheep && (
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  className="mb-6"
+                >
+                  <div className={`text-4xl mb-2 ${currentSheep.type === 'rare' ? 'animate-pulse' : ''}`}>
+                    {currentSheep.type === 'rare' ? '✨🐑' : '🐑'}
+                  </div>
+                  {currentSheep.message && (
+                    <div className="text-sm text-yellow-300 animate-bounce">
+                      {currentSheep.message}
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
+              {/* 数羊ボタン */}
+              {!showCompletion && (
+                <div className="space-y-4">
+                  {!isCounting ? (
+                    <Button
+                      onClick={startCounting}
+                      className="w-full bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 shadow-lg hover:shadow-white/20 transition-all duration-300 hover:scale-105"
+                    >
+                      <Sparkles className="h-4 w-4 mr-2" />
+                      开始数羊仪式
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={countSheep}
+                      className="w-full bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 shadow-lg hover:shadow-white/20 transition-all duration-300 hover:scale-105"
+                    >
+                      <span className="text-2xl mr-2">🐑</span>
+                      数一只羊
+                    </Button>
+                  )}
+                </div>
+              )}
+
+              {/* 完成画面 */}
+              {showCompletion && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center"
+                >
+                  <div className="text-4xl mb-4">🎉</div>
+                  <h3 className="text-xl font-bold text-white mb-2">数羊仪式完成！</h3>
+                  <p className="text-slate-300 mb-4">你已经数了 {sheepCount} 只羊，现在可以安心入睡了</p>
+                  <Button
+                    onClick={resetCounting}
+                    variant="outline"
+                    className="border-white/20 text-white hover:bg-white/10"
+                  >
+                    重新开始
+                  </Button>
+                </motion.div>
+              )}
+            </div>
+
+            {/* 养生提示 */}
+            {wellnessTip && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`${glassCardStyles.base} p-4 border border-white/20 mb-4`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full bg-white/60 animate-pulse"></div>
+                  <p className="text-slate-200 text-sm">{wellnessTip}</p>
+                </div>
+              </motion.div>
+            )}
+
+            {/* 羊群图鉴提示 */}
+            <div className={`${glassCardStyles.base} p-4 border border-white/20`}>
+              <h4 className="text-sm font-semibold text-white mb-2">羊群图鉴</h4>
+              <div className="grid grid-cols-3 gap-2 text-xs text-slate-300">
+                <div className="text-center">
+                  <div className="text-lg">🐑</div>
+                  <div>普通羊</div>
+                  <div className="text-slate-400">1-9只</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg">🌟🐑</div>
+                  <div>梦之羊</div>
+                  <div className="text-slate-400">10-19只</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg">✨🐑</div>
+                  <div>稀有羊</div>
+                  <div className="text-slate-400">随机出现</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
 /* —— 今日卡 Today's Card —— */
 function TodaysCardSection(){
   const { t } = useLocale()
@@ -747,7 +985,7 @@ function TodaysCardSection(){
         image: '/MIRA.jpg',
         interpretation: '昨夜你梦见了温柔的月光，这象征着内心的平静与智慧。',
         action: '今日建议：喝一杯温热的柚子茶，进行10分钟深呼吸冥想。',
-        color: 'from-blue-500/20 to-purple-500/20'
+        color: 'from-white/5 to-white/10'
       },
       {
         id: 'flame',
@@ -755,7 +993,7 @@ function TodaysCardSection(){
         image: '/IGNIS.jpg',
         interpretation: '梦中出现的火焰代表你内心的激情与创造力正在觉醒。',
         action: '今日建议：进行30分钟有氧运动，喝一杯生姜茶提升活力。',
-        color: 'from-orange-500/20 to-red-500/20'
+        color: 'from-white/5 to-white/10'
       },
       {
         id: 'echo',
@@ -763,7 +1001,7 @@ function TodaysCardSection(){
         image: '/ECHO.jpg',
         interpretation: '梦中的回响暗示你需要倾听内心的声音，寻找真实的自己。',
         action: '今日建议：写日记记录感受，喝一杯薰衣草茶放松心情。',
-        color: 'from-green-500/20 to-teal-500/20'
+        color: 'from-white/5 to-white/10'
       }
     ]
     
@@ -970,8 +1208,8 @@ function CyberWellnessSection(){
       title: "梦境处方签",
       description: "AI電気羊解读昨夜的梦，为你开出今日的小处方。可能是一杯柚子茶、一次深呼吸，或是一段短冥想。",
       cta: "解锁今日处方",
-      gradient: "from-pink-500/20 to-purple-500/20",
-      borderGradient: "from-pink-400/40 to-purple-400/40",
+      gradient: "from-white/5 to-white/10",
+      borderGradient: "from-white/20 to-white/30",
       action: () => {
         const prescription = generateDreamPrescription()
         setWellnessResult(prescription)
@@ -988,8 +1226,8 @@ function CyberWellnessSection(){
       title: "虚拟温泉",
       description: "闭上眼睛，进入数字温泉。屏幕中的热气与光晕，配合呼吸引导，就像身体在赛博温泉中复原。",
       cta: activeWellness === 'spa' ? "温泉中..." : "开始温泉疗法",
-      gradient: "from-cyan-500/20 to-blue-500/20",
-      borderGradient: "from-cyan-400/40 to-blue-400/40",
+      gradient: "from-white/5 to-white/10",
+      borderGradient: "from-white/20 to-white/30",
       action: startVirtualSpa
     },
     {
@@ -997,8 +1235,8 @@ function CyberWellnessSection(){
       title: "赛博药膳",
       description: "将梦境色彩转化为饮品推荐。梦见森林？来一杯抹茶。梦见星空？今晚适合紫苏茶。",
       cta: "冲泡我的梦饮",
-      gradient: "from-emerald-500/20 to-teal-500/20",
-      borderGradient: "from-emerald-400/40 to-teal-400/40",
+      gradient: "from-white/5 to-white/10",
+      borderGradient: "from-white/20 to-white/30",
       action: () => {
         const drink = generateDreamDrink()
         setWellnessResult(drink)
@@ -1030,7 +1268,7 @@ function CyberWellnessSection(){
           
           <motion.h2 
             variants={item}
-            className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent mb-4"
+            className="text-3xl md:text-5xl font-bold text-white mb-4"
           >
             让梦境成为你的每日养生处方
           </motion.h2>
@@ -1054,14 +1292,10 @@ function CyberWellnessSection(){
             <motion.div
               key={index}
               variants={item}
-              className={`group relative rounded-2xl p-6 ${glassCardStyles.base} border-2 border-transparent bg-gradient-to-br ${card.gradient} hover:border-opacity-60 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20 hover:scale-105`}
-              style={{
-                background: `linear-gradient(135deg, ${card.gradient.includes('pink') ? 'rgba(236, 72, 153, 0.1)' : card.gradient.includes('cyan') ? 'rgba(6, 182, 212, 0.1)' : 'rgba(16, 185, 129, 0.1)'}, transparent)`,
-                borderImage: `linear-gradient(135deg, ${card.borderGradient.includes('pink') ? 'rgba(244, 114, 182, 0.4)' : card.borderGradient.includes('cyan') ? 'rgba(34, 211, 238, 0.4)' : 'rgba(52, 211, 153, 0.4)'}, transparent) 1`
-              }}
+              className={`group relative rounded-2xl p-6 ${glassCardStyles.base} border border-white/20 hover:border-white/40 transition-all duration-500 hover:shadow-2xl hover:shadow-white/10 hover:scale-105`}
             >
               {/* 能量场效果 */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-pink-500/5 via-purple-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/5 via-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               <div className="relative z-10">
                 <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -1077,7 +1311,7 @@ function CyberWellnessSection(){
                 </p>
                 
                 <Button 
-                  className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-400 hover:to-purple-400 text-white shadow-lg hover:shadow-pink-500/30 transition-all duration-300 hover:scale-105"
+                  className="w-full bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 shadow-lg hover:shadow-white/20 transition-all duration-300 hover:scale-105"
                   onClick={() => {
                     card.action()
                     if (typeof window !== 'undefined' && (window as any).gtag) {
@@ -1103,16 +1337,16 @@ function CyberWellnessSection(){
             animate={{ opacity: 1, y: 0 }}
             className="mt-8 max-w-2xl mx-auto"
           >
-            <div className={`${glassCardStyles.base} p-6 border border-green-400/30 bg-gradient-to-br from-green-500/10 to-emerald-500/10`}>
+            <div className={`${glassCardStyles.base} p-6 border border-white/20 bg-white/5`}>
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-                <h3 className="text-lg font-semibold text-green-200">养生处方已生成</h3>
+                <div className="w-2 h-2 rounded-full bg-white/60 animate-pulse"></div>
+                <h3 className="text-lg font-semibold text-white">养生处方已生成</h3>
               </div>
               <p className="text-slate-200 leading-relaxed">{wellnessResult}</p>
               <Button
                 variant="outline"
                 size="sm"
-                className="mt-4 border-green-400/30 text-green-200 hover:bg-green-400/10"
+                className="mt-4 border-white/20 text-white hover:bg-white/10"
                 onClick={() => setWellnessResult(null)}
               >
                 关闭
@@ -1520,6 +1754,9 @@ export default function DreamLifeLanding() {
             <a href="#meditation" className="hover:text-white transition">
               {t.nav.meditation}
             </a>
+            <a href="#sheep-counting" className="hover:text-white transition">
+              数羊
+            </a>
             <a href="#todays-card" className="hover:text-white transition">
               今日卡
             </a>
@@ -1923,6 +2160,9 @@ export default function DreamLifeLanding() {
 
       {/* Creative Lab */}
       <CreativeLabSection />
+
+      {/* AI電気羊数羊 */}
+      <SheepCountingSection />
 
       {/* 今日卡 Today's Card */}
       <TodaysCardSection />
