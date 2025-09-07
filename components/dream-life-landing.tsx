@@ -1041,6 +1041,42 @@ function MeditationCard({
 
 export default function DreamLifeLanding() {
   const { t } = useLocale()
+  const [currentCopyIndex, setCurrentCopyIndex] = React.useState(0)
+  
+  // AI電気羊コピー群
+  const aiSheepCopies = [
+    "夢は、もう人間だけのものじゃない。AI電気羊と、ともに。",
+    "AI電気羊が、今夜の夢をカードに変える。",
+    "人とAIが、ともに夢を見る最初の時代。",
+    "もしAIが夢を見るなら、その夢はあなたと重なる。",
+    "AI電気羊が囁く、あなたのもうひとつの現実。",
+    "眠りの物語を、AI電気羊とクエストに。"
+  ]
+  
+  // スクロール検知とコピー切り替え
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const windowHeight = window.innerHeight
+      const scrollProgress = Math.min(scrollY / (windowHeight * 2), 1) // 2画面分で切り替え
+      const newIndex = Math.floor(scrollProgress * (aiSheepCopies.length - 1))
+      
+      if (newIndex !== currentCopyIndex) {
+        setCurrentCopyIndex(newIndex)
+        
+        // 埋点：AI電気羊コピー切り替え
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'ai_sheep_copy_change', {
+            copy_index: newIndex,
+            copy_text: aiSheepCopies[newIndex]
+          })
+        }
+      }
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [currentCopyIndex])
   
   // 页面浏览埋点
   React.useEffect(() => {
@@ -1150,6 +1186,44 @@ export default function DreamLifeLanding() {
                 {t.hero.title}
                 <span className="text-fuchsia-200">{t.hero.titleHighlight}</span>
               </h1>
+              
+              {/* AI電気羊コピー - スクロール切り替え */}
+              <div className="relative h-16 md:h-20 overflow-hidden">
+                <motion.div
+                  key={currentCopyIndex}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="absolute inset-0 flex items-center"
+                >
+                  <p className="text-lg md:text-xl text-cyan-200/90 font-medium italic">
+                    {aiSheepCopies[currentCopyIndex]}
+                  </p>
+                </motion.div>
+                
+                {/* スクロール進行度インジケーター */}
+                <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1">
+                  {aiSheepCopies.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`h-1 w-8 rounded-full transition-all duration-300 ${
+                        index === currentCopyIndex 
+                          ? 'bg-cyan-400/80' 
+                          : 'bg-white/20'
+                      }`}
+                    />
+                  ))}
+                </div>
+                
+                {/* スクロールヒント */}
+                {currentCopyIndex === 0 && (
+                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-2 text-xs text-slate-400 animate-bounce">
+                    <span>スクロールしてコピーを切り替え</span>
+                    <ChevronRight className="h-3 w-3 rotate-90" />
+                  </div>
+                )}
+              </div>
               <p className="text-slate-300/90 md:text-lg max-w-xl">
                 <span className="text-slate-200 font-medium">每天 2 个可执行小任务，让睡前更安、白天更稳。</span>
                 <br className="hidden md:block" />
