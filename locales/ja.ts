@@ -49,6 +49,43 @@ export const ja = {
     features: ['睡眠改善', '感情調整', '個人化ウェルネス', 'プライバシー優先']
   },
 
+  // Psychology Education Section
+  psychology: {
+    title: '夢心理学の歴史',
+    subtitle: '一世紀の探求、現代技術による新たな解釈',
+    description: '私たちの手法は心理学の古典理論を参考に、現代生活のための興味深い自己反省ツールを提供します',
+    theories: {
+      freud: {
+        name: 'フロイト',
+        period: '1900年',
+        theory: '夢の解釈',
+        description: '夢は無意識の願望の表現であり、内面の深い欲求と葛藤を隠している'
+      },
+      jung: {
+        name: 'ユング',
+        period: '1920年代',
+        theory: '原型理論',
+        description: '夢は個人と集合的無意識を結び、普遍的な象徴と原型を含む'
+      },
+      modern: {
+        name: '現代心理学',
+        period: '1980年代〜現在',
+        theory: '感情統合理論',
+        description: '夢は感情記憶の処理を助け、心理的健康と創造的思考を促進する'
+      }
+    },
+    approach: {
+      title: '私たちの探索方法',
+      items: [
+        '古典理論と現代技術の融合',
+        '個人的な体験と感情を重視',
+        '自主的な探索と内省を奨励',
+        '興味深いインタラクティブ体験を提供'
+      ]
+    },
+    disclaimer: '* 探索的ツールとして、専門的な心理療法の代替品ではなく、興味深い自己反省の方法としてご利用いただくことをお勧めします'
+  },
+
   // Features Section
   features: {
     title: 'コア機能',
@@ -309,6 +346,81 @@ export const ja = {
     placeholder_note: {
       audio: 'プレースホルダー音声 · 本番ではバックエンド生成リンクに置換',
       video: 'プレースホルダー動画 · 本番ではバックエンド生成リンクに置換'
+    }
+  },
+
+  // CBT Cards System
+  cbtCards: {
+    title: 'AI電気羊 × 認知行動療法',
+    subtitle: '夢を科学的な心理調整アクションに変換',
+    cards: {
+      chase: {
+        id: 'chase_dream',
+        frontTitle: '追われる者',
+        frontIcon: '🌙',
+        frontDesc: '未知のものに追われる夢、潜在意識が蓄積されたプレッシャーを放出している信号',
+        backTitle: 'CBT認知再構成',
+        backIcon: '🧠',
+        cognition: '"追われる"は"能力不足"ではなく"タスク過多"のリマインダー',
+        actions: [
+          '重要な3つのことをリストアップ、1つだけ完了',
+          '4-7-8呼吸法 × 3分間',
+          '誰かに「今日はペースを落としたい」と伝える'
+        ],
+        metrics: {
+          anxiety: -15,
+          control: 20
+        }
+      },
+      maze: {
+        id: 'maze_dream',
+        frontTitle: '迷路の探索者',
+        frontIcon: '🌀', 
+        frontDesc: '迷路は人生の新しい方向を求める象徴、現状打破への内なる渇望',
+        backTitle: 'CBT認知再構成',
+        backIcon: '🧠',
+        cognition: '"道に迷う"は"失敗"ではなく"新たな可能性の探索"プロセス',
+        actions: [
+          '小さな好奇心を書き出し15分間行動',
+          '久しぶりに友人と連絡を取る',
+          'いつもと違う帰り道を試す'
+        ],
+        metrics: {
+          creativity: 25,
+          social: 18
+        }
+      },
+      fly: {
+        id: 'fly_dream',
+        frontTitle: '自由な飛翔者',
+        frontIcon: '🕊️',
+        frontDesc: '飛翔の夢は潜在能力の覚醒、既存の限界突破への憧れ',
+        backTitle: 'CBT認知再構成', 
+        backIcon: '🧠',
+        cognition: '"飛びたい"は"現実逃避"ではなく"成長の動力"の表れ',
+        actions: [
+          '小さな目標に具体的なステップを設定',
+          '30分間の屋外活動で身体の力を感じる',
+          '今日の小さな成果を記録する'
+        ],
+        metrics: {
+          confidence: 22,
+          action: 28
+        }
+      }
+    },
+    ui: {
+      cognitiveReframe: '認知再構成',
+      actionPrescription: 'アクション処方',
+      expectedEffect: '期待される効果',
+      anxietyReduction: '不安軽減',
+      controlIncrease: 'コントロール感向上',
+      creativityBoost: '創造性向上',
+      socialConnection: '社会的つながり',
+      confidenceGain: '自信向上',
+      actionMotivation: '行動力強化',
+      completedAction: '完了したアクション',
+      markComplete: '完了をマーク'
     }
   },
 

@@ -49,6 +49,43 @@ export const zh = {
     features: ['改善睡眠', '情绪调节', '个性化养生', '隐私优先']
   },
 
+  // Psychology Education Section
+  psychology: {
+    title: '梦境心理学简史',
+    subtitle: '一个世纪的探索，现代技术的新诠释',
+    description: '我们的方法借鉴了心理学经典理论，为现代生活提供有趣的自我反思工具',
+    theories: {
+      freud: {
+        name: '弗洛伊德',
+        period: '1900年',
+        theory: '梦的解析',
+        description: '梦是潜意识愿望的表达，隐藏着内心深层的渴求与冲突'
+      },
+      jung: {
+        name: '荣格',
+        period: '1920年代',
+        theory: '原型理论',
+        description: '梦连接个体与集体无意识，包含普遍的象征和原型'
+      },
+      modern: {
+        name: '现代心理学',
+        period: '1980年代至今',
+        theory: '情绪整合理论',
+        description: '梦境有助于处理情绪记忆，促进心理健康与创造性思维'
+      }
+    },
+    approach: {
+      title: '我们的探索方式',
+      items: [
+        '结合经典理论与现代技术',
+        '注重个人体验与感受',
+        '鼓励自主探索与反思',
+        '提供有趣的互动体验'
+      ]
+    },
+    disclaimer: '* 作为探索性工具，我们鼓励将其作为有趣的自我反思方式，而非专业心理治疗替代品'
+  },
+
   // Features Section
   features: {
     title: '核心功能',
@@ -348,6 +385,81 @@ export const zh = {
     placeholder_note: {
       audio: '占位音频 · 上线后替换为后端生成链接',
       video: '占位视频 · 上线后替换为后端生成链接'
+    }
+  },
+
+  // CBT Cards System
+  cbtCards: {
+    title: 'AI电气羊 × 认知行为疗法',
+    subtitle: '将梦境转化为科学的心理调节行动',
+    cards: {
+      chase: {
+        id: 'chase_dream',
+        frontTitle: '被追赶者',
+        frontIcon: '🌙',
+        frontDesc: '梦见被未知事物追赶，潜意识在释放积累的压力信号',
+        backTitle: 'CBT认知重构',
+        backIcon: '🧠',
+        cognition: '"追赶"不是"能力不足"，而是"承担过多任务"的提醒',
+        actions: [
+          '列出3件重要事项，只完成1件',
+          '4-7-8呼吸法 × 3分钟',
+          '告诉一个人："我今天想放慢节奏"'
+        ],
+        metrics: {
+          anxiety: -15,
+          control: 20
+        }
+      },
+      maze: {
+        id: 'maze_dream', 
+        frontTitle: '迷途寻路者',
+        frontIcon: '🌀',
+        frontDesc: '迷宫象征寻找人生新方向，内心渴望突破现状',
+        backTitle: 'CBT认知重构',
+        backIcon: '🧠',
+        cognition: '"迷路"不是"失败"，而是"探索新可能性"的过程',
+        actions: [
+          '写下一个小好奇心并行动15分钟',
+          '联系一个很久没聊的朋友',
+          '尝试一条不同的回家路线'
+        ],
+        metrics: {
+          creativity: 25,
+          social: 18
+        }
+      },
+      fly: {
+        id: 'fly_dream',
+        frontTitle: '自由翱翔者', 
+        frontIcon: '🕊️',
+        frontDesc: '飞翔梦境表示潜能觉醒，渴望突破现有限制',
+        backTitle: 'CBT认知重构',
+        backIcon: '🧠',
+        cognition: '"想飞"不是"逃避现实"，而是"成长动力"的体现',
+        actions: [
+          '为一个小目标制定具体步骤',
+          '30分钟户外活动，感受身体力量',
+          '记录今天的一个小成就'
+        ],
+        metrics: {
+          confidence: 22,
+          action: 28
+        }
+      }
+    },
+    ui: {
+      cognitiveReframe: '认知重构',
+      actionPrescription: '行动处方',
+      expectedEffect: '预期效果',
+      anxietyReduction: '焦虑缓解',
+      controlIncrease: '掌控感提升',
+      creativityBoost: '创造力激发',
+      socialConnection: '社交连接',
+      confidenceGain: '自信提升',
+      actionMotivation: '行动力增强',
+      completedAction: '已完成行动',
+      markComplete: '标记完成'
     }
   },
 

@@ -104,7 +104,9 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-white">
             <Emoji emoji={EMOJIS.CRYSTAL} size={24} />
-            Synchrony Rate Dashboard
+            <span className="font-light tracking-tight">
+              <span className="font-medium italic">Synchrony</span> Rate Dashboard
+            </span>
             <Badge className={`ml-auto ${totalLevel.bg} ${totalLevel.color} border-0`}>
               {totalLevel.level}
             </Badge>
@@ -130,11 +132,11 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
             {/* SR詳細 */}
             <div className="space-y-4">
               <div className="text-center md:text-left">
-                <h3 className="text-3xl font-bold text-white mb-2">
-                  {srData.total}%
+                <h3 className="text-4xl md:text-5xl font-light tracking-tight text-white mb-2">
+                  <span className="font-medium italic">Synchrony</span> {srData.total}%
                 </h3>
-                <p className="text-slate-300 mb-4">
-                  夢と現実の同期率
+                <p className="text-white/70 font-light text-sm mb-4 leading-relaxed">
+                  夢と現実の同期率を測定する革新的な指標
                 </p>
                 <div className="flex items-center justify-center md:justify-start gap-2">
                   <motion.div
@@ -167,7 +169,9 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Emoji emoji={EMOJIS.HEART} size={20} />
-              <span className="text-sm font-medium text-white">Emotion SR</span>
+              <span className="text-sm font-light tracking-tight text-white">
+                <span className="font-medium italic">Emotion</span> SR
+              </span>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
@@ -190,7 +194,9 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Emoji emoji={EMOJIS.STAR} size={20} />
-              <span className="text-sm font-medium text-white">Symbol SR</span>
+              <span className="text-sm font-light tracking-tight text-white">
+                <span className="font-medium italic">Symbol</span> SR
+              </span>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
@@ -213,7 +219,9 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Emoji emoji={EMOJIS.ARROW_RIGHT} size={20} />
-              <span className="text-sm font-medium text-white">Action SR</span>
+              <span className="text-sm font-light tracking-tight text-white">
+                <span className="font-medium italic">Action</span> SR
+              </span>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
@@ -236,11 +244,11 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
       <Card className="bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border-purple-500/20 backdrop-blur-sm">
         <CardContent className="p-6">
           <div className="text-center">
-            <h4 className="text-lg font-semibold text-white mb-2">
+            <h4 className="text-lg font-light tracking-tight text-white mb-2">
               <Emoji emoji={EMOJIS.BRAIN} size={20} className="mr-2" />
-              Synchrony Rate とは？
+              <span className="font-medium italic">Synchrony</span> Rate とは？
             </h4>
-            <p className="text-slate-300 text-sm leading-relaxed">
+            <p className="text-white/70 font-light text-sm leading-relaxed">
               SRは夢と現実の同期率を測定する革新的な指標です。
               感情・象徴・行動の3つの次元から、あなたの無意識と意識の調和度を可視化します。
               心拍や睡眠の時代は終わりました。次は「夢と無意識」の可視化です。

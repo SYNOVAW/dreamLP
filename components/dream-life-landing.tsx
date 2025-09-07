@@ -2060,14 +2060,75 @@ export default function DreamLifeLanding() {
         </div>
       </section>
 
+      {/* Psychology Education */}
+      <section className="py-16 md:py-20 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/10 to-slate-900/30" />
+        <div className="mx-auto max-w-7xl px-4 relative z-10">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-semibold text-slate-100 mb-4">
+              {t.psychology.title}
+            </h2>
+            <p className="text-slate-300/80 text-sm md:text-base mb-2">
+              {t.psychology.subtitle}
+            </p>
+            <p className="text-slate-400 text-sm max-w-2xl mx-auto">
+              {t.psychology.description}
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {[
+              { key: 'freud', icon: '🧠' },
+              { key: 'jung', icon: '🌙' }, 
+              { key: 'modern', icon: '⚡' }
+            ].map(({ key, icon }) => (
+              <Card key={key} className={`${glassCardStyles.base} ${glassCardStyles.hover} p-6`}>
+                <div className="text-center">
+                  <div className="text-2xl mb-3">{icon}</div>
+                  <h3 className={`font-medium ${glassCardStyles.text.primary} mb-1`}>
+                    {t.psychology.theories[key].name}
+                  </h3>
+                  <p className={`text-xs ${glassCardStyles.text.subtle} mb-2`}>
+                    {t.psychology.theories[key].period}
+                  </p>
+                  <p className={`text-sm ${glassCardStyles.text.accent} mb-3 font-medium`}>
+                    {t.psychology.theories[key].theory}
+                  </p>
+                  <p className={`text-xs ${glassCardStyles.text.muted} leading-relaxed`}>
+                    {t.psychology.theories[key].description}
+                  </p>
+                </div>
+              </Card>
+            ))}
+          </div>
+          
+          <div className="max-w-3xl mx-auto">
+            <h3 className={`text-lg font-medium ${glassCardStyles.text.primary} text-center mb-4`}>
+              {t.psychology.approach.title}
+            </h3>
+            <div className="grid sm:grid-cols-2 gap-3 mb-6">
+              {t.psychology.approach.items.map((item, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-fuchsia-400/60" />
+                  <span className={`text-sm ${glassCardStyles.text.muted}`}>{item}</span>
+                </div>
+              ))}
+            </div>
+            <p className={`text-xs ${glassCardStyles.text.subtle} text-center italic`}>
+              {t.psychology.disclaimer}
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section id="features" className="py-16 md:py-24 relative">
         <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="max-w-2xl">
-            <h2 className="text-2xl md:text-4xl font-semibold">核心功能</h2>
+            <h2 className="text-2xl md:text-4xl font-semibold">{t.features.title}</h2>
             <p className="mt-3 text-slate-300/90">
-              解决睡眠质量差、情绪难调节、缺乏仪式感的痛点，将梦境语言翻译为可操作的日常指引。
+              {t.features.description}
             </p>
           </div>
 

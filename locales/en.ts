@@ -49,6 +49,43 @@ export const en = {
     features: ['Sleep Improvement', 'Emotion Regulation', 'Personalized Wellness', 'Privacy First']
   },
 
+  // Psychology Education Section
+  psychology: {
+    title: 'A Brief History of Dream Psychology',
+    subtitle: 'A century of exploration, reimagined with modern technology',
+    description: 'Our approach draws from classic psychological theories to provide an engaging self-reflection tool for modern life',
+    theories: {
+      freud: {
+        name: 'Freud',
+        period: '1900',
+        theory: 'The Interpretation of Dreams',
+        description: 'Dreams express unconscious wishes, revealing deep inner desires and conflicts'
+      },
+      jung: {
+        name: 'Jung',
+        period: '1920s',
+        theory: 'Archetypal Theory',
+        description: 'Dreams connect individuals to the collective unconscious, containing universal symbols and archetypes'
+      },
+      modern: {
+        name: 'Modern Psychology',
+        period: '1980s-Present',
+        theory: 'Emotional Integration Theory',
+        description: 'Dreams help process emotional memories, promoting psychological health and creative thinking'
+      }
+    },
+    approach: {
+      title: 'Our Exploration Method',
+      items: [
+        'Combining classic theories with modern technology',
+        'Focusing on personal experience and feelings',
+        'Encouraging autonomous exploration and reflection',
+        'Providing engaging interactive experiences'
+      ]
+    },
+    disclaimer: '* As an exploratory tool, we encourage its use as an interesting self-reflection method, not as a replacement for professional psychological therapy'
+  },
+
   // Features Section
   features: {
     title: 'Core Features',
@@ -348,6 +385,81 @@ export const en = {
     placeholder_note: {
       audio: 'Placeholder audio · Will be replaced with backend-generated link after launch',
       video: 'Placeholder video · Will be replaced with backend-generated link after launch'
+    }
+  },
+
+  // CBT Cards System
+  cbtCards: {
+    title: 'AI Electric Sheep × Cognitive Behavioral Therapy',
+    subtitle: 'Transform dreams into scientific psychological adjustment actions',
+    cards: {
+      chase: {
+        id: 'chase_dream',
+        frontTitle: 'The Pursued',
+        frontIcon: '🌙',
+        frontDesc: 'Dreams of being chased by unknown forces - subconscious releasing accumulated pressure signals',
+        backTitle: 'CBT Cognitive Reframe',
+        backIcon: '🧠',
+        cognition: '"Being chased" isn\'t "incompetence" but a reminder of "taking on too much"',
+        actions: [
+          'List 3 important tasks, complete only 1',
+          '4-7-8 breathing technique × 3 minutes',
+          'Tell someone: "I want to slow down today"'
+        ],
+        metrics: {
+          anxiety: -15,
+          control: 20
+        }
+      },
+      maze: {
+        id: 'maze_dream',
+        frontTitle: 'The Lost Seeker',
+        frontIcon: '🌀',
+        frontDesc: 'Maze symbolizes seeking new life direction, inner desire to break through current state',
+        backTitle: 'CBT Cognitive Reframe', 
+        backIcon: '🧠',
+        cognition: '"Being lost" isn\'t "failure" but a process of "exploring new possibilities"',
+        actions: [
+          'Write down a small curiosity and act on it for 15 minutes',
+          'Contact a friend you haven\'t talked to in a while',
+          'Try a different route home'
+        ],
+        metrics: {
+          creativity: 25,
+          social: 18
+        }
+      },
+      fly: {
+        id: 'fly_dream',
+        frontTitle: 'The Free Flyer',
+        frontIcon: '🕊️',
+        frontDesc: 'Flying dreams represent awakening potential, desire to break through existing limitations',
+        backTitle: 'CBT Cognitive Reframe',
+        backIcon: '🧠', 
+        cognition: '"Wanting to fly" isn\'t "escapism" but manifestation of "growth motivation"',
+        actions: [
+          'Set specific steps for a small goal',
+          '30 minutes outdoor activity, feel your body\'s strength',
+          'Record one small achievement today'
+        ],
+        metrics: {
+          confidence: 22,
+          action: 28
+        }
+      }
+    },
+    ui: {
+      cognitiveReframe: 'Cognitive Reframe',
+      actionPrescription: 'Action Prescription',
+      expectedEffect: 'Expected Effect',
+      anxietyReduction: 'Anxiety Reduction',
+      controlIncrease: 'Control Enhancement',
+      creativityBoost: 'Creativity Boost',
+      socialConnection: 'Social Connection',
+      confidenceGain: 'Confidence Gain',
+      actionMotivation: 'Action Motivation',
+      completedAction: 'Completed Action',
+      markComplete: 'Mark Complete'
     }
   },
 
