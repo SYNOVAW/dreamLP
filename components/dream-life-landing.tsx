@@ -1041,40 +1041,6 @@ function MeditationCard({
 
 export default function DreamLifeLanding() {
   const { t } = useLocale()
-  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 })
-  const [stars, setStars] = React.useState<Array<{id: number, x: number, y: number, opacity: number}>>([])
-  
-  // 鼠标追踪和四芒星动画
-  React.useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-      
-      // 生成四芒星轨迹
-      const newStar = {
-        id: Date.now() + Math.random(),
-        x: e.clientX,
-        y: e.clientY,
-        opacity: 1
-      }
-      
-      setStars(prev => [...prev.slice(-8), newStar]) // 保持最多9个星星
-    }
-    
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
-  
-  // 星星淡出动画
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setStars(prev => prev.map(star => ({
-        ...star,
-        opacity: star.opacity - 0.1
-      })).filter(star => star.opacity > 0))
-    }, 100)
-    
-    return () => clearInterval(interval)
-  }, [])
   
   // 页面浏览埋点
   React.useEffect(() => {
@@ -1085,29 +1051,6 @@ export default function DreamLifeLanding() {
   
   return (
     <div className="min-h-screen text-slate-100 relative overflow-hidden">
-      {/* 四芒星鼠标追随动画 */}
-      <div className="fixed inset-0 pointer-events-none z-50">
-        {stars.map((star) => (
-          <div
-            key={star.id}
-            className="absolute transform -translate-x-1/2 -translate-y-1/2"
-            style={{
-              left: star.x,
-              top: star.y,
-              opacity: star.opacity,
-              transition: 'opacity 0.1s ease-out'
-            }}
-          >
-            <div className="relative w-3 h-3">
-              {/* 四芒星形状 */}
-              <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-400 to-cyan-400 transform rotate-45 rounded-sm blur-[1px]" />
-              <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-400 to-cyan-400 rounded-sm blur-[1px]" />
-              <div className="absolute inset-0 bg-white/60 transform rotate-45 rounded-sm scale-75" />
-              <div className="absolute inset-0 bg-white/60 rounded-sm scale-75" />
-            </div>
-          </div>
-        ))}
-      </div>
 
       {/* 梦幻紫色背景动画 */}
       <div className="fixed inset-0 pointer-events-none">
