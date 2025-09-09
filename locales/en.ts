@@ -13,7 +13,7 @@ export const en = {
 
   // Hero Section
   hero: {
-    badge: 'AI電気羊と、ともに夢を見る時代へ',
+    badge: 'Enter the Era of Dreaming with AI Electric Sheep',
     title: 'REMia',
     titleHighlight: '',
     tagline: 'Dreams with AI Electric Sheep',
@@ -44,6 +44,7 @@ export const en = {
       ritual: 'Life rituals'
     },
     joinButton: 'Join Waitlist',
+    submitting: 'Submitting...',
     successMessage: '✅ Successfully joined waitlist. Please check your email for Beta invitation and download instructions.',
     privacy: 'By submitting, you agree to our Privacy Policy and Terms of Service (unsubscribe anytime).'
   },
@@ -106,6 +107,21 @@ export const en = {
       wellness: {
         title: 'Personalized Wellness Guide',
         description: 'Breathing techniques/routine reminders/diet advice/meditation practice, 2-3 daily micro-actions to improve sleep and emotions.'
+      },
+      eveningRitual: {
+        title: '🌌 Evening Ritual',
+        description: 'Sheep counting animation + breathing guide',
+        details: 'Hz sounds & minimal ambient audio'
+      },
+      morningRitual: {
+        title: '☀️ Morning Ritual',
+        description: 'Daily 1 draw: Constellation guardian card',
+        details: 'CBT & Mindfulness self-care tasks on card back'
+      },
+      collectShare: {
+        title: '🎴 Collect & Share',
+        description: 'Collection album',
+        details: 'Limited cards, dream realm characters, SNS sharing for daily cards with friends'
       }
     }
   },
@@ -209,6 +225,8 @@ export const en = {
     inputHint: 'For example: Floating on a purple sea with lighthouse light in the distance...',
     dreamWithAI: 'Dream with AI',
     generating: 'Weaving dreams...',
+    wellnessGenerated: 'Wellness prescription generated',
+    dreamPrescription: 'Let dreams become your daily wellness prescription',
     personaWorlds: {
       title: 'Persona Dream Worlds',
       description: 'Each Persona has unique dream colors and soundscapes',
@@ -464,6 +482,116 @@ export const en = {
       actionMotivation: 'Action Motivation',
       completedAction: 'Completed Action',
       markComplete: 'Mark Complete'
+    }
+  },
+
+  // Constellation Cards
+  constellationCards: {
+    title: 'Daily Constellation Draw',
+    subtitle: 'Draw your guardian card for today\'s guidance',
+    backTitle: 'Today\'s Guidance',
+    cards: {
+      aries: {
+        name: 'Aries',
+        frontTitle: 'The Pioneer',
+        frontDescription: 'Bold action leads to breakthrough',
+        backDescription: 'Take brave first steps, the universe will pave the way for your determination. Today is perfect for beginning new adventures.'
+      },
+      taurus: {
+        name: 'Taurus',
+        frontTitle: 'The Builder', 
+        frontDescription: 'Steady progress creates lasting beauty',
+        backDescription: 'Slow and steady wins the race. Focus on building solid foundations today. Patience is your greatest wealth.'
+      },
+      gemini: {
+        name: 'Gemini',
+        frontTitle: 'The Messenger',
+        frontDescription: 'Communication opens new worlds',
+        backDescription: 'Explore the world with curiosity, connect hearts with wisdom. Today is perfect for learning and communication.'
+      },
+      cancer: {
+        name: 'Cancer',
+        frontTitle: 'The Nurturer',
+        frontDescription: 'Intuition guides the heart home',
+        backDescription: 'Listen to your inner voice, care for those around you. Emotional power is especially strong today.'
+      },
+      leo: {
+        name: 'Leo',
+        frontTitle: 'The Creator',
+        frontDescription: 'Authenticity shines brightest',
+        backDescription: 'Show your true self, let your inner light illuminate the world. Confidence is your superpower.'
+      },
+      virgo: {
+        name: 'Virgo',
+        frontTitle: 'The Perfectionist',
+        frontDescription: 'Details reveal hidden treasures',
+        backDescription: 'Observe details carefully, find extraordinary in ordinary. Perfection comes from pursuing quality.'
+      },
+      libra: {
+        name: 'Libra',
+        frontTitle: 'The Harmonizer',
+        frontDescription: 'Balance brings inner peace',
+        backDescription: 'Find life\'s balance point, welcome every moment with a beautiful mood.'
+      },
+      scorpio: {
+        name: 'Scorpio',
+        frontTitle: 'The Transformer',
+        frontDescription: 'Depth reveals hidden power',
+        backDescription: 'Explore inner strength deeply, transform challenges into growth opportunities.'
+      },
+      sagittarius: {
+        name: 'Sagittarius',
+        frontTitle: 'The Explorer',
+        frontDescription: 'Adventure expands the soul',
+        backDescription: 'Keep an open mind, every experience accumulates wisdom. Courageously pursue dreams.'
+      },
+      capricorn: {
+        name: 'Capricorn',
+        frontTitle: 'The Achiever',
+        frontDescription: 'Discipline creates mountains',
+        backDescription: 'Move steadily toward goals, each step builds foundation for future success.'
+      },
+      aquarius: {
+        name: 'Aquarius',
+        frontTitle: 'The Innovator',
+        frontDescription: 'Vision shapes tomorrow',
+        backDescription: 'See the world with unique perspective, your innovative thinking will bring unexpected rewards.'
+      },
+      pisces: {
+        name: 'Pisces',
+        frontTitle: 'The Dreamer',
+        frontDescription: 'Imagination flows into reality',
+        backDescription: 'Let imagination guide direction, intuition will lead you to the most beautiful answers.'
+      }
+    }
+  },
+
+  // Wellness Content
+  wellness: {
+    herbalTea: {
+      title: 'Dream Herbal Prescriptions',
+      subtitle: 'Personalized tea recommendations based on your dreams',
+      cta: 'Unlock Today\'s Prescription',
+      recommendations: [
+        'Today\'s prescription: Drink warm yuzu tea, do 10 minutes deep breathing meditation.',
+        'Today\'s prescription: 30 minutes aerobic exercise, drink ginger tea to boost vitality.',
+        'Today\'s prescription: Journal your feelings, drink lavender tea to relax mood.',
+        'Today\'s prescription: Listen to 432Hz music for 15 minutes, drink mint tea to refresh mind.',
+        'Today\'s prescription: Do yoga stretches, drink rose tea to nourish body and soul.'
+      ],
+      dreamBased: [
+        'Dream of forest? Try matcha tea, feel nature\'s freshness.',
+        'Dream of starry sky? Perilla tea tonight, let thoughts sparkle like starlight.',
+        'Dream of ocean? Lemon honey tea recommended, refreshing as sea breeze.',
+        'Dream of flowers? Rose tea is perfect, let floral fragrance accompany dreams.',
+        'Dream of flames? Ginger tea warms body and soul, ignites inner energy.'
+      ]
+    },
+    spa: {
+      title: 'Virtual Spa',
+      description: 'Close your eyes, enter digital hot springs. Screen mist and light halos, with breathing guidance, like body recovering in cyber spa.',
+      cta: 'Start Spa Therapy',
+      activeText: 'In spa...'
     }
   },
 

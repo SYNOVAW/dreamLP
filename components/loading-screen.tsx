@@ -37,9 +37,12 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
                      referrer.includes('twitter.com') ||
                      referrer.includes('tiktok.com')
     
-    console.log('LoadingScreen - UserAgent:', userAgent)
-    console.log('LoadingScreen - Referrer:', referrer)
-    console.log('LoadingScreen - IsEmbedded:', isEmbedded)
+    // Debug info (development only)
+    if (process.env.NODE_ENV === 'development') {
+      console.log('LoadingScreen - UserAgent:', userAgent)
+      console.log('LoadingScreen - Referrer:', referrer)
+      console.log('LoadingScreen - IsEmbedded:', isEmbedded)
+    }
     
     setIsInstagramEmbed(isEmbedded)
     
@@ -48,17 +51,23 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
     
     // 埋め込みブラウザでは画像読み込みを待たずに短時間で完了
     const timer = setTimeout(() => {
-      console.log('LoadingScreen - Timer fired, hiding loading')
+      if (process.env.NODE_ENV === 'development') {
+        console.log('LoadingScreen - Timer fired, hiding loading')
+      }
       setIsVisible(false)
       setTimeout(() => {
-        console.log('LoadingScreen - Calling onLoadingComplete')
+        if (process.env.NODE_ENV === 'development') {
+          console.log('LoadingScreen - Calling onLoadingComplete')
+        }
         onLoadingComplete()
       }, isEmbedded ? 100 : 1000)
     }, loadingTime)
 
     // フォールバック: 最大3秒後に強制完了（埋め込みの場合）
     const fallbackTimer = setTimeout(() => {
-      console.log('LoadingScreen - Fallback timer fired, forcing completion')
+      if (process.env.NODE_ENV === 'development') {
+        console.log('LoadingScreen - Fallback timer fired, forcing completion')
+      }
       setIsVisible(false)
       onLoadingComplete()
     }, isEmbedded ? 3000 : 5000)

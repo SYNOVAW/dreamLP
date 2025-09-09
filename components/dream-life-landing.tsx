@@ -97,7 +97,9 @@ function CardArt({ seed, personaName }: { seed: string; personaName?: string }) 
           }`}
           onLoad={() => setImageLoaded(true)}
           onError={() => {
-            console.log(`Failed to load image: ${imageSrc}`)
+            if (process.env.NODE_ENV === 'development') {
+              console.log(`Failed to load image: ${imageSrc}`)
+            }
             setImageSrc(null) // 回退到程序化渐变
           }}
         />
@@ -525,7 +527,7 @@ function WaitlistForm() {
           className="h-11 bg-gradient-to-r from-fuchsia-500/80 to-indigo-500/80 hover:opacity-90 backdrop-blur-sm border border-white/10 disabled:opacity-50"
         >
           <Stars className="mr-1 h-4 w-4" />
-          {isSubmitting ? '提交中...' : t.waitlist.joinButton}
+          {isSubmitting ? t.waitlist.submitting : t.waitlist.joinButton}
       </Button>
     </form>
       
@@ -1004,191 +1006,6 @@ function SheepCountingSection(){
                   <div className="text-slate-400">随机出现</div>
                 </div>
               </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  )
-}
-
-/* —— 今日卡 Today's Card —— */
-function TodaysCardSection(){
-  const { t } = useLocale()
-  const [isFlipped, setIsFlipped] = React.useState(false)
-  const [cardData, setCardData] = React.useState<{
-    id: string,
-    title: string,
-    image: string,
-    interpretation: string,
-    action: string,
-    color: string
-  } | null>(null)
-
-  // 今日卡データ生成
-  const generateTodaysCard = () => {
-    const cards = [
-      {
-        id: 'moonlight',
-        title: '月光之梦',
-        image: '/MIRA.jpg',
-        interpretation: '昨夜你梦见了温柔的月光，这象征着内心的平静与智慧。',
-        action: '今日建议：喝一杯温热的柚子茶，进行10分钟深呼吸冥想。',
-        color: 'from-white/5 to-white/10'
-      },
-      {
-        id: 'flame',
-        title: '火焰之梦',
-        image: '/IGNIS.jpg',
-        interpretation: '梦中出现的火焰代表你内心的激情与创造力正在觉醒。',
-        action: '今日建议：进行30分钟有氧运动，喝一杯生姜茶提升活力。',
-        color: 'from-white/5 to-white/10'
-      },
-      {
-        id: 'echo',
-        title: '回响之梦',
-        image: '/ECHO.jpg',
-        interpretation: '梦中的回响暗示你需要倾听内心的声音，寻找真实的自己。',
-        action: '今日建议：写日记记录感受，喝一杯薰衣草茶放松心情。',
-        color: 'from-white/5 to-white/10'
-      }
-    ]
-    
-    const randomCard = cards[Math.floor(Math.random() * cards.length)]
-    setCardData(randomCard)
-    setIsFlipped(false)
-    
-    // 埋点：今日卡生成
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'todays_card_generated', {
-        card_id: randomCard.id,
-        card_title: randomCard?.title || 'Unknown Card'
-      })
-    }
-  }
-
-  // 初回生成
-  React.useEffect(() => {
-    if (!cardData) {
-      generateTodaysCard()
-    }
-  }, [])
-
-  return (
-    <section id="todays-card" className="py-16 md:py-24 border-t border-white/10 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-indigo-900/10 to-purple-900/10" />
-      
-      <div className="mx-auto max-w-4xl px-4 relative z-10">
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-12"
-        >
-          <motion.div variants={item} className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-slate-800/60 px-4 py-2 text-sm text-slate-200 mb-6">
-            <Moon className="h-4 w-4" /> 今日卡 Today's Card
-          </motion.div>
-          
-          <motion.h2 
-            variants={item}
-            className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4"
-          >
-            AI電気羊が、今夜の夢をカードに変える
-          </motion.h2>
-          
-          <motion.p 
-            variants={item}
-            className="text-slate-300/80 text-lg max-w-2xl mx-auto"
-          >
-            点击卡片，解锁今日的梦境指引
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-          className="flex justify-center"
-        >
-          <motion.div variants={item} className="w-full max-w-sm">
-            {cardData && (
-              <FlipCard
-                isFlipped={isFlipped}
-                onFlip={() => {
-                  setIsFlipped(!isFlipped)
-                  // 埋点：今日卡翻面
-                  if (typeof window !== 'undefined' && (window as any).gtag) {
-                    (window as any).gtag('event', 'todays_card_flip', {
-                      card_id: cardData?.id || 'unknown',
-                      is_flipped: !isFlipped
-                    })
-                  }
-                }}
-                className="cursor-pointer"
-              >
-                {/* 正面：插画 */}
-                <div className={`h-full rounded-2xl ${glassCardStyles.base} overflow-hidden flex flex-col bg-gradient-to-br ${cardData.color}`}>
-                  <div className="flex items-center justify-between px-4 py-3 flex-shrink-0">
-                    <div className="flex items-center gap-2">
-                      <Moon className="h-5 w-5 text-slate-300" />
-                      <span className="text-sm font-medium text-slate-200">今日卡</span>
-                    </div>
-                    <div className="text-xs text-slate-400">点击翻转</div>
-                  </div>
-                  <div className="flex-1 relative">
-                    <img
-                      src={cardData.image}
-                      alt={`${cardData?.title || 'Card'} card art`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="text-xl font-bold text-white mb-2">{cardData?.title || 'Untitled Card'}</h3>
-                      <p className="text-sm text-slate-200/90">点击查看解析</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 反面：解析+行动 */}
-                <div className={`h-full rounded-2xl ${glassCardStyles.base} overflow-hidden flex flex-col bg-gradient-to-br ${cardData.color}`}>
-                  <div className="flex items-center justify-between px-4 py-3 flex-shrink-0">
-                    <div className="flex items-center gap-2">
-                      <Brain className="h-5 w-5 text-slate-300" />
-                      <span className="text-sm font-medium text-slate-200">梦境解析</span>
-                    </div>
-                    <div className="text-xs text-slate-400">点击翻转</div>
-                  </div>
-                  <div className="flex-1 p-4 space-y-4">
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-100 mb-2">{cardData?.title || 'Untitled Card'}</h3>
-                      <p className="text-sm text-slate-300/90 leading-relaxed">
-                        {cardData.interpretation}
-                      </p>
-                    </div>
-                    <div className="border-t border-white/10 pt-4">
-                      <h4 className="text-sm font-semibold text-slate-200 mb-2">今日行动</h4>
-                      <p className="text-sm text-slate-300/90 leading-relaxed">
-                        {cardData.action}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </FlipCard>
-            )}
-            
-            {/* 重新生成按钮 */}
-            <div className="mt-6 text-center">
-              <Button
-                variant="outline"
-                className="border-white/20 text-slate-200 hover:bg-white/10 bg-transparent"
-                onClick={generateTodaysCard}
-              >
-                <Sparkles className="h-4 w-4 mr-2" />
-                重新抽取今日卡
-              </Button>
             </div>
           </motion.div>
         </motion.div>
@@ -1806,7 +1623,7 @@ export default function DreamLifeLanding() {
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-xl flex items-center justify-center bg-white/5 backdrop-blur-sm border border-white/10">
               <img 
-                src="/logo.png" 
+                src="/logo.jpg" 
                 alt="REMia Logo" 
                 className="w-6 h-6 object-contain"
               />
@@ -2723,7 +2540,7 @@ export default function DreamLifeLanding() {
           <div className="flex items-center gap-2">
               <div className="h-6 w-6 rounded-lg flex items-center justify-center bg-white/5 backdrop-blur-sm border border-white/10">
                 <img 
-                  src="/logo.png" 
+                  src="/logo.jpg" 
                   alt="REMia Logo" 
                   className="w-4 h-4 object-contain"
                 />

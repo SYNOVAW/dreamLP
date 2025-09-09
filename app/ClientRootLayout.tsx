@@ -23,16 +23,22 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
 
   // Handle client-side mounting with optimized timing
   useEffect(() => {
-    console.log('ClientRootLayout - isInstagramEmbed:', isInstagramEmbed)
-    console.log('ClientRootLayout - isMobile:', isMobile)
+    if (process.env.NODE_ENV === 'development') {
+      console.log('ClientRootLayout - isInstagramEmbed:', isInstagramEmbed)
+      console.log('ClientRootLayout - isMobile:', isMobile)
+    }
     
     // モバイルや埋め込みビューでは即座にマウント
     const mountDelay = isInstagramEmbed ? 0 : (isMobile ? 50 : 100)
     
-    console.log('ClientRootLayout - mountDelay:', mountDelay)
+    if (process.env.NODE_ENV === 'development') {
+      console.log('ClientRootLayout - mountDelay:', mountDelay)
+    }
     
     const timer = setTimeout(() => {
-      console.log('ClientRootLayout - Setting mounted to true')
+      if (process.env.NODE_ENV === 'development') {
+        console.log('ClientRootLayout - Setting mounted to true')
+      }
       setMounted(true)
       
       // ローディング状態を少し遅延させてから解除
@@ -49,7 +55,9 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
     const fallbackTime = isInstagramEmbed ? 1000 : 3000
     const fallbackTimer = setTimeout(() => {
       if (!mounted) {
-        console.warn("ClientRootLayout - Forcing mount due to timeout, isInstagramEmbed:", isInstagramEmbed)
+        if (process.env.NODE_ENV === 'development') {
+          console.warn("ClientRootLayout - Forcing mount due to timeout, isInstagramEmbed:", isInstagramEmbed)
+        }
         setMounted(true)
         setIsLoading(false)
       }
@@ -60,7 +68,9 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
 
   // ローディング完了時のコールバック
   const handleLoadingComplete = () => {
-    console.log('ClientRootLayout - Loading complete')
+    if (process.env.NODE_ENV === 'development') {
+      console.log('ClientRootLayout - Loading complete')
+    }
     setIsLoading(false)
   }
 

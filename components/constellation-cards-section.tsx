@@ -38,7 +38,7 @@ const constellationCards = [
     id: "gemini",
     name: "Gemini",
     chineseName: "双子座", 
-    image: "/Gemini.JPG",
+    image: "/Gemini.jpg",
     frontTitle: "The Messenger",
     frontDescription: "Communication opens new worlds",
     backTitle: "今日指引",
@@ -510,39 +510,6 @@ export default function ConstellationCardsSection() {
             {/* Gradient overlays for smooth edges */}
             <div className="absolute left-0 top-0 w-16 h-full bg-gradient-to-r from-slate-900 to-transparent pointer-events-none z-10" />
             <div className="absolute right-0 top-0 w-16 h-full bg-gradient-to-l from-slate-900 to-transparent pointer-events-none z-10" />
-          </motion.div>
-
-          {/* Call to action */}
-          <motion.div variants={itemVariants} className="text-center">
-            <Card className={`${glassCardStyles.highlight} max-w-2xl mx-auto`}>
-              <CardContent className="p-8">
-                <div className="space-y-6">
-                  <div className="space-y-3">
-                    <h3 className={`text-2xl font-bold ${glassCardStyles.text.primary}`}>
-                      开始你的星座指引之旅
-                    </h3>
-                    <p className={`${glassCardStyles.text.secondary}`}>
-                      每日抽取一张专属星座卡牌，让宇宙的智慧为你今日的选择和行动提供神秘指引
-                    </p>
-                  </div>
-                  
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-fuchsia-500 to-purple-600 hover:from-fuchsia-400 hover:to-purple-500 text-white font-semibold px-8 py-3 rounded-xl shadow-lg shadow-fuchsia-500/30"
-                    onClick={() => {
-                      document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })
-                      // Analytics tracking
-                      if (typeof window !== 'undefined' && (window as any).gtag) {
-                        (window as any).gtag('event', 'constellation_cta_click')
-                      }
-                    }}
-                  >
-                    <Stars className="h-5 w-5 mr-2" />
-                    体验每日星座抽卡
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
           </motion.div>
         </motion.div>
       </div>

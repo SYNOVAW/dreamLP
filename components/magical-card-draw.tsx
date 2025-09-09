@@ -37,7 +37,7 @@ const constellationCards = [
     id: "gemini",
     name: "Gemini",
     chineseName: "双子座", 
-    image: "/Gemini.JPG",
+    image: "/Gemini.jpg",
     frontTitle: "The Messenger",
     frontDescription: "Communication opens new worlds",
     backTitle: "今日指引",

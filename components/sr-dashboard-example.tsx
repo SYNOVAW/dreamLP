@@ -127,11 +127,15 @@ export default function SRDashboardExample() {
   }
 
   const handleMetricClick = (metric: string, value: number) => {
-    console.log(`Metric clicked: ${metric} with value ${value}%`)
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Metric clicked: ${metric} with value ${value}%`)
+    }
   }
 
   const handleAchievementClick = (achievement: any) => {
-    console.log(`Achievement clicked:`, achievement)
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Achievement clicked:`, achievement)
+    }
   }
 
   return (

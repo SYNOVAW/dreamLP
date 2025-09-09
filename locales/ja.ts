@@ -16,11 +16,11 @@ export const ja = {
     badge: 'AI電気羊と、ともに夢を見る時代へ',
     title: 'REMia',
     titleHighlight: '',
-    tagline: 'AI電気羊と、ともに夢を見る時代へ',
+    tagline: 'AI電気羊と、ともに夢を見る',
     valueProposition: '夜は数羊で眠り、朝はカードで心を整える。',
-    subtitle: 'CBT × Mindfulness × Entertainment の Ritual App。',
+    subtitle: 'CBT × マインドフルネス × エンターテインメントの儀式アプリ。',
     description: '',
-    startFree: 'Join the Waitlist',
+    startFree: 'ウェイトリストに参加',
     guardianCard: '登録すると最初の守護カードがもらえる',
     viewDemo: 'デモを見る',
     noRegistration: '登録不要 · ローカルプライバシーモード',
@@ -46,6 +46,7 @@ export const ja = {
       ritual: '生活の儀式感'
     },
     joinButton: 'カードを受け取る',
+    submitting: '送信中...',
     successMessage: '✅ ウェイトリストに参加しました。メールをご確認ください。ベータ招待とあなた専用の守護カードをお送りします。',
     privacy: '送信することで、プライバシーポリシーと利用規約に同意したものとみなします（いつでも配信停止可能）。'
   },
@@ -93,25 +94,36 @@ export const ja = {
   },
 
   // Features Section
-  // Enhanced Features Section
   features: {
     title: 'コア機能',
     description: '睡眠の質の悪さ、感情調整の困難、儀式感の欠如という痛点を解決し、夢言語を実行可能な日常指針に翻訳します。',
     cards: {
+      analysis: {
+        title: 'AI夢分析',
+        description: '60秒以内に音声/テキストで記録、シンボル/キャラクター/シーンと感情分布を抽出、パーソナライズされた夢マップを生成。'
+      },
+      cards: {
+        title: '運命カードシステム',
+        description: '夢シンボルベースのパーソナライズカードプール。毎日1-3枚カード：テーマ意味+アクションステップ、生活儀式の構築。'
+      },
+      wellness: {
+        title: 'パーソナライズウェルネスガイド',
+        description: '呼吸法/作息リマインダー/食事アドバイス/瑁想練習、毎日2-3個のマイクロアクションで睡眠と感情を改善。'
+      },
       eveningRitual: {
-        title: '🌌 Evening Ritual',
-        description: 'Sheep counting animation + breathing guide',
-        details: 'Hz sounds & minimal ambient audio'
+        title: '🌌 夕方の儀式',
+        description: '羊数えアニメーション + 呼吸ガイド',
+        details: 'Hz音声と環境音楽'
       },
       morningRitual: {
-        title: '☀️ Morning Ritual',
-        description: 'Daily 1 draw: Constellation guardian card',
-        details: 'CBT & Mindfulness self-care tasks on card back'
+        title: '☀️ 朝の儀式',
+        description: '毎日1枚抽選：星座守護カード',
+        details: 'カード裏面にCBTとマインドフルネスセルフケアタスク'
       },
       collectShare: {
-        title: '🎴 Collect & Share',
-        description: 'Collection album',
-        details: 'Limited cards, dream realm characters, SNS sharing for daily cards with friends'
+        title: '🎴 コレクションとシェア',
+        description: 'コレクションアルバム',
+        details: '限定カード、夢の世界キャラクター、SNSで友達と毎日カードをシェア'
       }
     }
   },
@@ -234,6 +246,8 @@ export const ja = {
     inputHint: '例：紫の海面に浮かんで、遠くに灯台の光が...',
     dreamWithAI: 'AIと一緒に夢を見る',
     generating: '夢を織っています...',
+    wellnessGenerated: 'ウェルネス処方箋が生成されました',
+    dreamPrescription: '夢をあなたの毎日のウェルネス処方箋に',
     personaWorlds: {
       title: 'ペルソナ夢世界',
       description: '各ペルソナには独特の夢の色彩と音風景があります',
@@ -271,6 +285,45 @@ export const ja = {
       note: 'プレミアムユーザーは無制限の夢セッションと高品質出力をお楽しみいただけます',
       upgrade: 'アップグレードして解放'
     }
+  },
+
+  // Creative Lab Section
+  creativeLab: {
+    title: 'クリエイティブラボ · AI音楽とショートビデオ',
+    subtitle: '昨夜の夢をメロディふ15秒の映像に。ペルソナテーマ、感情/Hz雰囲気、ワンクリック生成をサポート。',
+    tabs: {
+      music: 'AI音楽',
+      video: 'AIショートビデオ'
+    },
+    music: {
+      title: 'AI音楽生成',
+      persona: 'ペルソナテーマ',
+      mood: '気分/周波数', 
+      duration: '持続時間（秒）',
+      prompt: '歌詞/イメージプロンプト',
+      promptPlaceholder: '夢のシーン、リズム、楽器を説明：「スローテンポ · 呼吸パッド · 海波と風鈴」',
+      generate: 'ワンクリック生成',
+      generating: '生成中…',
+      autoFill: 'ペルソナで自動入力',
+      personaOptions: ['MIRA（穏やか）', 'IGNIS（激励）', 'ECHO（内省）'],
+      moodOptions: ['平静 · 432Hz', '癒し · 528Hz', '覚醒 · 963Hz', '集中 · Hzラベルなし']
+    },
+    video: {
+      title: 'AIショートビデオ作成',
+      style: 'スタイル',
+      ratio: 'アスペクト比',
+      rhythm: 'リズム',
+      script: 'ストーリーボード/スクリプト',
+      scriptPlaceholder: '3カット：① 星屑の流れ ② カードが徹々に表示 ③ ペルソナ名字幕',
+      upload: '素材アップロード（オプション）',
+      generate: 'ワンクリック15秒予告編生成',
+      generating: 'ビデオフレームレンダリング中…',
+      template: 'テンプレートスクリプト使用',
+      styleOptions: ['夢幻水彩 · 粒子光', 'ネオンサイバー · 星空', '柔らか霧映画感', '線形グラデーション · アブストラクト'],
+      ratioOptions: ['9:16', '1:1', '16:9'],
+      rhythmOptions: ['遅い', '中程度', '速い']
+    },
+    disclaimer: '* クリエイティブコンテンツは娯楽と個人のインスピレーションのみを目的としています。アップロード素材の著作権を所有していることを確認してください。生成された作品は第三者の権利を侵害したり、他人の声/外観を盗用したりしないでください。'
   },
 
   // Pricing Section
@@ -456,6 +509,116 @@ export const ja = {
       actionMotivation: '行動力強化',
       completedAction: '完了したアクション',
       markComplete: '完了をマーク'
+    }
+  },
+
+  // 星座カードシステム
+  constellationCards: {
+    title: '毎日の星座抽選',
+    subtitle: '今日のガイダンスカードを引く',
+    backTitle: '今日の指針',
+    cards: {
+      aries: {
+        name: '牡羊座',
+        frontTitle: 'パイオニア',
+        frontDescription: '勇敢な行動が突破をもたらす',
+        backDescription: '勇敢に最初の一歩を踏み出そう。宇宙があなたの決意に道を開いてくれる。今日は新しい冒険を始める完璧な時。'
+      },
+      taurus: {
+        name: '牡牛座',
+        frontTitle: 'ビルダー',
+        frontDescription: '着実な進歩が永続的な美を創造する',
+        backDescription: '急がば回れ。今日は堅実な基盤作りに集中しよう。忍耐力こそがあなたの最大の財産。'
+      },
+      gemini: {
+        name: '双子座',
+        frontTitle: 'メッセンジャー',
+        frontDescription: 'コミュニケーションが新しい世界を開く',
+        backDescription: '好奇心で世界を探索し、知恵で心をつなげよう。今日は学習と交流に適している。'
+      },
+      cancer: {
+        name: '蟹座',
+        frontTitle: '養育者',
+        frontDescription: '直感が心を家へ導く',
+        backDescription: '内なる声に耳を傾け、周りの人を大切にしよう。今日は感情の力が特に強い。'
+      },
+      leo: {
+        name: '獅子座',
+        frontTitle: 'クリエイター',
+        frontDescription: '真の自分が最も輝く',
+        backDescription: '本当の自分を見せて、内なる光で世界を照らそう。自信こそあなたの超能力。'
+      },
+      virgo: {
+        name: '乙女座',
+        frontTitle: 'パーフェクショニスト',
+        frontDescription: '細部が隠れた宝を明かす',
+        backDescription: '細部を心を込めて観察し、平凡の中に非凡を見つけよう。完璧は品質への追求から生まれる。'
+      },
+      libra: {
+        name: '天秤座',
+        frontTitle: 'ハーモナイザー',
+        frontDescription: 'バランスが内なる平和をもたらす',
+        backDescription: '人生のバランスポイントを見つけ、美しい気持ちで毎瞬間を迎えよう。'
+      },
+      scorpio: {
+        name: '蠍座',
+        frontTitle: 'トランスフォーマー',
+        frontDescription: '深さが隠れた力を明かす',
+        backDescription: '内なる力を深く探求し、挑戦を成長の機会に変えよう。'
+      },
+      sagittarius: {
+        name: '射手座',
+        frontTitle: 'エクスプローラー',
+        frontDescription: '冒険が魂を広げる',
+        backDescription: 'オープンマインドを保ち、すべての経験が知恵の蓄積となる。勇敢に夢を追いかけよう。'
+      },
+      capricorn: {
+        name: '山羊座',
+        frontTitle: 'アチーバー',
+        frontDescription: '規律が山を築く',
+        backDescription: '目標に向かって着実に歩み、一歩一歩が未来の成功の礎となる。'
+      },
+      aquarius: {
+        name: '水瓶座',
+        frontTitle: 'イノベーター',
+        frontDescription: 'ビジョンが明日を形作る',
+        backDescription: 'ユニークな視点で世界を見よう。あなたの革新的思考が意外な収穫をもたらす。'
+      },
+      pisces: {
+        name: '魚座',
+        frontTitle: 'ドリーマー',
+        frontDescription: '想像が現実に流れ込む',
+        backDescription: '想像力に方向を導かせよう。直感があなたを最も美しい答えへと導く。'
+      }
+    }
+  },
+
+  // ウェルネスコンテンツ
+  wellness: {
+    herbalTea: {
+      title: '夢の処方箋',
+      subtitle: '夢に基づく個人化されたお茶の推奨',
+      cta: '今日の処方箋を解読',
+      recommendations: [
+        '今日の処方：温かい柚子茶を飲み、10分間の深呼吸瞑想を行う。',
+        '今日の処方：30分間の有酸素運動、生姜茶で活力を高める。',
+        '今日の処方：感情を日記に記録し、ラベンダーティーで気分をリラックス。',
+        '今日の処方：15分間432Hz音楽を聞き、ミントティーで頭をすっきりさせる。',
+        '今日の処方：ヨガストレッチを行い、ローズティーで心身を養う。'
+      ],
+      dreamBased: [
+        '森の夢を見た？抹茶で自然の新鮮さを感じよう。',
+        '星空の夢？今夜は紫蘇茶が適している。思考を星光のように輝かせよう。',
+        '海の夢？レモンハチミツ茶がおすすめ。海風のように爽やか。',
+        '花の夢？ローズティーが完璧。花の香りが夢に寄り添う。',
+        '炎の夢？生姜茶が心身を温め、内なるエネルギーを点火する。'
+      ]
+    },
+    spa: {
+      title: 'バーチャル温泉',
+      description: '目を閉じて、デジタル温泉に入る。画面の湯気と光輪、呼吸ガイドで、まるで体がサイバー温泉で回復しているよう。',
+      cta: '温泉セラピーを始める',
+      activeText: '温泉中...'
     }
   },
 

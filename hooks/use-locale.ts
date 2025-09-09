@@ -9,6 +9,42 @@ import { en } from '@/locales/en'
 
 const translations = { zh, ja, en }
 
+// Safe translation function with fallback
+function createSafeTranslation(translation: any, fallbackTranslation: any) {
+  const handler: ProxyHandler<any> = {
+    get(target: any, prop: string | symbol) {
+      if (typeof prop === 'string' && target && typeof target === 'object') {
+        const value = target[prop]
+        
+        // If value exists, return it (possibly wrapped in proxy for nested access)
+        if (value !== undefined && value !== null) {
+          if (typeof value === 'object' && !Array.isArray(value)) {
+            return new Proxy(value, handler)
+          }
+          return value
+        }
+        
+        // Try fallback translation
+        const fallbackValue = fallbackTranslation?.[prop]
+        if (fallbackValue !== undefined && fallbackValue !== null) {
+          if (typeof fallbackValue === 'object' && !Array.isArray(fallbackValue)) {
+            return new Proxy(fallbackValue, handler)
+          }
+          return fallbackValue
+        }
+        
+        // Last resort: return a readable error message
+        console.warn(`Missing translation key: ${String(prop)}`)
+        return `[${String(prop)}]`
+      }
+      
+      return target?.[prop] || `[${String(prop)}]`
+    }
+  }
+  
+  return new Proxy(translation || {}, handler)
+}
+
 type LocaleContextType = {
   locale: Locale
   setLocale: (locale: Locale) => void
@@ -18,7 +54,7 @@ type LocaleContextType = {
 export const LocaleContext = createContext<LocaleContextType>({
   locale: defaultLocale,
   setLocale: () => {},
-  t: zh
+  t: createSafeTranslation(translations[defaultLocale], translations[defaultLocale])
 })
 
 export function useLocale() {
@@ -56,6 +92,9 @@ export function useLocalStorage() {
   return {
     locale: isHydrated ? locale : defaultLocale,
     setLocale,
-    t: translations[isHydrated ? locale : defaultLocale]
+    t: createSafeTranslation(
+      translations[isHydrated ? locale : defaultLocale],
+      translations[defaultLocale] // Use default locale as fallback
+    )
   }
 }

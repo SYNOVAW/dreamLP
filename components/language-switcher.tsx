@@ -88,7 +88,14 @@ export function LanguageSwitcher() {
                   transition={{ delay: index * 0.05, duration: 0.2 }}
                 >
                   <DropdownMenuItem
-                    onClick={() => setLocale(loc)}
+                    onClick={async () => {
+                      try {
+                        await setLocale(loc)
+                        setIsOpen(false) // Close dropdown after successful switch
+                      } catch (error) {
+                        console.error('Failed to switch language:', error)
+                      }
+                    }}
                     className="cursor-pointer text-slate-200 hover:text-slate-100 hover:bg-white/10 transition-colors relative rounded-sm px-2 py-1.5 text-sm outline-none select-none focus:bg-white/10 focus:text-slate-100 group"
                   >
                     <span className="flex-1">{localeNames[loc]}</span>
