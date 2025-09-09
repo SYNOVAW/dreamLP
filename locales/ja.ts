@@ -13,11 +13,15 @@ export const ja = {
 
   // Hero Section
   hero: {
-    badge: '夢分析 × カード抽選 × ウェルネスガイド × ペルソナ伴走',
-    title: 'あなたの夢を、',
-    titleHighlight: '昼間の道しるべに変える',
-    description: '睡眠の質を改善し、感情やストレスを調整し、生活の儀式感を築く。昨夜の物語を記録し、AIが象徴と感情を解読。今日の「運命カード」を引き、個人化された呼吸法/食事/生活リズムのアドバイスを得る。あなたと同調する夢の中のペルソナとの伴走を解放。',
-    startFree: '無料で始める',
+    badge: 'AI電気羊と、ともに夢を見る時代へ',
+    title: 'REMia',
+    titleHighlight: '',
+    tagline: 'AI電気羊と、ともに夢を見る時代へ',
+    valueProposition: '夜は数羊で眠り、朝はカードで心を整える。',
+    subtitle: 'CBT × Mindfulness × Entertainment の Ritual App。',
+    description: '',
+    startFree: 'Join the Waitlist',
+    guardianCard: '登録すると最初の守護カードがもらえる',
     viewDemo: 'デモを見る',
     noRegistration: '登録不要 · ローカルプライバシーモード',
     features: {
@@ -27,11 +31,13 @@ export const ja = {
     }
   },
 
-  // Waitlist Section
+  // Enhanced Waitlist Section
   waitlist: {
-    title: 'ウェイトリストに参加 · ベータ版を先行解放',
-    description: 'メールアドレスを残すだけで、内部テスト資格と限定ペルソナテーマパックを獲得。重要なアップデート時のみご連絡します。',
+    title: 'Enter your birthday to unlock your first guardian constellation card',
+    subtitle: 'Get invited to the limited alpha version',
+    description: 'メールアドレスと生年月日を残すだけで、内部テスト資格と限定守護星座カードを獲得。重要なアップデート時のみご連絡します。',
     emailPlaceholder: 'あなたのメールアドレス',
+    birthdayPlaceholder: '生年月日 (YYYY-MM-DD)',
     intentLabel: '最も改善したいもの…',
     intentOptions: {
       default: 'オプションを選択',
@@ -39,8 +45,8 @@ export const ja = {
       mood: '感情とストレス',
       ritual: '生活の儀式感'
     },
-    joinButton: 'ウェイトリストに参加',
-    successMessage: '✅ ウェイトリストに参加しました。メールをご確認ください。ベータ招待とダウンロード方法をお送りします。',
+    joinButton: 'カードを受け取る',
+    successMessage: '✅ ウェイトリストに参加しました。メールをご確認ください。ベータ招待とあなた専用の守護カードをお送りします。',
     privacy: '送信することで、プライバシーポリシーと利用規約に同意したものとみなします（いつでも配信停止可能）。'
   },
 
@@ -87,21 +93,44 @@ export const ja = {
   },
 
   // Features Section
+  // Enhanced Features Section
   features: {
     title: 'コア機能',
     description: '睡眠の質の悪さ、感情調整の困難、儀式感の欠如という痛点を解決し、夢言語を実行可能な日常指針に翻訳します。',
     cards: {
-      analysis: {
-        title: 'AI夢分析',
-        description: '60秒以内に音声/テキストで記録し、象徴/人物/場面と感情分布を抽出し、個人化された夢マップを生成。'
+      eveningRitual: {
+        title: '🌌 Evening Ritual',
+        description: 'Sheep counting animation + breathing guide',
+        details: 'Hz sounds & minimal ambient audio'
       },
-      cards: {
-        title: '運命カード抽選システム',
-        description: '夢象に基づく個人化カードプール。毎日1-3枚のカード：テーマの意味+実行可能アクション、生活の儀式感を構築。'
+      morningRitual: {
+        title: '☀️ Morning Ritual',
+        description: 'Daily 1 draw: Constellation guardian card',
+        details: 'CBT & Mindfulness self-care tasks on card back'
       },
-      wellness: {
-        title: '個人化ウェルネスガイド',
-        description: '呼吸法/生活リズム提醒/食事アドバイス/瞑想練習、毎日2-3個のマイクロアクション、睡眠と感情を改善。'
+      collectShare: {
+        title: '🎴 Collect & Share',
+        description: 'Collection album',
+        details: 'Limited cards, dream realm characters, SNS sharing for daily cards with friends'
+      }
+    }
+  },
+
+  // Emotional Value Section  
+  emotionalValue: {
+    title: '感情的価値',
+    cards: {
+      comfort: {
+        title: '安心感',
+        description: 'Daily companion guardian characters'
+      },
+      narrative: {
+        title: '自己物語',
+        description: 'Archetypes encountered in dreams'
+      },
+      science: {
+        title: '科学的裏付け',
+        description: 'Self-care based on CBT & Mindfulness'
       }
     }
   },
@@ -303,7 +332,13 @@ export const ja = {
   },
 
   // Footer
+  // Enhanced Footer
   footer: {
+    socialProof: {
+      cbt: 'Designed based on CBT/psychological approaches',
+      nextGen: 'Next-generation Emotional Wellness App following Rootd, Calm, Headspace',
+      company: '© SYNOVA WHISPER Inc.'
+    },
     links: {
       privacy: 'プライバシーポリシー',
       terms: '利用規約',

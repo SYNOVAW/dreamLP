@@ -177,7 +177,7 @@ const RitualLoopSection = () => {
                       <Emoji emoji={feature.icon} size={32} />
                     </div>
                     <h4 className={`text-sm font-semibold ${glassCardStyles.text.primary} mb-2`}>
-                      {feature.title}
+                      {feature?.title || 'Feature'}
                     </h4>
                     <p className={`text-xs ${glassCardStyles.text.secondary}`}>
                       {feature.desc}
@@ -220,7 +220,7 @@ const RitualLoopSection = () => {
                       <Emoji emoji={feature.icon} size={32} />
                     </div>
                     <h4 className={`text-sm font-semibold ${glassCardStyles.text.primary} mb-2`}>
-                      {feature.title}
+                      {feature?.title || 'Feature'}
                     </h4>
                     <p className={`text-xs ${glassCardStyles.text.secondary}`}>
                       {feature.desc}
@@ -259,7 +259,7 @@ const RitualLoopSection = () => {
                       <Emoji emoji={benefit.icon} size={32} />
                     </div>
                     <h4 className={`text-sm font-semibold ${glassCardStyles.text.primary} mb-2`}>
-                      {benefit.title}
+                      {benefit?.title || 'Benefit'}
                     </h4>
                     <p className={`text-xs ${glassCardStyles.text.secondary}`}>
                       {benefit.desc}

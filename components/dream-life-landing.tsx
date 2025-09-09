@@ -11,8 +11,17 @@ import { LanguageSwitcher } from "@/components/language-switcher"
 import { glassCardStyles } from "@/lib/card-styles"
 import { Emoji, EMOJIS } from "@/components/emoji"
 import LoadingScreen from "@/components/loading-screen"
-import SRDashboard from "@/components/sr-dashboard"
-import RitualLoopSection from "@/components/ritual-loop-section"
+import ConstellationCardsSection from "@/components/constellation-cards-section"
+import { 
+  TypewriterText, 
+  WordReveal, 
+  SparkleText, 
+  GradientText, 
+  FloatingLetters,
+  MagicalReveal,
+  ShimmerText 
+} from "@/components/magical-typography"
+import { animationVariants } from "@/hooks/use-animation"
 
 // JayVue: one-file landing page, Tailwind + shadcn/ui + framer-motion
 // Sections: Hero / Waitlist / Social Proof / Features / Meditation Hz Music / How It Works / Persona / Pricing / FAQ / CTA / Footer
@@ -294,7 +303,7 @@ function PersonaCardPro({ name, line, tip, sr, artSeed }: {
   );
 }
 
-function FeatureCard({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
+function FeatureCard({ icon, title, desc, details }: { icon: React.ReactNode; title: string; desc: string; details?: string }) {
   return (
     <Card className={`${glassCardStyles.hover}`}>
       <CardHeader>
@@ -304,7 +313,10 @@ function FeatureCard({ icon, title, desc }: { icon: React.ReactNode; title: stri
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className={`${glassCardStyles.text.muted} text-sm leading-relaxed`}>{desc}</p>
+        <p className={`${glassCardStyles.text.muted} text-sm leading-relaxed mb-2`}>{desc}</p>
+        {details && (
+          <p className={`${glassCardStyles.text.subtle} text-xs leading-relaxed`}>{details}</p>
+        )}
       </CardContent>
     </Card>
   )
@@ -394,6 +406,7 @@ function LockIcon() {
 function WaitlistForm() {
   const { t, locale } = useLocale()
   const [email, setEmail] = useState("")
+  const [birthday, setBirthday] = useState("")
   const [intent, setIntent] = useState("")
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -424,6 +437,7 @@ function WaitlistForm() {
       
       const { error: supabaseError } = await insertWaitlistEntry({
         email,
+        birthday: birthday || null,
         intent: intent || 'unknown',
         utm,
         timezone,
@@ -437,6 +451,7 @@ function WaitlistForm() {
 
     setSubmitted(true)
       setEmail('')
+      setBirthday('')
       setIntent('')
       
       // 埋点：等候名单提交成功
@@ -463,7 +478,7 @@ function WaitlistForm() {
 
   return (
     <div>
-    <form onSubmit={onSubmit} className="mt-4 grid gap-3 md:grid-cols-[1fr_220px_160px]">
+    <form onSubmit={onSubmit} className="mt-4 grid gap-3 md:grid-cols-[1fr_150px_180px_160px]">
         {/* Honeypot 防机器人 */}
         <input 
           name="company" 
@@ -482,6 +497,16 @@ function WaitlistForm() {
           placeholder={t.waitlist.emailPlaceholder}
           className={`h-11 rounded-lg border border-white/15 bg-white/10 backdrop-blur-sm px-3 text-sm ${glassCardStyles.text.primary} placeholder:${glassCardStyles.text.subtle} focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40 disabled:opacity-50`}
       />
+      
+      <input
+        type="date"
+        value={birthday}
+        disabled={isSubmitting}
+        onChange={(e) => setBirthday(e.target.value)}
+        placeholder={t.waitlist.birthdayPlaceholder}
+        className={`h-11 rounded-lg border border-white/15 bg-white/10 backdrop-blur-sm px-3 text-sm ${glassCardStyles.text.primary} placeholder:${glassCardStyles.text.subtle} focus:outline-none focus:ring-2 focus:ring-fuchsia-500/40 disabled:opacity-50 [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:opacity-70`}
+      />
+      
       <select
         value={intent}
           disabled={isSubmitting}
@@ -493,11 +518,13 @@ function WaitlistForm() {
           <option value="mood">{t.waitlist.intentOptions.mood}</option>
           <option value="ritual">{t.waitlist.intentOptions.ritual}</option>
       </select>
+      
         <Button 
           type="submit" 
           disabled={isSubmitting}
           className="h-11 bg-gradient-to-r from-fuchsia-500/80 to-indigo-500/80 hover:opacity-90 backdrop-blur-sm border border-white/10 disabled:opacity-50"
         >
+          <Stars className="mr-1 h-4 w-4" />
           {isSubmitting ? '提交中...' : t.waitlist.joinButton}
       </Button>
     </form>
@@ -1035,7 +1062,7 @@ function TodaysCardSection(){
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'todays_card_generated', {
         card_id: randomCard.id,
-        card_title: randomCard.title
+        card_title: randomCard?.title || 'Unknown Card'
       })
     }
   }
@@ -1094,7 +1121,7 @@ function TodaysCardSection(){
                   // 埋点：今日卡翻面
                   if (typeof window !== 'undefined' && (window as any).gtag) {
                     (window as any).gtag('event', 'todays_card_flip', {
-                      card_id: cardData.id,
+                      card_id: cardData?.id || 'unknown',
                       is_flipped: !isFlipped
                     })
                   }
@@ -1113,13 +1140,13 @@ function TodaysCardSection(){
                   <div className="flex-1 relative">
                     <img
                       src={cardData.image}
-                      alt={`${cardData.title} card art`}
+                      alt={`${cardData?.title || 'Card'} card art`}
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                     <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="text-xl font-bold text-white mb-2">{cardData.title}</h3>
+                      <h3 className="text-xl font-bold text-white mb-2">{cardData?.title || 'Untitled Card'}</h3>
                       <p className="text-sm text-slate-200/90">点击查看解析</p>
                     </div>
                   </div>
@@ -1136,7 +1163,7 @@ function TodaysCardSection(){
                   </div>
                   <div className="flex-1 p-4 space-y-4">
                     <div>
-                      <h3 className="text-lg font-bold text-slate-100 mb-2">{cardData.title}</h3>
+                      <h3 className="text-lg font-bold text-slate-100 mb-2">{cardData?.title || 'Untitled Card'}</h3>
                       <p className="text-sm text-slate-300/90 leading-relaxed">
                         {cardData.interpretation}
                       </p>
@@ -1325,7 +1352,7 @@ function CyberWellnessSection(){
                 </div>
                 
                 <h3 className="text-xl font-semibold text-slate-100 mb-3 group-hover:text-white transition-colors">
-                  {card.title}
+                  {card?.title || 'Untitled'}
                 </h3>
                 
                 <p className="text-sm text-slate-300/80 mb-6 leading-relaxed">
@@ -1338,7 +1365,7 @@ function CyberWellnessSection(){
                     card.action()
                     if (typeof window !== 'undefined' && (window as any).gtag) {
                       (window as any).gtag('event', 'cyber_wellness_click', {
-                        card_type: card.title,
+                        card_type: card?.title || 'unknown',
                         card_index: index
                       })
                     }
@@ -1486,7 +1513,7 @@ function AIElectricSheepSection(){
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-slate-100">
                 <span>✨</span>
-                {dreamResult.title}
+                {dreamResult?.title || 'Dream Result'}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -1721,6 +1748,11 @@ export default function DreamLifeLanding() {
   
   // スクロール検知とコピー切り替え
   React.useEffect(() => {
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined') {
+      return
+    }
+
     const handleScroll = () => {
       const scrollY = window.scrollY
       const windowHeight = window.innerHeight
@@ -1791,6 +1823,9 @@ export default function DreamLifeLanding() {
             <a href="#sheep-counting" className="hover:text-white transition">
               数羊
             </a>
+            <a href="#constellation-cards" className="hover:text-white transition">
+              星座卡牌
+            </a>
             <a href="#todays-card" className="hover:text-white transition">
               今日卡
             </a>
@@ -1844,95 +1879,207 @@ export default function DreamLifeLanding() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-slate-900/40 z-0" />
+        
+        {/* Enhanced Cosmic Background */}
         <div className="absolute inset-0 -z-10 pointer-events-none">
-          <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-fuchsia-500/20 blur-3xl" />
-          <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-cyan-400/20 blur-3xl" />
+          {/* Animated nebula clouds */}
+          <motion.div 
+            className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-fuchsia-500/20 blur-3xl"
+            variants={animationVariants.nebulaSwirl}
+            animate="animate"
+          />
+          <motion.div 
+            className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-cyan-400/20 blur-3xl"
+            variants={animationVariants.nebulaSwirl}
+            animate="animate"
+            transition={{ delay: 2 }}
+          />
+          <motion.div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-purple-600/10 blur-3xl"
+            variants={animationVariants.nebulaSwirl}
+            animate="animate"
+            transition={{ delay: 4 }}
+          />
+          
+          {/* Floating cosmic particles */}
+          {Array.from({ length: 20 }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full opacity-30"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [-20, -60, -20],
+                x: [-10, 10, -10],
+                opacity: [0.1, 0.6, 0.1],
+                scale: [0.5, 1.5, 0.5],
+              }}
+              transition={{
+                duration: 8 + Math.random() * 4,
+                repeat: Infinity,
+                delay: Math.random() * 5,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+          
+          {/* Constellation patterns */}
+          <motion.div 
+            className="absolute inset-0 opacity-20"
+            animate={{
+              backgroundPosition: ["0% 0%", "100% 100%"],
+            }}
+            transition={{
+              duration: 30,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            style={{
+              backgroundImage: `
+                radial-gradient(2px 2px at 20px 30px, #d946ef, transparent),
+                radial-gradient(2px 2px at 40px 70px, #8b5cf6, transparent),
+                radial-gradient(1px 1px at 90px 40px, #06b6d4, transparent),
+                radial-gradient(1px 1px at 130px 80px, #f59e0b, transparent),
+                radial-gradient(2px 2px at 160px 30px, #d946ef, transparent)
+              `,
+              backgroundRepeat: "repeat",
+              backgroundSize: "200px 200px",
+            }}
+          />
         </div>
-        <div className="mx-auto max-w-7xl px-4 pt-16 pb-10 md:pt-24 md:pb-24 relative z-10">
+        <div className="mx-auto max-w-7xl px-4 pt-16 pb-16 md:pt-24 md:pb-24 relative z-10">
           <motion.div
             variants={container}
             initial="hidden"
             animate="show"
-            className="grid md:grid-cols-2 gap-10 items-center"
+            className="grid md:grid-cols-2 gap-8 md:gap-12 items-center"
           >
-            <motion.div variants={item} className="space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-slate-800/60 px-3 py-1 text-xs text-slate-200">
-                <Sparkles className="h-3.5 w-3.5" /> {t.hero.badge}
-              </div>
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.1]">
-                {t.hero.title}
-                <span className="text-fuchsia-200">{t.hero.titleHighlight}</span>
-              </h1>
-              
-              {/* AI電気羊コピー - スクロール切り替え */}
-              <div className="relative h-16 md:h-20 overflow-hidden">
-                <motion.div
-                  key={currentCopyIndex}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="absolute inset-0 flex items-center"
+            <motion.div variants={item} className="space-y-8">
+              {/* Enhanced Logo with Glow Animation */}
+              <div className="space-y-4">
+                <motion.h1 
+                  className="instrument text-5xl sm:text-6xl md:text-8xl font-normal tracking-tight text-white relative"
+                  variants={animationVariants.logoGlow}
+                  animate="animate"
                 >
-                  <p className="text-lg md:text-xl text-cyan-200/90 font-medium italic">
-                    {aiSheepCopies[currentCopyIndex]}
-                  </p>
+                  <SparkleText className="relative z-10">
+                    {t?.hero?.title || 'REMia'}
+                  </SparkleText>
+                </motion.h1>
+                
+                {/* Enhanced Tagline with Typewriter Effect */}
+                <div className="text-xl md:text-2xl text-cyan-200/90 font-medium italic">
+                  <TypewriterText 
+                    text={t.hero.tagline}
+                    delay={1500}
+                    speed={80}
+                    className="inline-block"
+                  />
+                </div>
+              </div>
+              
+              {/* Enhanced Value proposition with Word Reveal */}
+              <div className="space-y-3">
+                <div className="text-xl md:text-2xl text-fuchsia-200/90 font-medium leading-relaxed">
+                  <WordReveal 
+                    text={t.hero.valueProposition}
+                    delay={2.5}
+                    staggerChildren={0.12}
+                  />
+                </div>
+                <div className="text-lg md:text-xl text-slate-300/80 font-light">
+                  <WordReveal 
+                    text={t.hero.subtitle}
+                    delay={4}
+                    staggerChildren={0.08}
+                  />
+                </div>
+              </div>
+              
+              {/* Enhanced CTA with Magical Effects */}
+              <motion.div 
+                className="space-y-4"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 5.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <motion.div
+                  variants={animationVariants.buttonMagical}
+                  initial="rest"
+                  whileHover="hover"
+                  whileTap="tap"
+                  className="relative inline-block"
+                >
+                  <Button 
+                    size="lg"
+                    className="relative overflow-hidden bg-gradient-to-r from-indigo-500 to-fuchsia-500 hover:from-indigo-400 hover:to-fuchsia-400 shadow-2xl shadow-indigo-500/30 text-white font-semibold px-8 py-4 text-lg border-0"
+                    onClick={() => {
+                      document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })
+                      if (typeof window !== 'undefined' && (window as any).gtag) {
+                        (window as any).gtag('event', 'hero_cta_click', { btn: 'waitlist' })
+                      }
+                    }}
+                  >
+                    {/* Shimmer effect overlay */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                      style={{ width: "30%", skewX: "-20deg" }}
+                      animate={{ x: ["-200%", "200%"] }}
+                      transition={{ 
+                        duration: 2, 
+                        repeat: Infinity, 
+                        repeatDelay: 3,
+                        ease: "linear" 
+                      }}
+                    />
+                    <span className="relative z-10 flex items-center">
+                      <ShimmerText>{t.hero.startFree}</ShimmerText>
+                      <ChevronRight className="ml-2 h-5 w-5" />
+                    </span>
+                  </Button>
+                  
+                  {/* Particle effects around button */}
+                  <div className="absolute -inset-2 pointer-events-none">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-1 h-1 bg-fuchsia-400 rounded-full opacity-60"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                        }}
+                        animate={{
+                          scale: [0, 1, 0],
+                          opacity: [0, 1, 0],
+                          x: [0, (Math.random() - 0.5) * 40],
+                          y: [0, (Math.random() - 0.5) * 40],
+                        }}
+                        transition={{
+                          duration: 2,
+                          delay: i * 0.2,
+                          repeat: Infinity,
+                          repeatDelay: Math.random() * 2 + 1,
+                        }}
+                      />
+                    ))}
+                  </div>
                 </motion.div>
                 
-                {/* スクロール進行度インジケーター */}
-                <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1">
-                  {aiSheepCopies.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`h-1 w-8 rounded-full transition-all duration-300 ${
-                        index === currentCopyIndex 
-                          ? 'bg-cyan-400/80' 
-                          : 'bg-white/20'
-                      }`}
-                    />
-                  ))}
-                </div>
-                
-                {/* スクロールヒント */}
-                {currentCopyIndex === 0 && (
-                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-2 text-xs text-slate-400 animate-bounce">
-                    <span>スクロールしてコピーを切り替え</span>
-                    <ChevronRight className="h-3 w-3 rotate-90" />
-                  </div>
-                )}
-              </div>
-              <p className="text-slate-300/90 md:text-lg max-w-xl">
-                <span className="text-slate-200 font-medium">每天 2 个可执行小任务，让睡前更安、白天更稳。</span>
-                <br className="hidden md:block" />
-                <span className="mt-2 block">{t.hero.description}</span>
-              </p>
-              <div className="flex flex-wrap items-center gap-3">
-                <Button 
-                  className="bg-indigo-500 hover:bg-indigo-400 shadow-lg shadow-indigo-500/30"
-                  onClick={() => {
-                    // 埋点：Hero CTA 点击
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
-                      (window as any).gtag('event', 'hero_cta_click', { btn: 'try' })
-                    }
-                  }}
+                <motion.p 
+                  className="text-sm text-slate-400"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 6, duration: 0.5 }}
                 >
-                  {t.hero.startFree}
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="border-white/20 text-slate-200 hover:bg-white/10 bg-transparent"
-                  onClick={() => {
-                    // 滚动到等候名单
-                    document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })
-                    // 埋点：Hero CTA 点击
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
-                      (window as any).gtag('event', 'hero_cta_click', { btn: 'waitlist' })
-                    }
-                  }}
-                >
-                  加入等候名单 <ChevronRight className="ml-1 h-4 w-4" />
-                </Button>
-              </div>
+                  <FloatingLetters 
+                    text={t.hero.guardianCard}
+                    delay={0.5}
+                    floatIntensity={5}
+                  />
+                </motion.p>
+              </motion.div>
               
               {/* 社证徽章 */}
               <div className="flex flex-wrap items-center gap-4 pt-4">
@@ -1962,82 +2109,210 @@ export default function DreamLifeLanding() {
               </div>
             </motion.div>
 
-            {/* Mock devices */}
+            {/* Simplified Mock Device - Single Guardian Card Focus */}
             <motion.div variants={item} className="relative">
               <div className="relative mx-auto aspect-[9/18] h-[560px] w-[310px] rounded-[2rem] border border-white/10 bg-gradient-to-b from-slate-900 to-slate-800 p-3 shadow-2xl">
                 <div className="h-full w-full rounded-[1.6rem] bg-slate-900/90 overflow-hidden">
                   <div className="h-12 w-full bg-gradient-to-r from-indigo-500/30 via-fuchsia-500/30 to-cyan-500/30" />
-                  <div className="p-4 space-y-3">
-                    <div className="text-xs text-slate-400">今日卡牌</div>
-                    <div className="grid grid-cols-3 gap-3">
-                      {t.mockData.todayCards.map((cardName, i) => {
-                        const cardMeanings = [
-                          { meaning: "新的起点 / 机会", action: "给今日设定一个 5 分钟小目标" },
-                          { meaning: "探索 / 成长", action: "尝试一个新的小习惯" },
-                          { meaning: "平静 / 反思", action: "花 3 分钟冥想或深呼吸" }
-                        ];
-                        return (
-                          <div key={i} style={{ perspective: 600, aspectRatio: '3/5' }}>
-                            <FlipCard
-                              hover={false}
-                              className="cursor-pointer"
-                              front={
-                                <div className="h-full rounded-xl bg-white/5 border border-white/10 p-3 text-center flex flex-col justify-between">
-                          <div className="text-[10px] text-slate-400">SR{90 - i * 7}</div>
-                                  <div className="text-sm text-slate-200">{cardName}</div>
-                                  <div className="text-[9px] text-slate-500">点击翻面</div>
-                        </div>
-                              }
-                              back={
-                                <div className="h-full rounded-xl bg-white/5 border border-white/10 p-3 text-left flex flex-col justify-between">
-                                  <div>
-                                    <div className="text-[11px] text-slate-300">寓意：{cardMeanings[i].meaning}</div>
-                                    <div className="mt-1 text-[11px] text-slate-400">行动：{cardMeanings[i].action}</div>
-                                  </div>
-                                  <div className="text-[9px] text-slate-500">再次点击翻回</div>
-                                </div>
-                              }
-                            />
+                  <div className="p-6 flex flex-col items-center justify-center h-full space-y-6">
+                    <div className="text-center space-y-2">
+                      <div className="text-sm text-slate-400">今日の守護カード</div>
+                      <div className="text-lg text-slate-200 font-medium">Today's Guardian Card</div>
+                    </div>
+                    
+                    {/* Enhanced Guardian Card with Advanced 3D Effects */}
+                    <motion.div
+                      variants={animationVariants.cardBreathing}
+                      animate="animate"
+                      className="relative group cursor-pointer"
+                      style={{ perspective: "1000px" }}
+                      whileHover={{
+                        scale: 1.05,
+                        rotateX: 10,
+                        rotateY: 10,
+                      }}
+                      transition={{ 
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20
+                      }}
+                    >
+                      {/* 3D Card Container */}
+                      <motion.div 
+                        className="aspect-[3/5] w-32 rounded-xl relative preserve-3d"
+                        style={{ transformStyle: "preserve-3d" }}
+                      >
+                        {/* Main Card Face */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/20 via-fuchsia-500/20 to-purple-600/30 border border-white/20 p-4 text-center flex flex-col justify-between backdrop-blur-sm rounded-xl shadow-2xl">
+                          {/* Animated constellation pattern overlay */}
+                          <motion.div 
+                            className="absolute inset-0 opacity-30 rounded-xl overflow-hidden"
+                            animate={{ 
+                              backgroundPosition: ["0% 0%", "100% 100%"] 
+                            }}
+                            transition={{ 
+                              duration: 20, 
+                              repeat: Infinity, 
+                              ease: "linear" 
+                            }}
+                            style={{
+                              backgroundImage: `radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+                                              radial-gradient(1px 1px at 40% 70%, #d946ef, transparent),
+                                              radial-gradient(1px 1px at 90% 40%, #8b5cf6, transparent),
+                                              radial-gradient(1px 1px at 30% 80%, #06b6d4, transparent)`,
+                              backgroundSize: "100% 100%"
+                            }}
+                          />
+                          
+                          <div className="relative z-10">
+                            <motion.div 
+                              className="text-xs text-slate-400"
+                              animate={{ 
+                                rotate: [0, 360],
+                                scale: [1, 1.2, 1]
+                              }}
+                              transition={{ 
+                                duration: 8, 
+                                repeat: Infinity,
+                                ease: "easeInOut" 
+                              }}
+                            >
+                              ✦
+                            </motion.div>
                           </div>
-                        );
-                      })}
-                    </div>
-                    <div className="mt-4 rounded-xl border border-white/20 bg-slate-800/80 p-3">
-                      <div className="text-xs text-slate-400">梦境情绪概览</div>
-                      <div className="mt-2 flex items-center gap-2 text-sm text-slate-200">
-                        <Brain className="h-4 w-4" /> {t.mockData.emotionOverview}
-                      </div>
-                    </div>
-                    <div className="mt-3 rounded-xl border border-white/10 bg-gradient-to-r from-fuchsia-500/10 to-cyan-500/10 p-3">
-                      <div className="text-xs text-slate-300">今日养生</div>
-                      <ul className="mt-2 space-y-1 text-[13px] text-slate-200/90">
-                        {t.mockData.todayWellness.map((item, i) => (
-                          <li key={i}>• {item}</li>
+                          
+                          <div className="space-y-2 relative z-10">
+                            <div className="text-sm text-slate-200 font-medium">
+                              <GradientText 
+                                gradientFrom="#d946ef" 
+                                gradientTo="#8b5cf6"
+                                animationDuration={4}
+                              >
+                                守護の星
+                              </GradientText>
+                            </div>
+                            <div className="text-xs text-slate-400">Guardian Star</div>
+                          </div>
+                          
+                          <div className="text-xs text-slate-500 relative z-10">
+                            <motion.span
+                              animate={{ opacity: [0.5, 1, 0.5] }}
+                              transition={{ duration: 2, repeat: Infinity }}
+                            >
+                              タップして引く
+                            </motion.span>
+                          </div>
+                        </div>
+                      </motion.div>
+                      
+                      {/* Enhanced Magical Particle System */}
+                      <div className="absolute -inset-6 pointer-events-none">
+                        {/* Orbiting particles */}
+                        {Array.from({ length: 12 }).map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 rounded-full"
+                            style={{
+                              background: ["#d946ef", "#8b5cf6", "#06b6d4", "#f59e0b"][i % 4],
+                              left: "50%",
+                              top: "50%",
+                            }}
+                            animate={{
+                              rotate: [0, 360],
+                              scale: [0.5, 1.2, 0.5],
+                              opacity: [0.3, 1, 0.3],
+                            }}
+                            transition={{
+                              rotate: {
+                                duration: 8 + i * 0.5,
+                                repeat: Infinity,
+                                ease: "linear",
+                              },
+                              scale: {
+                                duration: 3 + i * 0.2,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: i * 0.2,
+                              },
+                              opacity: {
+                                duration: 2 + i * 0.3,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: i * 0.1,
+                              },
+                            }}
+                            style={{
+                              transformOrigin: `${20 + i * 3}px 0px`,
+                            }}
+                          />
                         ))}
-                      </ul>
+                        
+                        {/* Floating sparkles */}
+                        {Array.from({ length: 8 }).map((_, i) => (
+                          <motion.div
+                            key={`sparkle-${i}`}
+                            className="absolute text-xs opacity-60"
+                            style={{
+                              left: `${Math.random() * 100}%`,
+                              top: `${Math.random() * 100}%`,
+                              color: ["#d946ef", "#8b5cf6", "#06b6d4"][i % 3],
+                            }}
+                            variants={animationVariants.starTwinkle}
+                            animate="animate"
+                            transition={{
+                              delay: i * 0.3,
+                            }}
+                          >
+                            ✨
+                          </motion.div>
+                        ))}
+                        
+                        {/* Cosmic energy rings */}
+                        {Array.from({ length: 3 }).map((_, i) => (
+                          <motion.div
+                            key={`ring-${i}`}
+                            className="absolute inset-0 rounded-full border border-fuchsia-400/20"
+                            style={{
+                              transform: `scale(${1 + i * 0.3})`,
+                            }}
+                            animate={{
+                              rotate: [0, 360],
+                              opacity: [0.2, 0.6, 0.2],
+                              scale: [1 + i * 0.3, 1.2 + i * 0.3, 1 + i * 0.3],
+                            }}
+                            transition={{
+                              duration: 6 + i * 2,
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                              delay: i * 0.5,
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </motion.div>
+                    
+                    <div className="text-center space-y-1">
+                      <div className="text-xs text-slate-500">朝の儀式を始めましょう</div>
+                      <div className="text-xs text-slate-600">Begin your morning ritual</div>
                     </div>
                   </div>
                 </div>
               </div>
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="absolute -right-8 -bottom-6 hidden md:block"
-              >
-                <MiniCard title="炽羽者・IGNIS" subtitle="Persona 已解锁" icon={<Flame className="h-4 w-4" />} />
-              </motion.div>
             </motion.div>
           </motion.div>
         </div>
       </section>
+
+      {/* Constellation Cards Section */}
+      <ConstellationCardsSection />
 
       {/* Waiting List */}
       <section id="waitlist" className="py-6 md:py-10 -mt-8">
         <div className="mx-auto max-w-3xl px-4">
           <Card className={`${glassCardStyles.base} shadow-2xl`}>
             <CardContent className="p-6 md:p-8">
-              <h3 className={`text-xl md:text-2xl font-semibold ${glassCardStyles.text.primary}`}>{t.waitlist.title}</h3>
+              <h3 className={`text-xl md:text-2xl font-semibold ${glassCardStyles.text.primary}`}>{t?.waitlist?.title || 'Join Waitlist'}</h3>
+              <p className={`mt-1 text-base font-medium ${glassCardStyles.text.secondary}`}>{t.waitlist.subtitle}</p>
               <p className={`mt-2 text-sm ${glassCardStyles.text.muted}`}>
                 {t.waitlist.description}
               </p>
@@ -2066,8 +2341,8 @@ export default function DreamLifeLanding() {
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/10 to-slate-900/30" />
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-semibold text-slate-100 mb-4">
-              {t.psychology.title}
+            <h2 className="instrument text-2xl md:text-3xl font-normal text-slate-100 mb-4">
+              {t?.psychology?.title || 'Psychology'}
             </h2>
             <p className="text-slate-300/80 text-sm md:text-base mb-2">
               {t.psychology.subtitle}
@@ -2105,7 +2380,7 @@ export default function DreamLifeLanding() {
           
           <div className="max-w-3xl mx-auto">
             <h3 className={`text-lg font-medium ${glassCardStyles.text.primary} text-center mb-4`}>
-              {t.psychology.approach.title}
+              {t?.psychology?.approach?.title || 'Our Approach'}
             </h3>
             <div className="grid sm:grid-cols-2 gap-3 mb-6">
               {t.psychology.approach.items.map((item, index) => (
@@ -2127,7 +2402,7 @@ export default function DreamLifeLanding() {
         <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="max-w-2xl">
-            <h2 className="text-2xl md:text-4xl font-semibold">{t.features.title}</h2>
+            <h2 className="instrument text-2xl md:text-4xl font-normal">{t?.features?.title || 'Core Features'}</h2>
             <p className="mt-3 text-slate-300/90">
               {t.features.description}
             </p>
@@ -2136,35 +2411,92 @@ export default function DreamLifeLanding() {
           <div className="mt-10 grid md:grid-cols-3 gap-6">
             <FeatureCard
               icon={<Moon className="h-5 w-5" />}
-              title="AI梦境分析"
-              desc="60秒内语音/文字记录，提取象征/人物/场景与情绪分布，生成个性化梦境图谱。"
+              title={t?.features?.cards?.eveningRitual?.title || 'Evening Ritual'}
+              desc={t.features.cards.eveningRitual.description}
+              details={t.features.cards.eveningRitual.details}
             />
             <FeatureCard
               icon={<Sparkles className="h-5 w-5" />}
-              title="命运抽卡系统"
-              desc="基于梦象的个性化卡池，每日1-3张卡牌：主题寓意+可执行行动，建立生活仪式感。"
+              title={t?.features?.cards?.morningRitual?.title || 'Morning Ritual'}
+              desc={t.features.cards.morningRitual.description}
+              details={t.features.cards.morningRitual.details}
             />
             <FeatureCard
               icon={<Heart className="h-5 w-5" />}
-              title="个性化养生指南"
-              desc="呼吸法/作息提醒/饮食建议/冥想练习，每日2-3个微行动，改善睡眠与情绪。"
+              title={t?.features?.cards?.collectShare?.title || 'Collect & Share'}
+              desc={t.features.cards.collectShare.description}
+              details={t.features.cards.collectShare.details}
             />
           </div>
         </div>
       </section>
 
-      {/* SR Dashboard */}
-      <SRDashboard />
+      {/* Emotional Value Section */}
+      <section id="emotional-value" className="py-16 md:py-24 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 to-slate-800/60" />
+        <div className="mx-auto max-w-7xl px-4 relative z-10">
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="instrument text-2xl md:text-4xl font-normal">{t?.emotionalValue?.title || 'Emotional Value'}</h2>
+          </div>
 
-      {/* Day/Night Ritual Loop */}
-      <RitualLoopSection />
+          <div className="mt-10 grid md:grid-cols-3 gap-6">
+            <Card className={`${glassCardStyles.hover} bg-gradient-to-br from-pink-500/10 to-transparent border-pink-400/20`}>
+              <CardHeader>
+                <CardTitle className={`${glassCardStyles.text.primary} text-center`}>
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-pink-400/20 flex items-center justify-center">
+                    <Heart className="h-6 w-6 text-pink-300" />
+                  </div>
+                  {t?.emotionalValue?.cards?.comfort?.title || 'Comfort'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className={`${glassCardStyles.text.muted} text-sm text-center leading-relaxed`}>
+                  {t.emotionalValue.cards.comfort.description}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className={`${glassCardStyles.hover} bg-gradient-to-br from-purple-500/10 to-transparent border-purple-400/20`}>
+              <CardHeader>
+                <CardTitle className={`${glassCardStyles.text.primary} text-center`}>
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-400/20 flex items-center justify-center">
+                    <Sparkles className="h-6 w-6 text-purple-300" />
+                  </div>
+                  {t?.emotionalValue?.cards?.narrative?.title || 'Narrative'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className={`${glassCardStyles.text.muted} text-sm text-center leading-relaxed`}>
+                  {t.emotionalValue.cards.narrative.description}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className={`${glassCardStyles.hover} bg-gradient-to-br from-cyan-500/10 to-transparent border-cyan-400/20`}>
+              <CardHeader>
+                <CardTitle className={`${glassCardStyles.text.primary} text-center`}>
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-cyan-400/20 flex items-center justify-center">
+                    <Brain className="h-6 w-6 text-cyan-300" />
+                  </div>
+                  {t?.emotionalValue?.cards?.science?.title || 'Science'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className={`${glassCardStyles.text.muted} text-sm text-center leading-relaxed`}>
+                  {t.emotionalValue.cards.science.description}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
 
       {/* Meditation Hz Music */}
       <section id="meditation" className="py-16 md:py-24 relative">
         <div className="absolute inset-0 bg-slate-900/30" />
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="max-w-2xl">
-            <h2 className="text-2xl md:text-4xl font-semibold">冥想 · Hz 音乐 <Emoji emoji={EMOJIS.MUSIC} size={32} /></h2>
+            <h2 className="instrument text-2xl md:text-4xl font-normal">冥想 · Hz 音乐 <Emoji emoji={EMOJIS.MUSIC} size={32} /></h2>
             <p className="mt-3 text-slate-300/90">科学频率调节脑波，配合梦境分析结果，提供个性化的冥想音频体验。</p>
           </div>
 
@@ -2349,7 +2681,7 @@ export default function DreamLifeLanding() {
         <div className="mx-auto max-w-5xl px-4 relative z-10">
           <Card className={`${glassCardStyles.base} shadow-2xl`}>
             <CardContent className="p-8 md:p-12 text-center">
-              <h3 className={`text-2xl md:text-4xl font-semibold ${glassCardStyles.text.primary}`}>{t.cta.title}</h3>
+              <h3 className={`text-2xl md:text-4xl font-semibold ${glassCardStyles.text.primary}`}>{t?.cta?.title || 'Get Started'}</h3>
               <p className={`mt-3 ${glassCardStyles.text.muted}`}>{t.cta.description}</p>
               <div className="mt-6 flex justify-center gap-3">
                 <Button className="bg-indigo-500/80 hover:bg-indigo-400/90 backdrop-blur-sm border border-white/10">{t.cta.downloadApp}</Button>
@@ -2366,6 +2698,18 @@ export default function DreamLifeLanding() {
       <footer className="py-10 border-t border-white/10 relative">
         <div className="absolute inset-0 bg-slate-900/80" />
         <div className="mx-auto max-w-7xl px-4 relative z-10">
+          {/* Social Proof */}
+          <div className={`mb-6 p-6 rounded-xl ${glassCardStyles.base} text-center`}>
+            <div className="space-y-3">
+              <p className={`text-sm ${glassCardStyles.text.muted} leading-relaxed`}>
+                {t.footer.socialProof.cbt}
+              </p>
+              <p className={`text-sm ${glassCardStyles.text.secondary} leading-relaxed font-medium`}>
+                {t.footer.socialProof.nextGen}
+              </p>
+            </div>
+          </div>
+
           {/* 医疗声明 */}
           <div className={`mb-6 p-4 rounded-xl ${glassCardStyles.base} text-center`}>
             <p className={`text-sm ${glassCardStyles.text.muted} leading-relaxed`}>
@@ -2384,7 +2728,7 @@ export default function DreamLifeLanding() {
                   className="w-4 h-4 object-contain"
                 />
               </div>
-              <span>REMia by Synova Whisper © {new Date().getFullYear()}</span>
+              <span>{t.footer.socialProof.company}</span>
           </div>
           <div className="flex items-center gap-6">
               <a className="hover:text-slate-200" href="https://www.synovawhisper.com" target="_blank" rel="noopener noreferrer">

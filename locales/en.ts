@@ -13,11 +13,15 @@ export const en = {
 
   // Hero Section
   hero: {
-    badge: 'Dream Analysis × Card Drawing × Wellness Guide × Persona Companion',
-    title: 'Turn your dreams into ',
-    titleHighlight: 'daytime guidance',
-    description: 'Improve sleep quality, regulate emotions and stress, build life rituals. Record last night\'s stories, AI interprets symbols and emotions; draw today\'s "Destiny Card" to get personalized breathing/diet/routine advice; unlock dream Personas that resonate with you.',
-    startFree: 'Start Free',
+    badge: 'AI電気羊と、ともに夢を見る時代へ',
+    title: 'REMia',
+    titleHighlight: '',
+    tagline: 'Dreams with AI Electric Sheep',
+    valueProposition: 'Sleep peacefully with counting sheep, align your mind with morning cards.',
+    subtitle: 'CBT × Mindfulness × Entertainment Ritual App.',
+    description: '',
+    startFree: 'Join the Waitlist',
+    guardianCard: 'Get your first guardian card upon signup',
     viewDemo: 'View Demo',
     noRegistration: 'No registration required · Local privacy mode',
     features: {

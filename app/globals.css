@@ -287,3 +287,221 @@ a, button, [role="button"], input, textarea, select, div, span, p, h1, h2, h3, h
   backface-visibility: hidden;
   transform-style: preserve-3d;
 }
+
+/* Additional Magical Keyframes for Enhanced Animations */
+@keyframes mystical-glow {
+  0%, 100% {
+    text-shadow: 
+      0 0 5px rgba(217, 70, 239, 0.3),
+      0 0 10px rgba(217, 70, 239, 0.3),
+      0 0 15px rgba(217, 70, 239, 0.3);
+  }
+  50% {
+    text-shadow: 
+      0 0 10px rgba(217, 70, 239, 0.8),
+      0 0 20px rgba(217, 70, 239, 0.8),
+      0 0 30px rgba(217, 70, 239, 0.8);
+  }
+}
+
+@keyframes aurora-shift {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes constellation-drift {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; }
+  25% { transform: translate(10px, -5px) rotate(90deg); opacity: 0.7; }
+  50% { transform: translate(5px, -10px) rotate(180deg); opacity: 1; }
+  75% { transform: translate(-5px, -5px) rotate(270deg); opacity: 0.7; }
+  100% { transform: translate(0, 0) rotate(360deg); opacity: 0.3; }
+}
+
+@keyframes cosmic-breath {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  50% {
+    transform: scale(1.05) rotate(5deg);
+    filter: hue-rotate(15deg) brightness(1.2);
+  }
+}
+
+@keyframes particle-orbit {
+  0% {
+    transform: rotate(0deg) translateX(30px) rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) translateX(30px) rotate(-360deg);
+    opacity: 0.3;
+  }
+}
+
+@keyframes text-shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+@keyframes magical-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.8) rotateX(-90deg);
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(15px) scale(0.9) rotateX(-45deg);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+    filter: blur(0px);
+  }
+}
+
+@keyframes energy-pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 5px rgba(217, 70, 239, 0.3),
+      0 0 10px rgba(217, 70, 239, 0.3),
+      inset 0 0 10px rgba(217, 70, 239, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 0 15px rgba(217, 70, 239, 0.8),
+      0 0 30px rgba(217, 70, 239, 0.8),
+      inset 0 0 20px rgba(217, 70, 239, 0.3);
+  }
+}
+
+@keyframes dimension-shift {
+  0% {
+    perspective: 1000px;
+    transform: rotateX(0deg) rotateY(0deg) translateZ(0px);
+  }
+  25% {
+    perspective: 1200px;
+    transform: rotateX(5deg) rotateY(10deg) translateZ(20px);
+  }
+  50% {
+    perspective: 800px;
+    transform: rotateX(-5deg) rotateY(-10deg) translateZ(40px);
+  }
+  75% {
+    perspective: 1500px;
+    transform: rotateX(10deg) rotateY(5deg) translateZ(20px);
+  }
+  100% {
+    perspective: 1000px;
+    transform: rotateX(0deg) rotateY(0deg) translateZ(0px);
+  }
+}
+
+/* Animation utility classes */
+.animate-mystical-glow {
+  animation: mystical-glow 3s ease-in-out infinite;
+}
+
+.animate-aurora-shift {
+  animation: aurora-shift 8s linear infinite;
+}
+
+.animate-constellation-drift {
+  animation: constellation-drift 12s ease-in-out infinite;
+}
+
+.animate-cosmic-breath {
+  animation: cosmic-breath 6s ease-in-out infinite;
+}
+
+.animate-particle-orbit {
+  animation: particle-orbit 8s linear infinite;
+}
+
+.animate-text-shimmer {
+  animation: text-shimmer 2s linear infinite;
+}
+
+.animate-magical-reveal {
+  animation: magical-reveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-energy-pulse {
+  animation: energy-pulse 4s ease-in-out infinite;
+}
+
+.animate-dimension-shift {
+  animation: dimension-shift 10s ease-in-out infinite;
+}
+
+/* Performance optimizations for animations */
+.animate-optimized {
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  contain: layout style paint;
+}
+
+/* 3D transform utilities */
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Improved layer management for complex animations */
+.animation-layer {
+  position: relative;
+  z-index: 0;
+}
+
+.animation-layer::before,
+.animation-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Hardware acceleration hints */
+.hardware-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Reduce motion media query support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin-slow,
+  .animate-float,
+  .animate-twinkle,
+  .animate-pulse-glow,
+  .animate-mystical-glow,
+  .animate-aurora-shift,
+  .animate-constellation-drift,
+  .animate-cosmic-breath,
+  .animate-particle-orbit,
+  .animate-text-shimmer,
+  .animate-energy-pulse,
+  .animate-dimension-shift {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

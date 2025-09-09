@@ -104,8 +104,8 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-white">
             <Emoji emoji={EMOJIS.CRYSTAL} size={24} />
-            <span className="font-light tracking-tight">
-              <span className="font-medium italic">Synchrony</span> Rate Dashboard
+            <span className="instrument text-lg font-normal tracking-tight">
+              <span className="text-purple-400 italic">Synchrony</span> Rate Metrics
             </span>
             <Badge className={`ml-auto ${totalLevel.bg} ${totalLevel.color} border-0`}>
               {totalLevel.level}
@@ -132,8 +132,8 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
             {/* SR詳細 */}
             <div className="space-y-4">
               <div className="text-center md:text-left">
-                <h3 className="text-4xl md:text-5xl font-light tracking-tight text-white mb-2">
-                  <span className="font-medium italic">Synchrony</span> {srData.total}%
+                <h3 className="instrument text-4xl md:text-5xl font-normal tracking-tight text-white mb-2">
+                  <span className="text-purple-400 italic">Synchrony</span> {srData.total}%
                 </h3>
                 <p className="text-white/70 font-light text-sm mb-4 leading-relaxed">
                   夢と現実の同期率を測定する革新的な指標
@@ -169,8 +169,8 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Emoji emoji={EMOJIS.HEART} size={20} />
-              <span className="text-sm font-light tracking-tight text-white">
-                <span className="font-medium italic">Emotion</span> SR
+              <span className="instrument text-sm font-normal tracking-tight text-white">
+                <span className="text-purple-400 italic">Emotion</span> SR
               </span>
             </div>
             <div className="space-y-2">
@@ -194,8 +194,8 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Emoji emoji={EMOJIS.STAR} size={20} />
-              <span className="text-sm font-light tracking-tight text-white">
-                <span className="font-medium italic">Symbol</span> SR
+              <span className="instrument text-sm font-normal tracking-tight text-white">
+                <span className="text-purple-400 italic">Symbol</span> SR
               </span>
             </div>
             <div className="space-y-2">
@@ -219,8 +219,8 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Emoji emoji={EMOJIS.ARROW_RIGHT} size={20} />
-              <span className="text-sm font-light tracking-tight text-white">
-                <span className="font-medium italic">Action</span> SR
+              <span className="instrument text-sm font-normal tracking-tight text-white">
+                <span className="text-purple-400 italic">Action</span> SR
               </span>
             </div>
             <div className="space-y-2">
@@ -244,9 +244,9 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
       <Card className="bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border-purple-500/20 backdrop-blur-sm">
         <CardContent className="p-6">
           <div className="text-center">
-            <h4 className="text-lg font-light tracking-tight text-white mb-2">
+            <h4 className="instrument text-lg font-normal tracking-tight text-white mb-2">
               <Emoji emoji={EMOJIS.BRAIN} size={20} className="mr-2" />
-              <span className="font-medium italic">Synchrony</span> Rate とは？
+              <span className="text-purple-400 italic">Synchrony</span> Rate とは？
             </h4>
             <p className="text-white/70 font-light text-sm leading-relaxed">
               SRは夢と現実の同期率を測定する革新的な指標です。

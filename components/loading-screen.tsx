@@ -14,9 +14,15 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
   const [isInstagramEmbed, setIsInstagramEmbed] = useState(false)
 
   useEffect(() => {
-    // Instagram/LinkedIn等の埋め込みブラウザを検出
-    const userAgent = navigator.userAgent.toLowerCase()
-    const referrer = document.referrer.toLowerCase()
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || typeof navigator === 'undefined' || typeof document === 'undefined') {
+      return
+    }
+
+    try {
+      // Instagram/LinkedIn等の埋め込みブラウザを検出
+      const userAgent = navigator.userAgent.toLowerCase()
+      const referrer = document.referrer.toLowerCase()
     
     const isEmbedded = userAgent.includes('instagram') || 
                      userAgent.includes('linkedin') || 
@@ -57,9 +63,14 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
       onLoadingComplete()
     }, isEmbedded ? 3000 : 5000)
 
-    return () => {
-      clearTimeout(timer)
-      clearTimeout(fallbackTimer)
+      return () => {
+        clearTimeout(timer)
+        clearTimeout(fallbackTimer)
+      }
+    } catch (error) {
+      // Fallback for environments where browser APIs aren't available
+      console.warn('Browser APIs not available during SSR')
+      setIsInstagramEmbed(false)
     }
   }, [onLoadingComplete, isImageLoaded])
 
@@ -129,11 +140,11 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
             <div className="relative">
               {/* テキストの影 */}
               <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-white to-indigo-400 bg-clip-text text-transparent text-lg font-light tracking-wider uppercase blur-sm opacity-50">
-                REMia
+                SYNOVA WHISPER
               </div>
               {/* メインテキスト */}
               <div className="relative bg-gradient-to-r from-purple-400 via-white to-indigo-400 bg-clip-text text-transparent text-lg font-light tracking-wider uppercase">
-                REMia
+                SYNOVA WHISPER
               </div>
             </div>
             
@@ -250,11 +261,11 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
               <div className="relative">
                 {/* テキストの影 */}
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-white to-indigo-400 bg-clip-text text-transparent text-xl md:text-2xl font-light tracking-[0.3em] uppercase blur-sm opacity-50">
-                  REMia
+                  SYNOVA WHISPER
                 </div>
                 {/* メインテキスト */}
                 <div className="relative bg-gradient-to-r from-purple-400 via-white to-indigo-400 bg-clip-text text-transparent text-xl md:text-2xl font-light tracking-[0.3em] uppercase">
-                  REMia
+                  SYNOVA WHISPER
                 </div>
               </div>
               

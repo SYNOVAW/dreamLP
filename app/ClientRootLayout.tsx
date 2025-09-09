@@ -12,7 +12,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   const isMobile = useMediaQuery("(max-width: 768px)")
   
   // Instagram/LinkedIn等の埋め込みビューを検出
-  const isInstagramEmbed = typeof window !== "undefined" && 
+  const isInstagramEmbed = typeof window !== "undefined" && typeof document !== "undefined" && 
     (window.location.href.includes("instagram.com") || 
      window.navigator.userAgent.includes("Instagram") ||
      window.navigator.userAgent.includes("LinkedIn") ||
