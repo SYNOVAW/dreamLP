@@ -88,6 +88,7 @@ export const EMOJIS = {
   CALENDAR: '📅',
   SUNRISE: '🌅',
   SUNSET: '🌇',
+  SUN: '☀️',
   
   // 食べ物・飲み物
   COFFEE: '☕',
@@ -101,7 +102,8 @@ export const EMOJIS = {
   ROCKET: '🚀',
   MAGIC: '🪄',
   CRYSTAL: '🔮',
-  USERS: '👥'
+  USERS: '👥',
+  REFRESH: '🔄'
 } as const
 
 // 絵文字のカテゴリ別グループ
