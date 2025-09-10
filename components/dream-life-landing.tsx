@@ -21,7 +21,6 @@ import {
   MagicalReveal,
   ShimmerText 
 } from "@/components/magical-typography"
-import { animationVariants } from "@/hooks/use-animation"
 
 // JayVue: one-file landing page, Tailwind + shadcn/ui + framer-motion
 // Sections: Hero / Waitlist / Social Proof / Features / Meditation Hz Music / How It Works / Persona / Pricing / FAQ / CTA / Footer
@@ -36,7 +35,58 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120, damping: 16 } },
+  show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 120, damping: 16 } },
+}
+
+const animationVariants = {
+  nebulaSwirl: {
+    animate: {
+      rotate: 360,
+      scale: [1, 1.2, 1],
+      opacity: [0.3, 0.6, 0.3],
+      transition: {
+        rotate: { duration: 20, repeat: Infinity, ease: "linear" as const },
+        scale: { duration: 8, repeat: Infinity, ease: "easeInOut" as const },
+        opacity: { duration: 6, repeat: Infinity, ease: "easeInOut" as const },
+      },
+    },
+  },
+  logoGlow: {
+    animate: {
+      filter: ["brightness(1)", "brightness(1.2)", "brightness(1)"],
+      transition: { duration: 3, repeat: Infinity, ease: "easeInOut" as const },
+    },
+  },
+  buttonMagical: {
+    rest: { scale: 1, boxShadow: "0 0 0 0 rgba(168, 85, 247, 0)" },
+    hover: { 
+      scale: 1.05, 
+      boxShadow: "0 0 20px 5px rgba(168, 85, 247, 0.3)",
+      background: "linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1))",
+      transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
+    },
+    tap: { scale: 0.95, transition: { duration: 0.1 } },
+  },
+  cardBreathing: {
+    animate: {
+      scale: [1, 1.02, 1],
+      rotateZ: [0, 1, 0],
+      boxShadow: [
+        "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+        "0 10px 15px -3px rgba(168, 85, 247, 0.1)",
+        "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+      ],
+      transition: { duration: 4, repeat: Infinity, ease: "easeInOut" as const },
+    },
+  },
+  starTwinkle: {
+    animate: {
+      opacity: [0.3, 1, 0.3],
+      scale: [0.8, 1.2, 0.8],
+      rotate: [0, 180, 360],
+      transition: { duration: 3, repeat: Infinity, ease: "easeInOut" as const, times: [0, 0.5, 1] },
+    },
+  },
 }
 
 /* AI Card Art helpers + PersonaCardPro */
@@ -106,7 +156,7 @@ function CardArt({ seed, personaName }: { seed: string; personaName?: string }) 
       )}
       
       {/* 渐变遮罩层，确保文字可读性 */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10 rounded-xl" />
+      
     </div>
   );
 }
@@ -439,7 +489,6 @@ function WaitlistForm() {
       
       const { error: supabaseError } = await insertWaitlistEntry({
         email,
-        birthday: birthday || null,
         intent: intent || 'unknown',
         utm,
         timezone,
@@ -767,7 +816,7 @@ function SheepCountingSection(){
   const [sheepCount, setSheepCount] = React.useState(0)
   const [isCounting, setIsCounting] = React.useState(false)
   const [currentSheep, setCurrentSheep] = React.useState<{id: number, type: 'normal' | 'rare', message?: string} | null>(null)
-  const [wellnessTip, setWellnessTip] = React.useState<string | null>(null)
+  const [wellnessTip, setWellnessTip] = React.useState<React.ReactElement | null>(null)
   const [showCompletion, setShowCompletion] = React.useState(false)
 
   // 养生提示
@@ -809,7 +858,7 @@ function SheepCountingSection(){
     
     const sheep = {
       id: newCount,
-      type: sheepType,
+      type: sheepType as "normal" | "rare",
       message: sheepType === 'rare' ? '✨ 稀有梦之羊出现了！' : undefined
     }
     
@@ -847,7 +896,7 @@ function SheepCountingSection(){
 
   return (
     <section id="sheep-counting" className="py-16 md:py-24 border-t border-white/10 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-indigo-900/10 to-purple-900/10" />
+      
       
       <div className="mx-auto max-w-4xl px-4 relative z-10">
         <motion.div
@@ -1118,7 +1167,7 @@ function CyberWellnessSection(){
 
   return (
     <section id="cyber-wellness" className="py-16 md:py-24 border-t border-white/10 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-purple-900/10 to-pink-900/10" />
+      
       
       <div className="mx-auto max-w-7xl px-4 relative z-10">
         <motion.div
@@ -1257,7 +1306,7 @@ function AIElectricSheepSection(){
 
   return (
     <section className="py-16 md:py-24 border-t border-white/10 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-slate-900/40 to-purple-900/20" />
+      
       <div className="mx-auto max-w-7xl px-4 relative z-10">
         
         <div className="text-center mb-12">
@@ -1695,7 +1744,7 @@ export default function DreamLifeLanding() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-slate-900/40 z-0" />
+        
         
         {/* Enhanced Cosmic Background */}
         <div className="absolute inset-0 -z-10 pointer-events-none">
@@ -1794,7 +1843,7 @@ export default function DreamLifeLanding() {
                     speed={80}
                     className="inline-block"
                   />
-                </div>
+              </div>
               </div>
               
               {/* Enhanced Value proposition with Word Reveal */}
@@ -1855,7 +1904,7 @@ export default function DreamLifeLanding() {
                       <ShimmerText>{t.hero.startFree}</ShimmerText>
                       <ChevronRight className="ml-2 h-5 w-5" />
                     </span>
-                  </Button>
+                </Button>
                   
                   {/* Particle effects around button */}
                   <div className="absolute -inset-2 pointer-events-none">
@@ -1935,7 +1984,7 @@ export default function DreamLifeLanding() {
                     <div className="text-center space-y-2">
                       <div className="text-sm text-slate-400">今日の守護カード</div>
                       <div className="text-lg text-slate-200 font-medium">Today's Guardian Card</div>
-                    </div>
+                        </div>
                     
                     {/* Enhanced Guardian Card with Advanced 3D Effects */}
                     <motion.div
@@ -1996,7 +2045,7 @@ export default function DreamLifeLanding() {
                             >
                               ✦
                             </motion.div>
-                          </div>
+                    </div>
                           
                           <div className="space-y-2 relative z-10">
                             <div className="text-sm text-slate-200 font-medium">
@@ -2007,9 +2056,9 @@ export default function DreamLifeLanding() {
                               >
                                 守護の星
                               </GradientText>
-                            </div>
+                      </div>
                             <div className="text-xs text-slate-400">Guardian Star</div>
-                          </div>
+                    </div>
                           
                           <div className="text-xs text-slate-500 relative z-10">
                             <motion.span
@@ -2018,21 +2067,22 @@ export default function DreamLifeLanding() {
                             >
                               タップして引く
                             </motion.span>
-                          </div>
-                        </div>
+                    </div>
+                  </div>
                       </motion.div>
                       
                       {/* Enhanced Magical Particle System */}
                       <div className="absolute -inset-6 pointer-events-none">
                         {/* Orbiting particles */}
                         {Array.from({ length: 12 }).map((_, i) => (
-                          <motion.div
+              <motion.div
                             key={i}
                             className="absolute w-1 h-1 rounded-full"
                             style={{
                               background: ["#d946ef", "#8b5cf6", "#06b6d4", "#f59e0b"][i % 4],
                               left: "50%",
                               top: "50%",
+                              transformOrigin: `${20 + i * 3}px 0px`,
                             }}
                             animate={{
                               rotate: [0, 360],
@@ -2058,9 +2108,6 @@ export default function DreamLifeLanding() {
                                 delay: i * 0.1,
                               },
                             }}
-                            style={{
-                              transformOrigin: `${20 + i * 3}px 0px`,
-                            }}
                           />
                         ))}
                         
@@ -2081,7 +2128,7 @@ export default function DreamLifeLanding() {
                             }}
                           >
                             ✨
-                          </motion.div>
+              </motion.div>
                         ))}
                         
                         {/* Cosmic energy rings */}
@@ -2142,7 +2189,7 @@ export default function DreamLifeLanding() {
 
       {/* Social proof */}
       <section className="py-8 md:py-12 border-t border-white/10 relative">
-        <div className="absolute inset-0 bg-slate-900/30" />
+        
         <div className="mx-auto max-w-6xl px-4 grid grid-cols-2 md:grid-cols-4 gap-6 opacity-80 relative z-10">
           {["改善睡眠", "情绪调节", "个性化养生", "隐私优先"].map((t, i) => (
             <div key={i} className="flex items-center gap-2 text-sm text-slate-300">
@@ -2155,7 +2202,7 @@ export default function DreamLifeLanding() {
 
       {/* Psychology Education */}
       <section className="py-16 md:py-20 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/10 to-slate-900/30" />
+        
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="text-center mb-12">
             <h2 className="instrument text-2xl md:text-3xl font-normal text-slate-100 mb-4">
@@ -2179,16 +2226,16 @@ export default function DreamLifeLanding() {
                 <div className="text-center">
                   <div className="text-2xl mb-3">{icon}</div>
                   <h3 className={`font-medium ${glassCardStyles.text.primary} mb-1`}>
-                    {t.psychology.theories[key].name}
+                    {t.psychology.theories[key as keyof typeof t.psychology.theories].name}
                   </h3>
                   <p className={`text-xs ${glassCardStyles.text.subtle} mb-2`}>
-                    {t.psychology.theories[key].period}
+                    {t.psychology.theories[key as keyof typeof t.psychology.theories].period}
                   </p>
                   <p className={`text-sm ${glassCardStyles.text.accent} mb-3 font-medium`}>
-                    {t.psychology.theories[key].theory}
+                    {t.psychology.theories[key as keyof typeof t.psychology.theories].theory}
                   </p>
                   <p className={`text-xs ${glassCardStyles.text.muted} leading-relaxed`}>
-                    {t.psychology.theories[key].description}
+                    {t.psychology.theories[key as keyof typeof t.psychology.theories].description}
                   </p>
                 </div>
               </Card>
@@ -2216,7 +2263,7 @@ export default function DreamLifeLanding() {
 
       {/* Features */}
       <section id="features" className="py-16 md:py-24 relative">
-        <div className="absolute inset-0 bg-slate-900/30" />
+        
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="max-w-2xl">
             <h2 className="instrument text-2xl md:text-4xl font-normal">{t?.features?.title || 'Core Features'}</h2>
@@ -2250,7 +2297,7 @@ export default function DreamLifeLanding() {
 
       {/* Emotional Value Section */}
       <section id="emotional-value" className="py-16 md:py-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 to-slate-800/60" />
+        
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="instrument text-2xl md:text-4xl font-normal">{t?.emotionalValue?.title || 'Emotional Value'}</h2>
@@ -2310,7 +2357,7 @@ export default function DreamLifeLanding() {
 
       {/* Meditation Hz Music */}
       <section id="meditation" className="py-16 md:py-24 relative">
-        <div className="absolute inset-0 bg-slate-900/30" />
+        
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="max-w-2xl">
             <h2 className="instrument text-2xl md:text-4xl font-normal">冥想 · Hz 音乐 <Emoji emoji={EMOJIS.MUSIC} size={32} /></h2>
@@ -2342,7 +2389,7 @@ export default function DreamLifeLanding() {
 
       {/* How it works */}
       <section id="how" className="py-16 relative">
-        <div className="absolute inset-0 bg-slate-900/30" />
+        
         <div className="mx-auto max-w-7xl px-4 grid md:grid-cols-2 gap-10 items-center relative z-10">
           <div>
             <h3 className="text-2xl md:text-3xl font-semibold">3步开始</h3>
@@ -2390,7 +2437,7 @@ export default function DreamLifeLanding() {
 
       {/* Persona */}
       <section id="persona" className="py-16 md:py-24 border-t border-white/10 relative">
-        <div className="absolute inset-0 bg-slate-900/30" />
+        
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <div className="max-w-2xl">
             <h3 className="text-2xl md:text-4xl font-semibold">解锁 Persona · 梦中同伴</h3>
@@ -2415,7 +2462,6 @@ export default function DreamLifeLanding() {
       <SheepCountingSection />
 
       {/* 今日卡 Today's Card */}
-      <TodaysCardSection />
 
       {/* 赛博养生 Cyber Wellness */}
       <CyberWellnessSection />
@@ -2425,7 +2471,7 @@ export default function DreamLifeLanding() {
 
       {/* Pricing */}
       <section id="pricing" className="py-16 md:py-24 relative">
-        <div className="absolute inset-0 bg-slate-900/30" />
+        
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           <h3 className="text-2xl md:text-4xl font-semibold">价格方案</h3>
           <p className="mt-2 text-slate-300/90">从入门到深度陪伴，支持订阅制与次卡制，按需选择。</p>
@@ -2460,7 +2506,7 @@ export default function DreamLifeLanding() {
 
       {/* FAQ */}
       <section id="faq" className="py-16 border-t border-white/10 relative">
-        <div className="absolute inset-0 bg-slate-900/30" />
+        
         <div className="mx-auto max-w-4xl px-4 relative z-10">
           <h3 className="text-2xl md:text-4xl font-semibold">常见问题</h3>
           <Accordion type="single" collapsible className="mt-6">
@@ -2494,7 +2540,7 @@ export default function DreamLifeLanding() {
 
       {/* CTA */}
       <section className="py-16 md:py-24 relative">
-        <div className="absolute inset-0 bg-slate-900/30" />
+        
         <div className="mx-auto max-w-5xl px-4 relative z-10">
           <Card className={`${glassCardStyles.base} shadow-2xl`}>
             <CardContent className="p-8 md:p-12 text-center">
@@ -2513,7 +2559,7 @@ export default function DreamLifeLanding() {
 
       {/* Footer */}
       <footer className="py-10 border-t border-white/10 relative">
-        <div className="absolute inset-0 bg-slate-900/80" />
+        
         <div className="mx-auto max-w-7xl px-4 relative z-10">
           {/* Social Proof */}
           <div className={`mb-6 p-6 rounded-xl ${glassCardStyles.base} text-center`}>
@@ -2561,7 +2607,7 @@ export default function DreamLifeLanding() {
           </div>
         </div>
       </footer>
-      </div>
+    </div>
     </>
   )
 }

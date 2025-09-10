@@ -9,30 +9,64 @@ import { Emoji, EMOJIS } from '@/components/emoji'
 
 interface SRData {
   total: number
-  emotion: number
-  symbol: number
-  action: number
+  dimensions?: {
+    emotion: number
+    symbol: number
+    action: number
+  }
+  emotion?: number
+  symbol?: number
+  action?: number
   trend: 'up' | 'down' | 'stable'
+  trendValue?: number
   lastUpdate: string
+  syncLevel?: string
+  streakDays?: number
+  weeklyTrend?: Array<{
+    day: string
+    value: number
+    date: Date
+  }>
+  achievements?: Array<{
+    id?: string
+    title: string
+    description: string
+    unlocked: boolean
+    icon?: string
+    level?: string
+    progress?: number
+  }>
 }
 
 interface SRDashboardProps {
   data?: SRData
   className?: string
+  language?: string
+  theme?: any
+  animationSpeed?: string | number
+  onMetricClick?: (metric: string, value?: number) => void
+  onAchievementClick?: (achievement: any) => void
 }
 
 export default function SRDashboard({ data, className = '' }: SRDashboardProps) {
   // デフォルトデータ（実際のアプリではAPIから取得）
   const defaultData: SRData = {
     total: 68,
-    emotion: 72,
-    symbol: 65,
-    action: 67,
+    dimensions: {
+      emotion: 72,
+      symbol: 65,
+      action: 67
+    },
     trend: 'up',
     lastUpdate: '2時間前'
   }
 
   const srData = data || defaultData
+  
+  // データの正規化
+  const emotionValue = srData.dimensions?.emotion || srData.emotion || 0
+  const symbolValue = srData.dimensions?.symbol || srData.symbol || 0
+  const actionValue = srData.dimensions?.action || srData.action || 0
 
   // SRレベル判定
   const getSRLevel = (value: number) => {
@@ -176,10 +210,10 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-slate-300">感情同期</span>
-                <span className="text-white font-medium">{srData.emotion}%</span>
+                <span className="text-white font-medium">{emotionValue}%</span>
               </div>
               <Progress 
-                value={srData.emotion} 
+                value={emotionValue} 
                 className="h-2 bg-white/10"
               />
               <p className="text-xs text-slate-400">
@@ -201,10 +235,10 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-slate-300">象徴同期</span>
-                <span className="text-white font-medium">{srData.symbol}%</span>
+                <span className="text-white font-medium">{symbolValue}%</span>
               </div>
               <Progress 
-                value={srData.symbol} 
+                value={symbolValue} 
                 className="h-2 bg-white/10"
               />
               <p className="text-xs text-slate-400">
@@ -226,10 +260,10 @@ export default function SRDashboard({ data, className = '' }: SRDashboardProps) 
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-slate-300">行動同期</span>
-                <span className="text-white font-medium">{srData.action}%</span>
+                <span className="text-white font-medium">{actionValue}%</span>
               </div>
               <Progress 
-                value={srData.action} 
+                value={actionValue} 
                 className="h-2 bg-white/10"
               />
               <p className="text-xs text-slate-400">

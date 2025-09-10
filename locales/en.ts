@@ -17,7 +17,7 @@ export const en = {
     title: 'REMia',
     titleHighlight: '',
     tagline: 'Dreams with AI Electric Sheep',
-    valueProposition: 'Sleep peacefully with counting sheep, align your mind with morning cards.',
+    valueProposition: 'Sleep peacefully while counting sheep, align your mind with morning card guidance.',
     subtitle: 'CBT × Mindfulness × Entertainment Ritual App.',
     description: '',
     startFree: 'Join the Waitlist',
@@ -33,9 +33,11 @@ export const en = {
 
   // Waitlist Section
   waitlist: {
-    title: 'Join Waitlist · Early Beta Access',
-    description: 'Leave your email to get beta access and limited Persona theme packs. We\'ll only contact you for important updates.',
+    title: 'Enter your birthday to unlock your first guardian constellation card',
+    subtitle: 'Get invited to the limited alpha version',
+    description: 'Leave your email and birthday to get beta access and limited guardian constellation cards. We\'ll only contact you for important updates.',
     emailPlaceholder: 'Your email address',
+    birthdayPlaceholder: 'Birthday (YYYY-MM-DD)',
     intentLabel: 'What you most want to improve…',
     intentOptions: {
       default: 'Select an option',
@@ -43,9 +45,9 @@ export const en = {
       mood: 'Emotions & stress',
       ritual: 'Life rituals'
     },
-    joinButton: 'Join Waitlist',
+    joinButton: 'Get Card',
     submitting: 'Submitting...',
-    successMessage: '✅ Successfully joined waitlist. Please check your email for Beta invitation and download instructions.',
+    successMessage: '✅ Successfully joined waitlist. Please check your email for Beta invitation and your exclusive guardian card.',
     privacy: 'By submitting, you agree to our Privacy Policy and Terms of Service (unsubscribe anytime).'
   },
 
@@ -94,11 +96,11 @@ export const en = {
   // Features Section
   features: {
     title: 'Core Features',
-    description: 'Solve pain points of poor sleep quality, difficult emotion regulation, and lack of life rituals by translating dream language into actionable daily guidance.',
+    description: 'Address challenges with poor sleep quality, emotional regulation difficulties, and lack of meaningful daily rituals by translating dream language into actionable daily guidance.',
     cards: {
       analysis: {
         title: 'AI Dream Analysis',
-        description: 'Voice/text recording within 60 seconds, extract symbols/characters/scenes and emotion distribution, generate personalized dream maps.'
+        description: 'Record dreams via voice or text within 60 seconds of waking; extract symbols, characters, and scenes with emotion distribution to generate personalized dream maps.'
       },
       cards: {
         title: 'Destiny Card System',
@@ -122,6 +124,25 @@ export const en = {
         title: '🎴 Collect & Share',
         description: 'Collection album',
         details: 'Limited cards, dream realm characters, SNS sharing for daily cards with friends'
+      }
+    }
+  },
+
+  // Emotional Value Section  
+  emotionalValue: {
+    title: 'Emotional Value',
+    cards: {
+      comfort: {
+        title: 'Sense of Security',
+        description: 'Daily companion guardian characters'
+      },
+      narrative: {
+        title: 'Personal Story',
+        description: 'Archetypes encountered in dreams'
+      },
+      science: {
+        title: 'Scientific Foundation',
+        description: 'Self-care based on CBT & Mindfulness'
       }
     }
   },
@@ -365,6 +386,11 @@ export const en = {
 
   // Footer
   footer: {
+    socialProof: {
+      cbt: 'Designed based on CBT/psychological approaches',
+      nextGen: 'Next-generation Emotional Wellness App following Rootd, Calm, Headspace',
+      company: '© SYNOVA WHISPER Inc.'
+    },
     links: {
       privacy: 'Privacy Policy',
       terms: 'Terms of Service',
@@ -490,6 +516,21 @@ export const en = {
     title: 'Daily Constellation Draw',
     subtitle: 'Draw your guardian card for today\'s guidance',
     backTitle: 'Today\'s Guidance',
+    // Section UI translations
+    sectionTitle: 'Constellation Personality Cards',
+    sectionDescription: 'Each card carries the wisdom of the universe and the energy of constellations, providing mysterious and profound guidance for your daily journey',
+    exploreAll: 'Explore All Constellation Cards',
+    instructions: 'Click cards to flip for daily guidance • Hover to pause auto-scroll',
+    clickForGuidance: 'Click to view today\'s guidance',
+    clickToFlipBack: 'Click to flip back',
+    // Magical card draw UI
+    magicalDrawTitle: 'Daily Mystical Card Draw',
+    drawPrompt: 'Ready to receive guidance from the universe?',
+    alreadyDrawnToday: 'Today\'s card has been drawn, come back tomorrow',
+    universeSelecting: 'The universe is selecting for you...',
+    clickToDraw: 'Click to draw today\'s card',
+    retryExperience: 'Retry Experience',
+    dailyLimitMessage: 'One card per day limit, come back tomorrow for new cosmic guidance',
     cards: {
       aries: {
         name: 'Aries',

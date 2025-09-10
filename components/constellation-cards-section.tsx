@@ -5,156 +5,12 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { glassCardStyles } from "@/lib/card-styles"
+import { designTokens, applyTokens } from "@/lib/design-tokens"
+import { mindfulDesign, applyMindful } from "@/lib/mindful-design-system"
 import { Stars, Sparkles, RotateCcw } from "lucide-react"
+import { useLocale } from "@/hooks/use-locale"
+import { createConstellationCards, ConstellationCard } from "@/lib/constellation-data"
 import MagicalCardDraw from "./magical-card-draw"
-
-// Constellation cards data with front/back content
-const constellationCards = [
-  {
-    id: "aries",
-    name: "Aries",
-    chineseName: "白羊座",
-    image: "/Aries.jpg",
-    frontTitle: "The Pioneer",
-    frontDescription: "Bold action leads to breakthrough",
-    backTitle: "今日指引",
-    backDescription: "勇敢迈出第一步，宇宙会为你的决心铺路。今天是开始新冒险的完美时机。",
-    element: "Fire",
-    dates: "3/21 - 4/19"
-  },
-  {
-    id: "taurus",
-    name: "Taurus", 
-    chineseName: "金牛座",
-    image: "/Taurus.jpg",
-    frontTitle: "The Builder",
-    frontDescription: "Steady progress creates lasting beauty",
-    backTitle: "今日指引",
-    backDescription: "慢工出细活，今天专注于打造坚实的基础。耐心是你最大的财富。",
-    element: "Earth",
-    dates: "4/20 - 5/20"
-  },
-  {
-    id: "gemini",
-    name: "Gemini",
-    chineseName: "双子座", 
-    image: "/Gemini.jpg",
-    frontTitle: "The Messenger",
-    frontDescription: "Communication opens new worlds",
-    backTitle: "今日指引",
-    backDescription: "用好奇心探索世界，用智慧连接人心。今天适合学习和交流。",
-    element: "Air",
-    dates: "5/21 - 6/20"
-  },
-  {
-    id: "cancer",
-    name: "Cancer",
-    chineseName: "巨蟹座",
-    image: "/Cancer.jpg", 
-    frontTitle: "The Nurturer",
-    frontDescription: "Intuition guides the heart home",
-    backTitle: "今日指引",
-    backDescription: "倾听内心的声音，关爱身边的人。情感的力量今天格外强大。",
-    element: "Water",
-    dates: "6/21 - 7/22"
-  },
-  {
-    id: "leo",
-    name: "Leo",
-    chineseName: "狮子座",
-    image: "/Leo.jpg",
-    frontTitle: "The Creator", 
-    frontDescription: "Authenticity shines brightest",
-    backTitle: "今日指引",
-    backDescription: "展现真实的自己，让内在的光芒照亮世界。自信是你的超能力。",
-    element: "Fire",
-    dates: "7/23 - 8/22"
-  },
-  {
-    id: "virgo",
-    name: "Virgo",
-    chineseName: "处女座",
-    image: "/Virgo.jpg",
-    frontTitle: "The Perfectionist",
-    frontDescription: "Details reveal hidden treasures",
-    backTitle: "今日指引", 
-    backDescription: "用心观察细节，在平凡中发现非凡。完美来自对品质的追求。",
-    element: "Earth",
-    dates: "8/23 - 9/22"
-  },
-  {
-    id: "libra", 
-    name: "Libra",
-    chineseName: "天秤座",
-    image: "/Libra.jpg",
-    frontTitle: "The Harmonizer",
-    frontDescription: "Balance brings inner peace",
-    backTitle: "今日指引",
-    backDescription: "寻找生活的平衡点，用美好的心情迎接每一个瞬间。",
-    element: "Air", 
-    dates: "9/23 - 10/22"
-  },
-  {
-    id: "scorpio",
-    name: "Scorpio",
-    chineseName: "天蝎座", 
-    image: "/Scorpio.jpg",
-    frontTitle: "The Transformer",
-    frontDescription: "Depth reveals hidden power",
-    backTitle: "今日指引",
-    backDescription: "深入探索内在的力量，转化挑战为成长的机会。",
-    element: "Water",
-    dates: "10/23 - 11/21" 
-  },
-  {
-    id: "sagittarius",
-    name: "Sagittarius",
-    chineseName: "射手座",
-    image: "/Sagittarius.jpg", 
-    frontTitle: "The Explorer",
-    frontDescription: "Adventure expands the soul",
-    backTitle: "今日指引",
-    backDescription: "保持开放的心态，每一次经历都是智慧的积累。勇敢追求梦想。",
-    element: "Fire",
-    dates: "11/22 - 12/21"
-  },
-  {
-    id: "capricorn",
-    name: "Capricorn", 
-    chineseName: "摩羯座",
-    image: "/Capricorn.jpg",
-    frontTitle: "The Achiever",
-    frontDescription: "Discipline creates mountains",
-    backTitle: "今日指引",
-    backDescription: "脚踏实地向目标前进，每一步都在为未来的成功奠基。",
-    element: "Earth",
-    dates: "12/22 - 1/19"
-  },
-  {
-    id: "aquarius",
-    name: "Aquarius",
-    chineseName: "水瓶座",
-    image: "/Aquarius.jpg",
-    frontTitle: "The Innovator", 
-    frontDescription: "Vision shapes tomorrow",
-    backTitle: "今日指引",
-    backDescription: "用独特的视角看世界，你的创新思维将带来意想不到的收获。",
-    element: "Air",
-    dates: "1/20 - 2/18"
-  },
-  {
-    id: "pisces",
-    name: "Pisces",
-    chineseName: "双鱼座",
-    image: "/Pisces.jpg", 
-    frontTitle: "The Dreamer",
-    frontDescription: "Imagination flows into reality",
-    backTitle: "今日指引",
-    backDescription: "让想象力指引方向，直觉将带你找到最美的答案。",
-    element: "Water",
-    dates: "2/19 - 3/20"
-  }
-]
 
 // Element color mapping
 const elementColors = {
@@ -166,12 +22,13 @@ const elementColors = {
 
 // Flip card component with overlay design
 interface FlipCardProps {
-  card: typeof constellationCards[0]
+  card: ConstellationCard
   isFlipped: boolean
   onClick: () => void
+  t: any
 }
 
-function FlipCard({ card, isFlipped, onClick }: FlipCardProps) {
+function FlipCard({ card, isFlipped, onClick, t }: FlipCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   
   return (
@@ -223,7 +80,7 @@ function FlipCard({ card, isFlipped, onClick }: FlipCardProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
                 
                 {/* Content overlay */}
-                <div className="relative z-20 p-6 space-y-3">
+                <div className={`relative z-20 ${designTokens.spacing.cardPadding} space-y-3`}>
                   <div className="flex items-center justify-between">
                     <div className="space-y-1">
                       <h3 className="text-2xl font-bold text-white">
@@ -237,13 +94,13 @@ function FlipCard({ card, isFlipped, onClick }: FlipCardProps) {
                   </div>
                   
                   <div className="space-y-2">
-                    <p className="text-xs text-slate-400 font-medium">
+                    <p className={`${applyTokens.text('caption')} ${glassCardStyles.text.subtle} font-medium`}>
                       {card.dates}
                     </p>
-                    <p className="text-base font-semibold text-fuchsia-200">
+                    <p className={`${applyTokens.text('body')} font-semibold ${glassCardStyles.text.accent}`}>
                       {card.frontTitle}
                     </p>
-                    <p className="text-sm text-slate-200 leading-relaxed">
+                    <p className={`${applyTokens.text('small')} ${glassCardStyles.text.secondary}`}>
                       {card.frontDescription}
                     </p>
                   </div>
@@ -252,7 +109,7 @@ function FlipCard({ card, isFlipped, onClick }: FlipCardProps) {
                   <div className="flex items-center justify-center mt-4 pt-2 border-t border-white/10">
                     <div className="flex items-center gap-2 text-xs text-slate-400">
                       <RotateCcw className="h-3 w-3" />
-                      <span>点击查看今日指引</span>
+                      <span>{t.constellationCards.clickForGuidance}</span>
                     </div>
                   </div>
                 </div>
@@ -286,7 +143,7 @@ function FlipCard({ card, isFlipped, onClick }: FlipCardProps) {
               </div>
               
               {/* Content overlay centered */}
-              <div className="absolute inset-0 z-20 flex flex-col justify-center items-center p-8 text-center">
+              <div className={`absolute inset-0 z-20 flex flex-col justify-center items-center ${designTokens.spacing.cardPaddingLarge} text-center`}>
                 <div className="space-y-6">
                   {/* Icon */}
                   <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-fuchsia-500/30 to-purple-600/30 backdrop-blur-sm flex items-center justify-center border border-fuchsia-400/20">
@@ -295,28 +152,28 @@ function FlipCard({ card, isFlipped, onClick }: FlipCardProps) {
                   
                   {/* Constellation name */}
                   <div className="space-y-2">
-                    <h3 className="text-3xl font-bold text-white">
+                    <h3 className={`${applyTokens.heading('h3')} ${glassCardStyles.text.primary}`}>
                       {card.name}
                     </h3>
-                    <p className="text-lg text-slate-300">
+                    <p className={`${applyTokens.text('large')} ${glassCardStyles.text.secondary}`}>
                       {card.chineseName}
                     </p>
                   </div>
                   
                   {/* Daily guidance */}
                   <div className="space-y-4 max-w-sm">
-                    <h4 className="text-xl font-semibold text-fuchsia-300">
+                    <h4 className={`${applyTokens.heading('h4')} ${glassCardStyles.text.accent}`}>
                       {card.backTitle}
                     </h4>
-                    <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 border border-purple-500/20">
-                      <p className="text-sm leading-relaxed text-slate-200">
+                    <div className={`bg-black/40 backdrop-blur-sm ${designTokens.components.borderRadius.small} p-4 border border-purple-500/20`}>
+                      <p className={`${applyTokens.text('small')} ${glassCardStyles.text.secondary}`}>
                         {card.backDescription}
                       </p>
                     </div>
                   </div>
                   
                   {/* Date range */}
-                  <div className="text-xs text-slate-400 font-medium">
+                  <div className={`${applyTokens.text('caption')} ${glassCardStyles.text.subtle} font-medium`}>
                     {card.dates}
                   </div>
                 </div>
@@ -325,7 +182,7 @@ function FlipCard({ card, isFlipped, onClick }: FlipCardProps) {
                 <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
                   <div className="flex items-center gap-2 text-xs text-slate-400">
                     <RotateCcw className="h-3 w-3" />
-                    <span>点击翻回正面</span>
+                    <span>{t.constellationCards.clickToFlipBack}</span>
                   </div>
                 </div>
               </div>
@@ -339,6 +196,8 @@ function FlipCard({ card, isFlipped, onClick }: FlipCardProps) {
 
 // Main constellation cards section component
 export default function ConstellationCardsSection() {
+  const { t } = useLocale()
+  const constellationCards = createConstellationCards(t)
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set())
   const [isPaused, setIsPaused] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -407,7 +266,7 @@ export default function ConstellationCardsSection() {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 200,
         damping: 20,
       },
@@ -416,12 +275,6 @@ export default function ConstellationCardsSection() {
 
   return (
     <section id="constellation-cards" className="py-16 md:py-24 relative overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-fuchsia-500/5 rounded-full blur-3xl animate-pulse-glow" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/8 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-600/3 via-purple-600/3 to-fuchsia-600/3 rounded-full blur-3xl animate-spin-slow" />
-      </div>
 
       <div className="mx-auto max-w-7xl px-4">
         <motion.div
@@ -435,10 +288,10 @@ export default function ConstellationCardsSection() {
           <div className="text-center space-y-6">
             <motion.div variants={itemVariants} className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-200 via-fuchsia-200 to-slate-200 bg-clip-text text-transparent">
-                星座人格卡牌
+                {t.constellationCards.sectionTitle}
               </h2>
               <p className={`text-lg ${glassCardStyles.text.secondary} max-w-2xl mx-auto`}>
-                每张卡牌都承载着宇宙的智慧与星座的能量，为你的今日之路提供神秘而深刻的指引
+                {t.constellationCards.sectionDescription}
               </p>
             </motion.div>
           </div>
@@ -453,11 +306,11 @@ export default function ConstellationCardsSection() {
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent"></div>
             <div className="px-4">
               <Card className={`${glassCardStyles.base}`}>
-                <CardContent className="p-3">
+                <CardContent className={designTokens.spacing.cardPaddingSmall}>
                   <div className="flex items-center gap-2 text-center justify-center">
                     <Sparkles className="h-4 w-4 text-fuchsia-300" />
                     <span className={`text-xs ${glassCardStyles.text.muted}`}>
-                      探索所有星座卡牌
+                      {t.constellationCards.exploreAll}
                     </span>
                     <Sparkles className="h-4 w-4 text-fuchsia-300" />
                   </div>
@@ -470,10 +323,10 @@ export default function ConstellationCardsSection() {
           {/* Instructions for gallery */}
           <motion.div variants={itemVariants}>
             <Card className={`${glassCardStyles.base} max-w-lg mx-auto`}>
-              <CardContent className="p-6">
+              <CardContent className={designTokens.spacing.cardPadding}>
                 <div className="flex items-center gap-3 text-center justify-center">
                   <span className={`text-sm ${glassCardStyles.text.muted}`}>
-                    点击卡牌翻转查看今日指引 • 悬停暂停自动滚动
+                    {t.constellationCards.instructions}
                   </span>
                 </div>
               </CardContent>
@@ -484,7 +337,7 @@ export default function ConstellationCardsSection() {
           <motion.div variants={itemVariants} className="relative">
             <div
               ref={scrollRef}
-              className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
+              className={`flex ${designTokens.spacing.cardGrid} overflow-x-auto scrollbar-hide pb-4`}
               style={{
                 scrollBehavior: 'smooth',
                 scrollbarWidth: 'none',
@@ -502,6 +355,7 @@ export default function ConstellationCardsSection() {
                     card={card}
                     isFlipped={flippedCards.has(`${card.id}-${index}`)}
                     onClick={() => handleCardFlip(`${card.id}-${index}`)}
+                    t={t}
                   />
                 </div>
               ))}

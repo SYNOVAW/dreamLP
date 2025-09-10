@@ -517,6 +517,21 @@ export const ja = {
     title: '毎日の星座抽選',
     subtitle: '今日のガイダンスカードを引く',
     backTitle: '今日の指針',
+    // Section UI translations
+    sectionTitle: '星座パーソナリティカード',
+    sectionDescription: '各カードは宇宙の知恵と星座のエネルギーを宿し、あなたの今日の道のりに神秘的で深遠な導きを提供します',
+    exploreAll: 'すべての星座カードを探索',
+    instructions: 'カードをクリックして今日の指針を表示 • ホバーで自動スクロール停止',
+    clickForGuidance: '今日の指針を見るにはクリック',
+    clickToFlipBack: '裏面に戻すにはクリック',
+    // Magical card draw UI
+    magicalDrawTitle: '毎日の神秘的カード抽選',
+    drawPrompt: '宇宙からの導きを受ける準備はできていますか？',
+    alreadyDrawnToday: '今日のカードは引かれています。明日また来てください',
+    universeSelecting: '宇宙があなたのために選んでいます...',
+    clickToDraw: '今日のカードを引くにはクリック',
+    retryExperience: '体験をやり直す',
+    dailyLimitMessage: '1日1枚まで、明日新しい宇宙の導きを受けに来てください',
     cards: {
       aries: {
         name: '牡羊座',

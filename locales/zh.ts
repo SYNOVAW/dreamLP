@@ -436,45 +436,6 @@ export const zh = {
     }
   },
 
-  // Creative Lab Section
-  creativeLab: {
-    title: '创作实验室 · AI 歌曲 & 短视频',
-    subtitle: '让昨夜的梦，长成一段旋律或 15s 影像。支持 Persona 主题、情绪/Hz 氛围、一键生成。',
-    tabs: {
-      music: 'AI 歌曲',
-      video: 'AI 短视频'
-    },
-    music: {
-      title: 'AI 歌曲生成',
-      persona: 'Persona 主题',
-      mood: '情绪/频率', 
-      duration: '时长（秒）',
-      prompt: '歌词/意象提示',
-      promptPlaceholder: '描述梦境场景、节奏与乐器："慢板 · 呼吸感 pad · 海浪与风铃"',
-      generate: '一键生成',
-      generating: '生成中…',
-      autoFill: '用 Persona 自动填充',
-      personaOptions: ['MIRA（安抚）', 'IGNIS（激励）', 'ECHO（反思）'],
-      moodOptions: ['平静 · 432Hz', '疗愈 · 528Hz', '觉醒 · 963Hz', '专注 · 无Hz标签']
-    },
-    video: {
-      title: 'AI 短视频制作',
-      style: '风格',
-      ratio: '画幅',
-      rhythm: '节奏',
-      script: '分镜/脚本',
-      scriptPlaceholder: '分三镜：① 星屑流动 ② 卡牌渐显 ③ Persona 名称字幕',
-      upload: '上传素材（可选）',
-      generate: '一键生成 15s 预告片',
-      generating: '渲染视频帧…',
-      template: '用模板脚本',
-      styleOptions: ['梦境水彩 · 粒子光', '霓虹赛博 · 星空', '柔雾电影感', '线性渐变 · 抽象'],
-      ratioOptions: ['9:16', '1:1', '16:9'],
-      rhythmOptions: ['慢', '中', '快']
-    },
-    disclaimer: '* 创作内容仅作娱乐与个人灵感用途。请确保你拥有上传素材的版权；生成作品不应侵犯第三方权利或冒用他人声音/形象。'
-  },
-
   // CBT Cards System
   cbtCards: {
     title: 'AI电气羊 × 认知行为疗法',
@@ -555,6 +516,21 @@ export const zh = {
     title: '每日星座抽卡',
     subtitle: '抽取你今日的守护卡片指引',
     backTitle: '今日指引',
+    // Section UI translations
+    sectionTitle: '星座人格卡牌',
+    sectionDescription: '每张卡牌都承载着宇宙的智慧与星座的能量，为你的今日之路提供神秘而深刻的指引',
+    exploreAll: '探索所有星座卡牌',
+    instructions: '点击卡牌翻转查看今日指引 • 悬停暂停自动滚动',
+    clickForGuidance: '点击查看今日指引',
+    clickToFlipBack: '点击翻回正面',
+    // Magical card draw UI
+    magicalDrawTitle: '每日神秘抽卡',
+    drawPrompt: '准备好接受宇宙的指引了吗？',
+    alreadyDrawnToday: '今日卡牌已抽取，明日再来吧',
+    universeSelecting: '宇宙正在为你选择...',
+    clickToDraw: '点击抽取今日卡牌',
+    retryExperience: '重新体验',
+    dailyLimitMessage: '每日限抽一张，明天再来接受新的宇宙指引',
     cards: {
       aries: {
         name: '白羊座',

@@ -107,7 +107,7 @@ export function WordReveal({
       filter: "blur(0px)",
       transition: {
         duration: prefersReducedMotion ? 0.1 : 0.8,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as const,
       },
     },
   }
@@ -258,7 +258,7 @@ export function FloatingLetters({
       y: 0,
       transition: {
         duration: 0.6,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as const,
       },
     },
   }

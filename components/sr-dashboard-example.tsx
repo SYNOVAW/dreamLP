@@ -106,7 +106,7 @@ export default function SRDashboardExample() {
     }
   }
 
-  const [currentData, setCurrentData] = useState(sampleData.moderate)
+  const [currentData, setCurrentData] = useState<typeof sampleData.moderate | typeof sampleData.excellent>(sampleData.moderate)
 
   const themeConfigs = {
     purple: {
@@ -126,9 +126,9 @@ export default function SRDashboardExample() {
     }
   }
 
-  const handleMetricClick = (metric: string, value: number) => {
+  const handleMetricClick = (metric: string, value?: number) => {
     if (process.env.NODE_ENV === 'development') {
-      console.log(`Metric clicked: ${metric} with value ${value}%`)
+      console.log(`Metric clicked: ${metric} with value ${value || 'N/A'}%`)
     }
   }
 

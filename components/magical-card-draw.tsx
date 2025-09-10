@@ -5,155 +5,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { glassCardStyles } from "@/lib/card-styles"
+import { designTokens, applyTokens } from "@/lib/design-tokens"
 import { Stars, Sparkles, RotateCcw, Moon } from "lucide-react"
-
-// Constellation cards data (same as existing)
-const constellationCards = [
-  {
-    id: "aries",
-    name: "Aries",
-    chineseName: "白羊座",
-    image: "/Aries.jpg",
-    frontTitle: "The Pioneer",
-    frontDescription: "Bold action leads to breakthrough",
-    backTitle: "今日指引",
-    backDescription: "勇敢迈出第一步，宇宙会为你的决心铺路。今天是开始新冒险的完美时机。",
-    element: "Fire",
-    dates: "3/21 - 4/19"
-  },
-  {
-    id: "taurus",
-    name: "Taurus", 
-    chineseName: "金牛座",
-    image: "/Taurus.jpg",
-    frontTitle: "The Builder",
-    frontDescription: "Steady progress creates lasting beauty",
-    backTitle: "今日指引",
-    backDescription: "慢工出细活，今天专注于打造坚实的基础。耐心是你最大的财富。",
-    element: "Earth",
-    dates: "4/20 - 5/20"
-  },
-  {
-    id: "gemini",
-    name: "Gemini",
-    chineseName: "双子座", 
-    image: "/Gemini.jpg",
-    frontTitle: "The Messenger",
-    frontDescription: "Communication opens new worlds",
-    backTitle: "今日指引",
-    backDescription: "用好奇心探索世界，用智慧连接人心。今天适合学习和交流。",
-    element: "Air",
-    dates: "5/21 - 6/20"
-  },
-  {
-    id: "cancer",
-    name: "Cancer",
-    chineseName: "巨蟹座",
-    image: "/Cancer.jpg", 
-    frontTitle: "The Nurturer",
-    frontDescription: "Intuition guides the heart home",
-    backTitle: "今日指引",
-    backDescription: "倾听内心的声音，关爱身边的人。情感的力量今天格外强大。",
-    element: "Water",
-    dates: "6/21 - 7/22"
-  },
-  {
-    id: "leo",
-    name: "Leo",
-    chineseName: "狮子座",
-    image: "/Leo.jpg",
-    frontTitle: "The Creator", 
-    frontDescription: "Authenticity shines brightest",
-    backTitle: "今日指引",
-    backDescription: "展现真实的自己，让内在的光芒照亮世界。自信是你的超能力。",
-    element: "Fire",
-    dates: "7/23 - 8/22"
-  },
-  {
-    id: "virgo",
-    name: "Virgo",
-    chineseName: "处女座",
-    image: "/Virgo.jpg",
-    frontTitle: "The Perfectionist",
-    frontDescription: "Details reveal hidden treasures",
-    backTitle: "今日指引", 
-    backDescription: "用心观察细节，在平凡中发现非凡。完美来自对品质的追求。",
-    element: "Earth",
-    dates: "8/23 - 9/22"
-  },
-  {
-    id: "libra", 
-    name: "Libra",
-    chineseName: "天秤座",
-    image: "/Libra.jpg",
-    frontTitle: "The Harmonizer",
-    frontDescription: "Balance brings inner peace",
-    backTitle: "今日指引",
-    backDescription: "寻找生活的平衡点，用美好的心情迎接每一个瞬间。",
-    element: "Air", 
-    dates: "9/23 - 10/22"
-  },
-  {
-    id: "scorpio",
-    name: "Scorpio",
-    chineseName: "天蝎座", 
-    image: "/Scorpio.jpg",
-    frontTitle: "The Transformer",
-    frontDescription: "Depth reveals hidden power",
-    backTitle: "今日指引",
-    backDescription: "深入探索内在的力量，转化挑战为成长的机会。",
-    element: "Water",
-    dates: "10/23 - 11/21" 
-  },
-  {
-    id: "sagittarius",
-    name: "Sagittarius",
-    chineseName: "射手座",
-    image: "/Sagittarius.jpg", 
-    frontTitle: "The Explorer",
-    frontDescription: "Adventure expands the soul",
-    backTitle: "今日指引",
-    backDescription: "保持开放的心态，每一次经历都是智慧的积累。勇敢追求梦想。",
-    element: "Fire",
-    dates: "11/22 - 12/21"
-  },
-  {
-    id: "capricorn",
-    name: "Capricorn", 
-    chineseName: "摩羯座",
-    image: "/Capricorn.jpg",
-    frontTitle: "The Achiever",
-    frontDescription: "Discipline creates mountains",
-    backTitle: "今日指引",
-    backDescription: "脚踏实地向目标前进，每一步都在为未来的成功奠基。",
-    element: "Earth",
-    dates: "12/22 - 1/19"
-  },
-  {
-    id: "aquarius",
-    name: "Aquarius",
-    chineseName: "水瓶座",
-    image: "/Aquarius.jpg",
-    frontTitle: "The Innovator", 
-    frontDescription: "Vision shapes tomorrow",
-    backTitle: "今日指引",
-    backDescription: "用独特的视角看世界，你的创新思维将带来意想不到的收获。",
-    element: "Air",
-    dates: "1/20 - 2/18"
-  },
-  {
-    id: "pisces",
-    name: "Pisces",
-    chineseName: "双鱼座",
-    image: "/Pisces.jpg", 
-    frontTitle: "The Dreamer",
-    frontDescription: "Imagination flows into reality",
-    backTitle: "今日指引",
-    backDescription: "让想象力指引方向，直觉将带你找到最美的答案。",
-    element: "Water",
-    dates: "2/19 - 3/20"
-  }
-]
+import { useLocale } from "@/hooks/use-locale"
+import { createConstellationCards, ConstellationCard } from "@/lib/constellation-data"
 
 // Element color mapping
 const elementColors = {
@@ -225,12 +80,14 @@ const FloatingParticles = ({ isActive }: { isActive: boolean }) => {
 
 // Main magical card drawing component
 interface MagicalCardDrawProps {
-  onCardDrawn?: (card: typeof constellationCards[0]) => void
+  onCardDrawn?: (card: ConstellationCard) => void
 }
 
 export default function MagicalCardDraw({ onCardDrawn }: MagicalCardDrawProps) {
+  const { t } = useLocale()
+  const constellationCards = createConstellationCards(t)
   const [isDrawing, setIsDrawing] = useState(false)
-  const [drawnCard, setDrawnCard] = useState<typeof constellationCards[0] | null>(null)
+  const [drawnCard, setDrawnCard] = useState<ConstellationCard | null>(null)
   const [showParticles, setShowParticles] = useState(false)
   const [lastDrawDate, setLastDrawDate] = useState<string | null>(null)
   const [cardFlipped, setCardFlipped] = useState(false)
@@ -323,10 +180,10 @@ export default function MagicalCardDraw({ onCardDrawn }: MagicalCardDrawProps) {
             className="space-y-2"
           >
             <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-fuchsia-300 via-purple-300 to-fuchsia-300 bg-clip-text text-transparent">
-              每日神秘抽卡
+              {t.constellationCards.magicalDrawTitle}
             </h2>
             <p className={`text-sm ${glassCardStyles.text.secondary}`}>
-              {canDrawToday() ? "准备好接受宇宙的指引了吗？" : "今日卡牌已抽取，明日再来吧"}
+              {canDrawToday() ? t.constellationCards.drawPrompt : t.constellationCards.alreadyDrawnToday}
             </p>
           </motion.div>
         </div>
@@ -383,7 +240,7 @@ export default function MagicalCardDraw({ onCardDrawn }: MagicalCardDrawProps) {
                                 transition={{ duration: 1.5, repeat: Infinity }}
                                 className="text-fuchsia-200 font-medium"
                               >
-                                宇宙正在为你选择...
+                                {t.constellationCards.universeSelecting}
                               </motion.p>
                             </div>
                           </motion.div>
@@ -400,7 +257,7 @@ export default function MagicalCardDraw({ onCardDrawn }: MagicalCardDrawProps) {
                           >
                             <div className="flex items-center gap-2 text-sm text-fuchsia-200">
                               <Moon className="h-4 w-4" />
-                              <span>点击抽取今日卡牌</span>
+                              <span>{t.constellationCards.clickToDraw}</span>
                             </div>
                           </motion.div>
                         </div>
@@ -491,7 +348,7 @@ export default function MagicalCardDraw({ onCardDrawn }: MagicalCardDrawProps) {
                             <div className="flex items-center justify-center mt-4 pt-2 border-t border-white/10">
                               <div className="flex items-center gap-2 text-xs text-slate-400">
                                 <RotateCcw className="h-3 w-3" />
-                                <span>点击查看今日指引</span>
+                                <span>{t.constellationCards.clickForGuidance}</span>
                               </div>
                             </div>
                           </div>
@@ -553,7 +410,7 @@ export default function MagicalCardDraw({ onCardDrawn }: MagicalCardDrawProps) {
                           <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
                             <div className="flex items-center gap-2 text-xs text-slate-400">
                               <RotateCcw className="h-3 w-3" />
-                              <span>点击翻回正面</span>
+                              <span>{t.constellationCards.clickToFlipBack}</span>
                             </div>
                           </div>
                         </div>
@@ -576,7 +433,7 @@ export default function MagicalCardDraw({ onCardDrawn }: MagicalCardDrawProps) {
               className="bg-transparent border-purple-500/30 text-purple-300 hover:bg-purple-500/10 hover:border-purple-400/50"
             >
               <RotateCcw className="h-4 w-4 mr-2" />
-              重新体验
+              {t.constellationCards.retryExperience}
             </Button>
           )}
           
@@ -584,7 +441,7 @@ export default function MagicalCardDraw({ onCardDrawn }: MagicalCardDrawProps) {
             <Card className={`${glassCardStyles.base} max-w-sm mx-auto`}>
               <CardContent className="p-4">
                 <p className="text-sm text-center text-slate-400">
-                  每日限抽一张，明天再来接受新的宇宙指引
+                  {t.constellationCards.dailyLimitMessage}
                 </p>
               </CardContent>
             </Card>
